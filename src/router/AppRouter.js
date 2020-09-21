@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, Router } from 'react-router-dom'
+import { Switch, Router } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory'
 import Dashboard from '../components/Dashboard'
 import Clientes from '../components/Clientes'
