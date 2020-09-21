@@ -5,10 +5,14 @@ import { startAddCliente } from '../actions/clientes'
 
 
 
-const AddCliente = () => {
+const AddCliente = (props) => {
     const dispatch = useDispatch()
+
     const { register, handleSubmit, errors } = useForm()
-    const onSubmit = data => dispatch(startAddCliente(data));
+    const onSubmit = data => {
+        dispatch(startAddCliente(data))
+        props.history.push('/clientes')
+    }
 
     
    
