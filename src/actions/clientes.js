@@ -62,26 +62,26 @@ export const startAddCliente = (clienteData = {}) => {
 //     }
 // }
 
-// // SET_EXPENSES
-// export const setExpenses = (expenses) => ({
-//     type: 'SET_EXPENSES',
-//     expenses
-// })
+// SET_EXPENSES
+export const setClientes = (clientes) => ({
+    type: 'SET_CLIENTES',
+    clientes
+})
 
-// export const startSetExpenses = () => {
-//     return (dispatch, getState) => {
-//         const uid = getState().auth.uid
+export const startSetClientes = () => {
+    return (dispatch) => {
+        //const uid = getState().auth.uid
         
-//         return database.ref(`users/${uid}/expenses`).once('value').then((snapshot) => {
-//             const expenses = []
+        return database.ref(`clientes`).once('value').then((snapshot) => {
+            const clientes = []
 
-//             snapshot.forEach((childSnapshot) => {
-//                 expenses.push({
-//                     id: childSnapshot.key,
-//                     ...childSnapshot.val()
-//                 })
-//             })
-//             dispatch(setExpenses(expenses))
-//         })
-//     }
-// }
+            snapshot.forEach((childSnapshot) => {
+                clientes.push({
+                    id: childSnapshot.key,
+                    ...childSnapshot.val()
+                })
+            })
+            dispatch(setClientes(clientes))
+        })
+    }
+}

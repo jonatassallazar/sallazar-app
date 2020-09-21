@@ -18,7 +18,7 @@ export default (state = [], action) => {
                     return cliente;
                 };
             });
-        case 'SET_EXPENSES':
+        case 'SET_CLIENTES':
             return action.clientes;
         default:
             return state
