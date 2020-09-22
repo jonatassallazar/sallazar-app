@@ -1,4 +1,5 @@
-import React, { Link } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 const ClienteItem = ({ id, nome, telefone, email, dataDeNascimento }) => (
@@ -13,4 +14,4 @@ const ClienteItem = ({ id, nome, telefone, email, dataDeNascimento }) => (
     </div>
 )
 
-export { ClienteItem as default}
+export { ClienteItem as default }

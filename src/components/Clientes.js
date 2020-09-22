@@ -11,12 +11,7 @@ const Clientes = () => {
         <div>
             <h1>Clientes</h1>
             <Link to="/clientes/novo">Novo Cliente</Link>
-            {
-                selection.map((cliente) => (
-                    <ClienteItem {...cliente} key={cliente.id} />
-
-                ))
-            }
+            { selection.map((cliente) => <ClienteItem key={cliente.id} {...cliente}/>)}
         </div>
     )
 }
