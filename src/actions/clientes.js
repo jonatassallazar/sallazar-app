@@ -3,7 +3,7 @@ import {database} from '../database/firebase'
 //ADD_EXPENSE
 
 export const addCliente = (cliente) => ({
-    type: 'ADD_EXPENSE',
+    type: 'ADD_CLIENTE',
     cliente
 })
 
@@ -26,41 +26,41 @@ export const startAddCliente = (clienteData = {}) => {
     }
 }
 
-// //REMOVE_EXPENSE
+//REMOVE_EXPENSE
 
-// export const removeExpense = (id) => ({
-//     type: 'REMOVE_EXPENSE',
-//     expense: {
-//         id
-//     }
-// })
+export const removeCliente = (id) => ({
+    type: 'REMOVER_CLIENTE',
+    cliente: {
+        id
+    }
+})
 
-// export const startRemoveExpense = ({ id } = {}) => {
-//     return (dispatch, getState) => {
-//         const uid = getState().auth.uid
-//         return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
+export const startRemoveCliente = ({ id } = {}) => {
+    return (dispatch) => {
+        //const uid = getState().auth.uid
+        return database.ref(`clientes/${id}`).remove().then(() => {
 
-//             dispatch(removeExpense(id))
-//         })
-//     }
-// }
+            dispatch(removeCliente(id))
+        })
+    }
+}
 
-// //EDIT_EXPENSE
+//EDIT_EXPENSE
 
-// export const editExpense = (id, updates) => ({
-//     type: 'EDIT_EXPENSE',
-//     id,
-//     updates
-// })
+export const editCliente = (id, updates) => ({
+    type: 'EDITAR_CLIENTE',
+    id,
+    updates
+})
 
-// export const startEditExpense = (id, updates) => {
-//     return (dispatch) => {
-//         return database.ref('expenses/' + id).update(updates).then(() => {
+export const startEditCliente = (id, updates) => {
+    return (dispatch) => {
+        return database.ref('clientes/' + id).update(updates).then(() => {
 
-//             dispatch(editExpense(id, updates))
-//         })
-//     }
-// }
+            dispatch(editCliente(id, updates))
+        })
+    }
+}
 
 // SET_EXPENSES
 export const setClientes = (clientes) => ({

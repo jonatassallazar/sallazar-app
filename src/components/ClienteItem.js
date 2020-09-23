@@ -4,7 +4,7 @@ import moment from 'moment'
 
 const ClienteItem = ({ id, nome, telefone, email, dataDeNascimento }) => (
     <div>
-        <Link to={`/edit/${id}`}>
+        <Link to={`/editar/${id}`}>
             <h3>{nome}</h3>
         </Link>
         <p>{telefone} | {email} |
