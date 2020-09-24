@@ -1,28 +1,67 @@
-import React from 'react'
-import {useForm} from 'react-hook-form'
+import React, { useState } from 'react'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import { DatePicker } from '@material-ui/pickers';
 
 const ClienteForm = (props) => {
+    const {nome: nomeP, telefone: telefoneP, email: emailP, dataDeNascimento: dataDeNascimentoP} = props.cliente || { dataDeNascimentoP: new Date()}
 
-    const { register, handleSubmit, errors } = useForm()
+    const [nome, setNome] = useState(nomeP)
+    const [telefone, setTelefone] = useState(telefoneP)
+    const [email, setEmail] = useState(emailP)
+    const [dataDeNascimento, setDataDeNascimento] = useState(dataDeNascimentoP)
 
-    const {nome = "", telefone = "", email = "", dataDeNascimento = ""} = props.cliente || {}
+    const [error, setError] = useState('')
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+
+        if (!nome) {
+            setError('Digite um nome para o cliente')
+            // Set error state equal to 'Please provide description and amount.'
+        } else {
+            setError('')
+            // Clear the error
+            props.onSubmit({
+                nome,
+                email,
+                telefone,
+                dataDeNascimento: dataDeNascimento.valueOf()
+            })
+        }
+    }
 
     return (
         <div>
-            <form onSubmit={handleSubmit(props.onSubmit)}>
-                <label>Nome Completo</label>
-                <input name="nome" defaultValue={nome} ref={register({
-                    required: true
-                })} />
-                {errors.nome && <span>Este campo é obrigatório</span>}
-                <label>Telefone</label>
-                <input name="telefone" ref={register()} defaultValue={telefone}/>
-                <label>E-mail</label>
-                <input name="email" ref={register()} defaultValue={email}/>
-                <label>Data de Nascimento</label>
-                <input name="dataDeNascimento" ref={register()} defaultValue={dataDeNascimento}/>
-                <input type="submit" />
+            <form onSubmit={onSubmit}>
+                <TextField
+                    id="standard-basic"
+                    label="Nome Completo"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                />
+                <TextField
+                    id="standard-basic"
+                    label="Telefone"
+                    value={telefone}
+                    onChange={(e) => setTelefone(e.target.value)}
+                />
+                <TextField
+                    id="standard-basic"
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <DatePicker
+                    id="date"
+                    label="Data de Nascimento"
+                    value={dataDeNascimento}
+                    onChange={setDataDeNascimento}
+                />
+
+                <Button variant="contained" color="primary" type="submit">Enviar</Button>
             </form>
+            {error ? <p>{error}</p> : null}
         </div>
     )
 }

@@ -6,13 +6,12 @@ import ClienteForm from './ClienteForm'
 const AddCliente = (props) => {
     const dispatch = useDispatch()
 
-    const onSubmit = data => {
-        dispatch(startAddCliente(data))
-        props.history.push('/clientes')
-    }
-  
     return (
-        <ClienteForm onSubmit={onSubmit}/>
+        <ClienteForm onSubmit={data => {
+            dispatch(startAddCliente(data))
+            props.history.push('/clientes')
+        }}
+        />
     )
 }
 

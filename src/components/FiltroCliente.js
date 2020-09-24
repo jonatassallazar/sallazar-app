@@ -11,18 +11,21 @@ const FiltroCliente = (props) => {
             <input
                 type="text"
                 value={nome}
+                placeholder="Nome"
                 onChange={(e) => {
                     dispatch(setNomeFiltro(e.target.value))
                 }} />
             <input
                 type="text"
                 value={email}
+                placeholder="Email"
                 onChange={(e) => {
                     dispatch(setEmailFiltro(e.target.value))
                 }} />
             <input
                 type="text"
                 value={telefone}
+                placeholder="Telefone"
                 onChange={(e) => {
                     dispatch(setTelefoneFiltro(e.target.value))
                 }} />
