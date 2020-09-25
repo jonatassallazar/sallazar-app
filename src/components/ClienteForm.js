@@ -1,17 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { DatePicker } from '@material-ui/pickers';
 
-const ClienteForm = (props) => {
-    const {nome: nomeP, telefone: telefoneP, email: emailP, dataDeNascimento: dataDeNascimentoP} = props.cliente || { dataDeNascimentoP: new Date()}
+let hasPopulated = false
 
-    const [nome, setNome] = useState(nomeP)
-    const [telefone, setTelefone] = useState(telefoneP)
-    const [email, setEmail] = useState(emailP)
-    const [dataDeNascimento, setDataDeNascimento] = useState(dataDeNascimentoP)
+const ClienteForm = (props) => {
+    const [nome, setNome] = useState('')
+    const [telefone, setTelefone] = useState('')
+    const [email, setEmail] = useState('')
+    const [dataDeNascimento, setDataDeNascimento] = useState(new Date())
 
     const [error, setError] = useState('')
+
+    //Popula os campos
+    if (props.cliente && !hasPopulated) {
+        setNome(props.cliente.nome)
+        setTelefone(props.cliente.telefone)
+        setEmail(props.cliente.email)
+        setDataDeNascimento(props.cliente.dataDeNascimento)
+        hasPopulated = true
+    }
+
+    //Limpa a função de popular os campos
+    useEffect(() => {
+        return () => hasPopulated = false
+    }, [])
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -37,6 +51,7 @@ const ClienteForm = (props) => {
                 <TextField
                     id="standard-basic"
                     label="Nome Completo"
+                    required={true}
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                 />
@@ -56,7 +71,7 @@ const ClienteForm = (props) => {
                     id="date"
                     label="Data de Nascimento"
                     value={dataDeNascimento}
-                    onChange={setDataDeNascimento}
+                    onChange={(e) => setDataDeNascimento(e._d)}
                 />
 
                 <Button variant="contained" color="primary" type="submit">Enviar</Button>

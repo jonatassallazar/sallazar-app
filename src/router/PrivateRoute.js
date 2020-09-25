@@ -2,8 +2,9 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import Header from '../components/Header'
+import Menu from '../components/Menu'
 
-export const PrivateRoute = ({ component: Component, ...rest}) => {
+export const PrivateRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated = useSelector((state) => {
         if (state.auth.uid) {
             return true
@@ -14,9 +15,15 @@ export const PrivateRoute = ({ component: Component, ...rest}) => {
     return (
         <Route {...rest} component={(props) => (
             isAuthenticated ? (
-                <div>
+                <div className="app">
                     <Header />
-                    <Component {...props} />
+                    <div className="conteudo-app">
+                        <Menu />
+                        <div className="conteudo-page">
+                            <Component {...props} />
+                        </div>
+
+                    </div>
                 </div>
             ) : (
                     <Redirect to="/" />
@@ -25,4 +32,4 @@ export const PrivateRoute = ({ component: Component, ...rest}) => {
     )
 }
 
-export {PrivateRoute as default}
+export { PrivateRoute as default }

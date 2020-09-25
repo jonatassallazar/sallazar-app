@@ -8,8 +8,8 @@ export const addCliente = (cliente) => ({
 })
 
 export const startAddCliente = (clienteData = {}) => {
-    return (dispatch) => {
-        //const uid = getState().auth.uid
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
         const {
             nome = '',
             telefone = '',
@@ -17,7 +17,7 @@ export const startAddCliente = (clienteData = {}) => {
             dataDeNascimento = 0
         } = clienteData
         const cliente = { nome, telefone, email, dataDeNascimento }
-        database.ref(`clientes`).push(clienteData).then((ref) => {
+        database.ref(`users/${uid}/clientes`).push(clienteData).then((ref) => {
             dispatch(addCliente({
                 id: ref.key,
                 ...cliente
@@ -36,9 +36,9 @@ export const removeCliente = (id) => ({
 })
 
 export const startRemoveCliente = ({ id } = {}) => {
-    return (dispatch) => {
-        //const uid = getState().auth.uid
-        return database.ref(`clientes/${id}`).remove().then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
+        return database.ref(`users/${uid}/clientes/${id}`).remove().then(() => {
 
             dispatch(removeCliente(id))
         })
@@ -54,8 +54,9 @@ export const editCliente = (id, updates) => ({
 })
 
 export const startEditCliente = (id, updates) => {
-    return (dispatch) => {
-        return database.ref('clientes/' + id).update(updates).then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
+        return database.ref(`users/${uid}/clientes/${id}`).update(updates).then(() => {
 
             dispatch(editCliente(id, updates))
         })
@@ -69,10 +70,10 @@ export const setClientes = (clientes) => ({
 })
 
 export const startSetClientes = () => {
-    return (dispatch) => {
-        //const uid = getState().auth.uid
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
         
-        return database.ref(`clientes`).once('value').then((snapshot) => {
+        return database.ref(`users/${uid}/clientes`).once('value').then((snapshot) => {
             const clientes = []
 
             snapshot.forEach((childSnapshot) => {

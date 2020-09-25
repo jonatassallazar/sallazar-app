@@ -8,6 +8,8 @@ import { Provider } from 'react-redux'
 import configureStore from './store/store'
 import { startSetClientes } from './actions/clientes'
 
+import './index.scss'
+
 const store = configureStore()
 const jsx = (
   <Provider store={store}>
@@ -28,7 +30,7 @@ ReactDOM.render(<p>Loading...</p>, document.getElementById('root'))
 
 firebase.auth().onIdTokenChanged((user) => {
   if (user) {
-    store.dispatch(login(user.uid))
+    store.dispatch(login(user))
     store.dispatch(startSetClientes()).then(() => {
       renderApp()
       if (history.location.pathname === '/') {

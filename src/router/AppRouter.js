@@ -19,7 +19,7 @@ export const history = createHistory()
 
 const AppRouter = () => (
     <Router history={history}>
-        <div>
+        <div className="app">
             <MuiPickersUtilsProvider utils={MomentUtils}>
             <Switch>
                 <PublicRoute path="/" component={LoginPage} exact={true}/>
