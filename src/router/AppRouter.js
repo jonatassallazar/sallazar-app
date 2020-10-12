@@ -8,6 +8,10 @@ import EditarCliente from '../components/EditarCliente'
 import { LoginPage } from '../components/LoginPage'
 import PrivateRoute from './PrivateRoute'
 import PublicRoute from './PublicRoute'
+import Produtos from '../components/Produtos'
+import Vendas from '../components/Vendas'
+import Relatorios from '../components/Relatorios'
+import Ajuda from '../components/Ajuda'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 // pick a date util library
@@ -27,6 +31,10 @@ const AppRouter = () => (
                 <PrivateRoute path="/clientes" component={Clientes} exact={true}/>
                 <PrivateRoute path="/clientes/novo" component={AddCliente} />
                 <PrivateRoute path="/editar/:id" component={EditarCliente} />
+                <PrivateRoute path="/produtos" component={Produtos} />
+                <PrivateRoute path="/vendas" component={Vendas} />
+                <PrivateRoute path="/relatorios" component={Relatorios} />
+                <PrivateRoute path="/ajuda" component={Ajuda} />
             </Switch>
             </MuiPickersUtilsProvider>
         </div>
