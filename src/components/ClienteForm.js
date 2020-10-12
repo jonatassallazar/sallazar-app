@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import FormEndereco from './FormEndereco'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -9,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Input from '@material-ui/core/Input'
 import Checkbox from '@material-ui/core/Checkbox'
 import ListItemText from '@material-ui/core/ListItemText'
+
 
 let hasPopulated = false
 
@@ -38,6 +40,8 @@ const ClienteForm = (props) => {
         hasPopulated = true
     }
 
+    const enderecoCompleto = useSelector((state) => state.endereco)
+       
     //Limpa a função de popular os campos
     useEffect(() => {
         return () => hasPopulated = false
@@ -56,7 +60,11 @@ const ClienteForm = (props) => {
                 nome,
                 email,
                 telefone,
-                dataDeNascimento: dataDeNascimento.valueOf()
+                dataDeNascimento: dataDeNascimento.valueOf(),
+                status,
+                genero,
+                selectedTags,
+                enderecoCompleto
             })
         }
     }
@@ -118,7 +126,7 @@ const ClienteForm = (props) => {
                         </MenuItem>
                     ))}
                 </Select>
-                <FormEndereco/>
+                <FormEndereco />
                 <Button
                     variant="contained"
                     color="primary"
