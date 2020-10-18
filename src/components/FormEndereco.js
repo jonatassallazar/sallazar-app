@@ -1,44 +1,50 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { setEnderecoCompleto } from '../actions/endereco'
 import TextField from '@material-ui/core/TextField'
 import cep from 'cep-promise'
 
+let CEPgenerated = false
+
 const FormEndereco = (props) => {
     const dispatch = useDispatch()
 
-    const [CEP, setCEP] = useState('')
-    const [endereco, setEndereco] = useState('')
-    const [numero, setNumero] = useState('')
-    const [complemento, setComplemento] = useState('')
-    const [bairro, setBairro] = useState('')
-    const [cidade, setCidade] = useState('')
-    const [estado, setEstado] = useState('')
+    const { CEP = '', endereco, numero, complemento, bairro, cidade, estado } = useSelector((state) => state.endereco)
 
-    const onChange = () => {
+    //e = evento | f = final
+    const onChange = ({ CEPe, enderecoe, numeroe, complementoe, bairroe, cidadee, estadoe }) => {
+        const CEPf = CEPe || CEP
+        const enderecof = enderecoe || endereco
+        const numerof = numeroe || numero
+        const complementof = complementoe || complemento
+        const bairrof = bairroe || bairro
+        const cidadef = cidadee || cidade
+        const estadof = estadoe || estado
+
         const enderecoCompleto = {
-            CEP,
-            endereco,
-            numero,
-            complemento,
-            bairro,
-            cidade,
-            estado
+            CEP: CEPf,
+            endereco: enderecof,
+            numero: numerof,
+            complemento: complementof,
+            bairro: bairrof,
+            cidade: cidadef,
+            estado: estadof
         }
 
         dispatch(setEnderecoCompleto(enderecoCompleto))
     }
 
-    if (CEP.length === 8) {
+    if (CEP.length === 8 && !CEPgenerated) {
         cep(CEP).then((valor) => {
-            setEndereco(valor.street)
-            setBairro(valor.neighborhood)
-            setCidade(valor.city)
-            setEstado(valor.state)
+            onChange({ enderecoe: valor.street, bairroe: valor.neighborhood, cidadee: valor.city, estadoe: valor.state })
+            CEPgenerated = true
         }).catch((e) => {
             console.log(e);
+            CEPgenerated = false
         })
     }
+
+
 
     return (
         <div>
@@ -47,8 +53,7 @@ const FormEndereco = (props) => {
                 label="CEP"
                 value={CEP}
                 onChange={(e) => {
-                    setCEP(e.target.value)
-                    onChange()
+                    onChange({ CEPe: e.target.value })
                 }}
             />
             <TextField
@@ -56,17 +61,16 @@ const FormEndereco = (props) => {
                 label="Endereço"
                 value={endereco}
                 onChange={(e) => {
-                    setEndereco(e.target.value)
-                    onChange()
+                    onChange({ enderecoe: e.target.value })
                 }}
+                InputLabelProps={{ shrink: true }}
             />
             <TextField
                 id="standard-basic"
                 label="Número"
                 value={numero}
                 onChange={(e) => {
-                    setNumero(e.target.value)
-                    onChange()
+                    onChange({ numeroe: e.target.value })
                 }}
             />
             <TextField
@@ -74,8 +78,7 @@ const FormEndereco = (props) => {
                 label="Complemento"
                 value={complemento}
                 onChange={(e) => {
-                    setComplemento(e.target.value)
-                    onChange()
+                    onChange({ complementoe: e.target.value })
                 }}
             />
             <TextField
@@ -83,27 +86,27 @@ const FormEndereco = (props) => {
                 label="Bairro"
                 value={bairro}
                 onChange={(e) => {
-                    setBairro(e.target.value)
-                    onChange()
+                    onChange({ bairroe: e.target.value })
                 }}
+                InputLabelProps={{ shrink: true }}
             />
             <TextField
                 id="standard-basic"
                 label="Cidade"
                 value={cidade}
                 onChange={(e) => {
-                    setCidade(e.target.value)
-                    onChange()
+                    onChange({ cidadee: e.target.value })
                 }}
+                InputLabelProps={{ shrink: true }}
             />
             <TextField
                 id="standard-basic"
                 label="Estado"
                 value={estado}
                 onChange={(e) => {
-                    setEstado(e.target.value)
-                    onChange()
+                    onChange({ estadoe: e.target.value })
                 }}
+                InputLabelProps={{ shrink: true }}
             />
         </div>
     )

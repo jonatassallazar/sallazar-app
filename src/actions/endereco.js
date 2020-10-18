@@ -4,5 +4,5 @@ export const setEnderecoCompleto = (endereco) => ({
 })
 
 export const removerEndereco = () => ({
-    type: 'REMOVER_ENDERECO',
+    type: 'REMOVER_ENDERECO'
 })
