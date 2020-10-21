@@ -14,9 +14,21 @@ export const startAddCliente = (clienteData = {}) => {
             nome = '',
             telefone = '',
             email = 0,
-            dataDeNascimento = 0
+            dataDeNascimento = 0,
+            status = 'ativo',
+            genero = '',
+            selectedTags = [],
+            enderecoCompleto = {
+                CEP:'',
+                endereco: '',
+                numero: '',
+                complemento: '',
+                bairro: '',
+                cidade: '',
+                estado: ''
+            }
         } = clienteData
-        const cliente = { nome, telefone, email, dataDeNascimento }
+        const cliente = { nome, telefone, email, dataDeNascimento, status, genero, selectedTags, enderecoCompleto }
         database.ref(`users/${uid}/clientes`).push(clienteData).then((ref) => {
             dispatch(addCliente({
                 id: ref.key,

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setEnderecoCompleto } from '../actions/endereco'
+import { removerEndereco, setEnderecoCompleto } from '../actions/endereco'
 import TextField from '@material-ui/core/TextField'
 import cep from 'cep-promise'
 
@@ -9,7 +9,15 @@ let CEPgenerated = false
 const FormEndereco = (props) => {
     const dispatch = useDispatch()
 
-    const { CEP = '', endereco, numero, complemento, bairro, cidade, estado } = useSelector((state) => state.endereco)
+    const {
+        CEP = props.cliente.enderecoCompleto.CEP || '',
+        endereco = props.cliente.enderecoCompleto.endereco || '',
+        numero = props.cliente.enderecoCompleto.numero || '',
+        complemento = props.cliente.enderecoCompleto.complemento || '',
+        bairro = props.cliente.enderecoCompleto.bairro || '',
+        cidade = props.cliente.enderecoCompleto.cidade || '',
+        estado = props.cliente.enderecoCompleto.estado || ''
+    } = useSelector((state) => state.endereco)
 
     //e = evento | f = final
     const onChange = ({ CEPe, enderecoe, numeroe, complementoe, bairroe, cidadee, estadoe }) => {
@@ -34,9 +42,19 @@ const FormEndereco = (props) => {
         dispatch(setEnderecoCompleto(enderecoCompleto))
     }
 
+    useEffect(() => {
+        return () => dispatch(removerEndereco())
+        // eslint-disable-next-line
+    }, [])
+
     if (CEP.length === 8 && !CEPgenerated) {
         cep(CEP).then((valor) => {
-            onChange({ enderecoe: valor.street, bairroe: valor.neighborhood, cidadee: valor.city, estadoe: valor.state })
+            onChange({
+                enderecoe: valor.street,
+                bairroe: valor.neighborhood,
+                cidadee: valor.city,
+                estadoe: valor.state
+            })
             CEPgenerated = true
         }).catch((e) => {
             console.log(e);

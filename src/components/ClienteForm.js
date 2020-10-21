@@ -37,6 +37,9 @@ const ClienteForm = (props) => {
         setTelefone(props.cliente.telefone)
         setEmail(props.cliente.email)
         setDataDeNascimento(props.cliente.dataDeNascimento)
+        setStatus(props.cliente.status || ['Ativo'])
+        setGenero(props.cliente.genero || [])
+        setSelectedTags(props.cliente.selectedTags || [])
         hasPopulated = true
     }
 
@@ -126,7 +129,7 @@ const ClienteForm = (props) => {
                         </MenuItem>
                     ))}
                 </Select>
-                <FormEndereco />
+                <FormEndereco cliente={props.cliente} />
                 <Button
                     variant="contained"
                     color="primary"

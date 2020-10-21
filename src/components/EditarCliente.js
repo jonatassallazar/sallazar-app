@@ -13,7 +13,7 @@ const EditarCliente = (props) => {
     })
     
     const onSubmit = data => {
-        dispatch(startEditCliente(cliente.id, data)).then(() => props.history.push('/clientes'))
+        dispatch(startEditCliente(cliente.id, data)).then(() => props.history.push(`/clientes`))
     }
   
     return (
