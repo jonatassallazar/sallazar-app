@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import FormEndereco from './FormEndereco'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -10,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Input from '@material-ui/core/Input'
 import Checkbox from '@material-ui/core/Checkbox'
 import ListItemText from '@material-ui/core/ListItemText'
+
 
 
 let hasPopulated = false
@@ -23,6 +23,14 @@ const ClienteForm = (props) => {
     const [genero, setGenero] = useState('')
     //const [foto, setFoto] = useState('')
     const [selectedTags, setSelectedTags] = useState([])
+    const [CEP, setCEP] = useState('')
+    const [endereco, setEndereco] = useState('')
+    const [numero, setNumero] = useState('')
+    const [complemento, setComplemento] = useState('')
+    const [bairro, setBairro] = useState('')
+    const [cidade, setCidade] = useState('')
+    const [estado, setEstado] = useState('')
+    const [createdAt, setCreatedAt] = useState(new Date())
     const [error, setError] = useState('')
 
     const tags = [
@@ -40,11 +48,27 @@ const ClienteForm = (props) => {
         setStatus(props.cliente.status || ['Ativo'])
         setGenero(props.cliente.genero || [])
         setSelectedTags(props.cliente.selectedTags || [])
+        setCEP(props.cliente.enderecoCompleto.CEP || '')
+        setEndereco(props.cliente.enderecoCompleto.endereco|| '')
+        setNumero(props.cliente.enderecoCompleto.numero|| '')
+        setComplemento(props.cliente.enderecoCompleto.complemento|| '')
+        setBairro(props.cliente.enderecoCompleto.bairro|| '')
+        setCidade(props.cliente.enderecoCompleto.cidade|| '')
+        setEstado(props.cliente.enderecoCompleto.estado|| '')
+        setCreatedAt(props.cliente.createdAt)
         hasPopulated = true
     }
 
-    const enderecoCompleto = useSelector((state) => state.endereco)
-       
+    const enderecoCompleto = {
+        CEP,
+        endereco,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        estado
+    }
+
     //Limpa a função de popular os campos
     useEffect(() => {
         return () => hasPopulated = false
@@ -67,7 +91,8 @@ const ClienteForm = (props) => {
                 status,
                 genero,
                 selectedTags,
-                enderecoCompleto
+                enderecoCompleto,
+                createdAt: createdAt.valueOf()
             })
         }
     }
@@ -129,7 +154,22 @@ const ClienteForm = (props) => {
                         </MenuItem>
                     ))}
                 </Select>
-                <FormEndereco cliente={props.cliente} />
+                <FormEndereco
+                    CEP={CEP}
+                    setCEP={setCEP}
+                    endereco={endereco}
+                    setEndereco={setEndereco}
+                    numero={numero}
+                    setNumero={setNumero}
+                    complemento={complemento}
+                    setComplemento={setComplemento}
+                    bairro={bairro}
+                    setBairro={setBairro}
+                    cidade={cidade}
+                    setCidade={setCidade}
+                    estado={estado}
+                    setEstado={setEstado}
+                />
                 <Button
                     variant="contained"
                     color="primary"
