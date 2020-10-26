@@ -9,6 +9,7 @@ import { LoginPage } from '../components/LoginPage'
 import PrivateRoute from './PrivateRoute'
 import PublicRoute from './PublicRoute'
 import Produtos from '../components/Produtos'
+import AddProduto from '../components/AddProduto'
 import Vendas from '../components/Vendas'
 import Relatorios from '../components/Relatorios'
 import Ajuda from '../components/Ajuda'
@@ -31,7 +32,8 @@ const AppRouter = () => (
                 <PrivateRoute path="/clientes" component={Clientes} exact={true}/>
                 <PrivateRoute path="/clientes/novo" component={AddCliente} />
                 <PrivateRoute path="/editar/:id" component={EditarCliente} />
-                <PrivateRoute path="/produtos" component={Produtos} />
+                <PrivateRoute path="/produtos" component={Produtos} exact={true}/>
+                <PrivateRoute path="/produtos/novo" component={AddProduto} />
                 <PrivateRoute path="/vendas" component={Vendas} />
                 <PrivateRoute path="/relatorios" component={Relatorios} />
                 <PrivateRoute path="/ajuda" component={Ajuda} />

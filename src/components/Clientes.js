@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import selectClientes from '../selectors/clientes'
@@ -12,8 +12,12 @@ const Clientes = () => {
     const selection = useSelector((state) => selectClientes(state.clientes, state.filtrosClientes))
     const dispatch = useDispatch()
 
-    dispatch(startSetClientes())
-    
+    useEffect(() => {
+        dispatch(startSetClientes())
+        // eslint-disable-next-line
+    }, [])
+
+
     return (
         <div>
             <h1>Clientes</h1>

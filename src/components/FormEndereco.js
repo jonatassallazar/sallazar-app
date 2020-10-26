@@ -45,7 +45,6 @@ return (
             helperText={CEPErrorText}
             onChange={(e) => {
                 setCEP(e.target.value)
-                console.log(e.target.value);
                 gerarEndereco(e.target.value)
             }}
         />
