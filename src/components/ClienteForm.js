@@ -49,12 +49,12 @@ const ClienteForm = (props) => {
         setGenero(props.cliente.genero || [])
         setSelectedTags(props.cliente.selectedTags || [])
         setCEP(props.cliente.enderecoCompleto.CEP || '')
-        setEndereco(props.cliente.enderecoCompleto.endereco|| '')
-        setNumero(props.cliente.enderecoCompleto.numero|| '')
-        setComplemento(props.cliente.enderecoCompleto.complemento|| '')
-        setBairro(props.cliente.enderecoCompleto.bairro|| '')
-        setCidade(props.cliente.enderecoCompleto.cidade|| '')
-        setEstado(props.cliente.enderecoCompleto.estado|| '')
+        setEndereco(props.cliente.enderecoCompleto.endereco || '')
+        setNumero(props.cliente.enderecoCompleto.numero || '')
+        setComplemento(props.cliente.enderecoCompleto.complemento || '')
+        setBairro(props.cliente.enderecoCompleto.bairro || '')
+        setCidade(props.cliente.enderecoCompleto.cidade || '')
+        setEstado(props.cliente.enderecoCompleto.estado || '')
         setCreatedAt(props.cliente.createdAt)
         hasPopulated = true
     }
@@ -99,8 +99,9 @@ const ClienteForm = (props) => {
 
     return (
         <div>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className='general-form'>
                 <Select
+                    className='form-inside-field'
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                 >
@@ -108,6 +109,7 @@ const ClienteForm = (props) => {
                     <MenuItem value="Inativo">Inativo</MenuItem>
                 </Select>
                 <TextField
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Nome Completo"
                     required={true}
@@ -115,18 +117,21 @@ const ClienteForm = (props) => {
                     onChange={(e) => setNome(e.target.value)}
                 />
                 <TextField
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Telefone"
                     value={telefone}
                     onChange={(e) => setTelefone(e.target.value)}
                 />
                 <TextField
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <Select
+                    className='form-inside-field'
                     value={genero}
                     onChange={(e) => setGenero(e.target.value)}
                 >
@@ -135,12 +140,14 @@ const ClienteForm = (props) => {
                     <MenuItem value="Feminino">Feminino</MenuItem>
                 </Select>
                 <DatePicker
+                    className='form-inside-field'
                     id="date"
                     label="Data de Nascimento"
                     value={dataDeNascimento}
                     onChange={(e) => setDataDeNascimento(e._d)}
                 />
                 <Select
+                    className='form-inside-field'
                     multiple
                     value={selectedTags}
                     onChange={(e) => setSelectedTags(e.target.value)}

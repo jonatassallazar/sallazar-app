@@ -19,7 +19,7 @@ const FormEndereco = ({
     }, [])
 
     const gerarEndereco = (event) => {
-        if(event.length === 8) {
+        if (event.length === 8) {
             cep(event).then((valor) => {
                 setEndereco(valor.street)
                 setBairro(valor.neighborhood)
@@ -35,73 +35,80 @@ const FormEndereco = ({
     }
 
 
-return (
-    <div>
-        <TextField
-            id="standard-basic"
-            label="CEP"
-            value={CEP}
-            error={CEPerror}
-            helperText={CEPErrorText}
-            onChange={(e) => {
-                setCEP(e.target.value)
-                gerarEndereco(e.target.value)
-            }}
-        />
-        <TextField
-            id="standard-basic"
-            label="Endereço"
-            value={endereco}
-            onChange={(e) => {
-                setEndereco(e.target.value)
-            }}
-            InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-            id="standard-basic"
-            label="Número"
-            value={numero}
-            onChange={(e) => {
-                setNumero(e.target.value)
-            }}
-        />
-        <TextField
-            id="standard-basic"
-            label="Complemento"
-            value={complemento}
-            onChange={(e) => {
-                setComplemento(e.target.value)
-            }}
-        />
-        <TextField
-            id="standard-basic"
-            label="Bairro"
-            value={bairro}
-            onChange={(e) => {
-                setBairro(e.target.value)
-            }}
-            InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-            id="standard-basic"
-            label="Cidade"
-            value={cidade}
-            onChange={(e) => {
-                setCidade(e.target.value)
-            }}
-            InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-            id="standard-basic"
-            label="Estado"
-            value={estado}
-            onChange={(e) => {
-                setEstado(e.target.value)
-            }}
-            InputLabelProps={{ shrink: true }}
-        />
-    </div>
-)
+    return (
+        <div className='general-form'>
+            <TextField
+                className='form-inside-field form-item-m'
+                id="standard-basic"
+                label="CEP"
+                value={CEP}
+                error={CEPerror}
+                helperText={CEPErrorText}
+                onChange={(e) => {
+                    setCEP(e.target.value)
+                    gerarEndereco(e.target.value)
+                }}
+            />
+            <TextField
+                className='form-inside-field form-item-gg'
+                id="standard-basic"
+                label="Endereço"
+                value={endereco}
+                onChange={(e) => {
+                    setEndereco(e.target.value)
+                }}
+                InputLabelProps={{ shrink: true }}
+            />
+            <TextField
+                className='form-inside-field form-item-p'
+                id="standard-basic"
+                label="Número"
+                value={numero}
+                onChange={(e) => {
+                    setNumero(e.target.value)
+                }}
+            />
+            <TextField
+                className='form-inside-field form-item-m'
+                id="standard-basic"
+                label="Complemento"
+                value={complemento}
+                onChange={(e) => {
+                    setComplemento(e.target.value)
+                }}
+            />
+            <TextField
+                className='form-inside-field form-item-g'
+                id="standard-basic"
+                label="Bairro"
+                value={bairro}
+                onChange={(e) => {
+                    setBairro(e.target.value)
+                }}
+                InputLabelProps={{ shrink: true }}
+            />
+            <TextField
+                className='form-inside-field form-item-g'
+                id="standard-basic"
+                label="Cidade"
+                value={cidade}
+                onChange={(e) => {
+                    setCidade(e.target.value)
+                }}
+                InputLabelProps={{ shrink: true }}
+            />
+            <TextField
+                className='form-inside-field form-item-p'
+                id="standard-basic"
+                label="Estado"
+                value={estado}
+                onChange={(e) => {
+                    setEstado(e.target.value)
+                }}
+                InputLabelProps={{ shrink: true }}
+            />
+        </div>
+    )
 }
 
 export { FormEndereco as default }

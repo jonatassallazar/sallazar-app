@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import configureStore from './store/store'
 
 import './index.scss'
+import './css/forms.scss'
 
 const store = configureStore()
 const jsx = (
