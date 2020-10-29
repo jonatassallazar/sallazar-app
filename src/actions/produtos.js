@@ -16,12 +16,11 @@ export const startAddProduto = (produtoData = {}) => {
             peso = 0,
             valorCusto = 0,
             valorVenda = '',
-            custoUltimaCompra = '',
             fornecedor = '',
             status = '',
             foto = '',
         } = produtoData
-        const produto = { nome, unidade, peso, valorCusto, status, valorVenda, custoUltimaCompra, fornecedor, foto }
+        const produto = { nome, unidade, peso, valorCusto, status, valorVenda, fornecedor, foto }
         database.ref(`users/${uid}/produtos`).push(produtoData).then((ref) => {
             dispatch(addProduto({
                 id: ref.key,

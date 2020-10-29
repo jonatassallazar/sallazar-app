@@ -1,8 +1,8 @@
 export default (produtos, { nome, sortBy, fornecedor, status, valorVenda, createdAt }) => {
     return produtos.filter((produto) => {
         const nomeMatch = produto.nome.toLowerCase().includes(nome.toLowerCase())
-        const fornecedorMatch = produto.email.toLowerCase().includes(fornecedor.toLowerCase())
-        const statusMatch = produto.telefone.toLowerCase().includes(status.toLowerCase())
+        const fornecedorMatch = produto.fornecedor.toLowerCase().includes(fornecedor.toLowerCase())
+        const statusMatch = produto.status.toLowerCase().includes(status.toLowerCase())
 
         return nomeMatch && fornecedorMatch && statusMatch
         // eslint-disable-next-line

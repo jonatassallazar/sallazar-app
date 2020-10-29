@@ -1,63 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import FormEndereco from './FormEndereco'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import { DatePicker } from '@material-ui/pickers';
 import SaveIcon from '@material-ui/icons/Save'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-import Input from '@material-ui/core/Input'
-import Checkbox from '@material-ui/core/Checkbox'
-import ListItemText from '@material-ui/core/ListItemText'
 
 let hasPopulated = false
 
 const ProdutoForm = (props) => {
     const [nome, setNome] = useState('')
-    const [telefone, setTelefone] = useState('')
-    const [email, setEmail] = useState('')
-    const [dataDeNascimento, setDataDeNascimento] = useState(new Date())
+    const [unidade, setUnidade] = useState('')
+    const [peso, setPeso] = useState('')
+    const [valorCusto, setValorCusto] = useState('')
     const [status, setStatus] = useState('Ativo')
-    const [genero, setGenero] = useState('')
-    //const [foto, setFoto] = useState('')
-    const [selectedTags, setSelectedTags] = useState([])
+    const [valorVenda, setValorVenda] = useState('')
+    const [fornecedor, setFornecedor] = useState('')
+    const [foto, setFoto] = useState('')
     const [createdAt, setCreatedAt] = useState(new Date())
     const [error, setError] = useState('')
 
-    const tags = [
-        'Teste',
-        'Pagador',
-        'Devedor'
-    ]
-
     //Popula os campos
-    if (props.cliente && !hasPopulated) {
-        setNome(props.cliente.nome)
-        setTelefone(props.cliente.telefone)
-        setEmail(props.cliente.email)
-        setDataDeNascimento(props.cliente.dataDeNascimento)
-        setStatus(props.cliente.status || ['Ativo'])
-        setGenero(props.cliente.genero || [])
-        setSelectedTags(props.cliente.selectedTags || [])
-        setCEP(props.cliente.enderecoCompleto.CEP || '')
-        setEndereco(props.cliente.enderecoCompleto.endereco|| '')
-        setNumero(props.cliente.enderecoCompleto.numero|| '')
-        setComplemento(props.cliente.enderecoCompleto.complemento|| '')
-        setBairro(props.cliente.enderecoCompleto.bairro|| '')
-        setCidade(props.cliente.enderecoCompleto.cidade|| '')
-        setEstado(props.cliente.enderecoCompleto.estado|| '')
-        setCreatedAt(props.cliente.createdAt)
+    if (props.produto && !hasPopulated) {
+        setNome(props.produto.nome)
+        setUnidade(props.produto.unidade)
+        setPeso(props.produto.email.peso)
+        setValorCusto(props.produto.valorCusto)
+        setStatus(props.produto.status || ['Ativo'])
+        setValorVenda(props.produto.valorVenda)
+        setFornecedor(props.produto.fornecedor)
+        setFoto(props.produto.foto)
+        setCreatedAt(props.produto.createdAt)
         hasPopulated = true
-    }
-
-    const enderecoCompleto = {
-        CEP,
-        endereco,
-        numero,
-        complemento,
-        bairro,
-        cidade,
-        estado
     }
 
     //Limpa a função de popular os campos
@@ -69,20 +42,20 @@ const ProdutoForm = (props) => {
         e.preventDefault()
 
         if (!nome) {
-            setError('Digite um nome para o cliente')
+            setError('Digite um nome para o Produto')
             // Set error state equal to 'Please provide description and amount.'
         } else {
             setError('')
             // Clear the error
             props.onSubmit({
                 nome,
-                email,
-                telefone,
-                dataDeNascimento: dataDeNascimento.valueOf(),
+                unidade,
+                peso,
+                valorCusto,
                 status,
-                genero,
-                selectedTags,
-                enderecoCompleto,
+                valorVenda,
+                fornecedor,
+                foto,
                 createdAt: createdAt.valueOf()
             })
         }
@@ -100,51 +73,41 @@ const ProdutoForm = (props) => {
                 </Select>
                 <TextField
                     id="standard-basic"
-                    label="Nome Completo"
+                    label="Nome do Produto"
                     required={true}
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                 />
                 <TextField
                     id="standard-basic"
-                    label="Telefone"
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
+                    label="Unidade"
+                    value={unidade}
+                    onChange={(e) => setUnidade(e.target.value)}
                 />
                 <TextField
                     id="standard-basic"
-                    label="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    label="Peso"
+                    value={peso}
+                    onChange={(e) => setPeso(e.target.value)}
                 />
-                <Select
-                    value={genero}
-                    onChange={(e) => setGenero(e.target.value)}
-                >
-                    <MenuItem value=''></MenuItem>
-                    <MenuItem value="Masculino">Masculino</MenuItem>
-                    <MenuItem value="Feminino">Feminino</MenuItem>
-                </Select>
-                <DatePicker
-                    id="date"
-                    label="Data de Nascimento"
-                    value={dataDeNascimento}
-                    onChange={(e) => setDataDeNascimento(e._d)}
+                <TextField
+                    id="standard-basic"
+                    label="Preço de Custo"
+                    value={valorCusto}
+                    onChange={(e) => setValorCusto(e.target.value)}
                 />
-                <Select
-                    multiple
-                    value={selectedTags}
-                    onChange={(e) => setSelectedTags(e.target.value)}
-                    input={<Input />}
-                    renderValue={(selected) => selected.join(', ')}
-                >
-                    {tags.map((tag) => (
-                        <MenuItem key={tag} value={tag}>
-                            <Checkbox checked={selectedTags.indexOf(tag) > -1} />
-                            <ListItemText primary={tag} />
-                        </MenuItem>
-                    ))}
-                </Select>
+                <TextField
+                    id="standard-basic"
+                    label="Valor de Venda"
+                    value={valorVenda}
+                    onChange={(e) => setValorVenda(e.target.value)}
+                />
+                <TextField
+                    id="standard-basic"
+                    label="Fornecedor"
+                    value={fornecedor}
+                    onChange={(e) => setFornecedor(e.target.value)}
+                />
                 <Button
                     variant="contained"
                     color="primary"

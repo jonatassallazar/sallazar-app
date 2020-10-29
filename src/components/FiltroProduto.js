@@ -25,13 +25,14 @@ const FiltroProduto = () => {
                 onChange={(e) => {
                     dispatch(setFornecedorFiltro(e.target.value))
                 }} />
-            <Input
-                type="text"
+            
+            <Select
                 value={status}
-                placeholder="Status"
-                onChange={(e) => {
-                    dispatch(setStatusFiltro(e.target.value))
-                }} />
+                onChange={(e) => dispatch(setStatusFiltro(e.target.value))}>
+                <MenuItem value="">Todos</MenuItem>
+                <MenuItem value="ativo">Ativo</MenuItem>
+                <MenuItem value="inativo">Inativo</MenuItem>
+            </Select>
             <Select
                 value={sortBy}
                 onChange={(e) => {
