@@ -9,8 +9,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Input from '@material-ui/core/Input'
 import Checkbox from '@material-ui/core/Checkbox'
 import ListItemText from '@material-ui/core/ListItemText'
-
-
+import InputMask from 'react-input-mask'
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 
 let hasPopulated = false
 
@@ -46,7 +47,7 @@ const ClienteForm = (props) => {
         setEmail(props.cliente.email)
         setDataDeNascimento(props.cliente.dataDeNascimento)
         setStatus(props.cliente.status || ['Ativo'])
-        setGenero(props.cliente.genero || [])
+        setGenero(props.cliente.genero || '')
         setSelectedTags(props.cliente.selectedTags || [])
         setCEP(props.cliente.enderecoCompleto.CEP || '')
         setEndereco(props.cliente.enderecoCompleto.endereco || '')
@@ -101,6 +102,7 @@ const ClienteForm = (props) => {
         <div>
             <form onSubmit={onSubmit} className='general-form'>
                 <Select
+                    id='status'
                     className='form-inside-field'
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
@@ -110,57 +112,72 @@ const ClienteForm = (props) => {
                 </Select>
                 <TextField
                     className='form-inside-field'
-                    id="standard-basic"
+                    id="standard-basic nome"
                     label="Nome Completo"
                     required={true}
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                 />
-                <TextField
-                    className='form-inside-field'
-                    id="standard-basic"
-                    label="Telefone"
+                <InputMask
+                    mask="(99)99999-9999"
                     value={telefone}
                     onChange={(e) => setTelefone(e.target.value)}
-                />
+                    className='form-inside-field'
+                    id="standard-basic tel"
+                    label="Telefone"
+                    maskChar={null}
+                    inputProps={
+                        { maxLength: 14 , size: 14}
+                    }
+                >
+                    {(props) => <TextField {...props} type="tel" />}
+                </InputMask>
                 <TextField
                     className='form-inside-field'
-                    id="standard-basic"
+                    id="standard-basic email"
                     label="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <Select
-                    className='form-inside-field'
-                    value={genero}
-                    onChange={(e) => setGenero(e.target.value)}
-                >
-                    <MenuItem value=''></MenuItem>
-                    <MenuItem value="Masculino">Masculino</MenuItem>
-                    <MenuItem value="Feminino">Feminino</MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+                    <Select
+                        autoWidth
+                        className='form-inside-field'
+                        value={genero}
+                        onChange={(e) => setGenero(e.target.value)}
+                    >
+                        <MenuItem value="" disabled>Sexo</MenuItem>
+                        <MenuItem value="Masculino">Masculino</MenuItem>
+                        <MenuItem value="Feminino">Feminino</MenuItem>
+                    </Select>
+                </FormControl>
                 <DatePicker
                     className='form-inside-field'
                     id="date"
                     label="Data de Nascimento"
+                    format="DD/MM/YYYY"
                     value={dataDeNascimento}
                     onChange={(e) => setDataDeNascimento(e._d)}
                 />
-                <Select
-                    className='form-inside-field'
-                    multiple
-                    value={selectedTags}
-                    onChange={(e) => setSelectedTags(e.target.value)}
-                    input={<Input />}
-                    renderValue={(selected) => selected.join(', ')}
-                >
-                    {tags.map((tag) => (
-                        <MenuItem key={tag} value={tag}>
-                            <Checkbox checked={selectedTags.indexOf(tag) > -1} />
-                            <ListItemText primary={tag} />
-                        </MenuItem>
-                    ))}
-                </Select>
+                <FormControl>
+                    <InputLabel id="demo-simple-select-label">Tags</InputLabel>
+                    <Select
+                        className='form-inside-field'
+                        multiple
+                        value={selectedTags}
+                        onChange={(e) => setSelectedTags(e.target.value)}
+                        input={<Input />}
+                        renderValue={(selected) => selected.join(', ')}
+                    >
+                        {tags.map((tag) => (
+                            <MenuItem key={tag} value={tag}>
+                                <Checkbox checked={selectedTags.indexOf(tag) > -1} />
+                                <ListItemText primary={tag} />
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <FormEndereco
                     CEP={CEP}
                     setCEP={setCEP}
@@ -184,8 +201,8 @@ const ClienteForm = (props) => {
                     startIcon={<SaveIcon />}
                 >Salvar</Button>
             </form>
-            {error ? <p>{error}</p> : null}
-        </div>
+            { error ? <p>{error}</p> : null}
+        </div >
     )
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import cep from 'cep-promise'
+import InputMask from 'react-input-mask'
 
 
 let CEPerror = false
@@ -19,8 +20,14 @@ const FormEndereco = ({
     }, [])
 
     const gerarEndereco = (event) => {
-        if (event.length === 8) {
-            cep(event).then((valor) => {
+        
+        
+        if (event.length === 9) {
+            const cepLimpo = event.replace('-','')
+
+            console.log(cepLimpo);
+
+            cep(cepLimpo).then((valor) => {
                 setEndereco(valor.street)
                 setBairro(valor.neighborhood)
                 setCidade(valor.city)
@@ -37,21 +44,28 @@ const FormEndereco = ({
 
     return (
         <div className='general-form'>
-            <TextField
+            <InputMask
+                mask="99999-999"
+                maskChar={null}
                 className='form-inside-field form-item-m'
-                id="standard-basic"
+                id="standard-basic cep"
                 label="CEP"
                 value={CEP}
                 error={CEPerror}
                 helperText={CEPErrorText}
+                inputProps={
+                    { maxLength: 9 }
+                }
                 onChange={(e) => {
                     setCEP(e.target.value)
                     gerarEndereco(e.target.value)
                 }}
-            />
+            >
+                {(props) => <TextField {...props}/>}
+            </InputMask>
             <TextField
                 className='form-inside-field form-item-gg'
-                id="standard-basic"
+                id="standard-basic endereco"
                 label="Endereço"
                 value={endereco}
                 onChange={(e) => {
@@ -61,7 +75,7 @@ const FormEndereco = ({
             />
             <TextField
                 className='form-inside-field form-item-p'
-                id="standard-basic"
+                id="standard-basic numero"
                 label="Número"
                 value={numero}
                 onChange={(e) => {
@@ -70,7 +84,7 @@ const FormEndereco = ({
             />
             <TextField
                 className='form-inside-field form-item-m'
-                id="standard-basic"
+                id="standard-basic complemento"
                 label="Complemento"
                 value={complemento}
                 onChange={(e) => {
@@ -79,7 +93,7 @@ const FormEndereco = ({
             />
             <TextField
                 className='form-inside-field form-item-g'
-                id="standard-basic"
+                id="standard-basic bairro"
                 label="Bairro"
                 value={bairro}
                 onChange={(e) => {
@@ -89,7 +103,7 @@ const FormEndereco = ({
             />
             <TextField
                 className='form-inside-field form-item-g'
-                id="standard-basic"
+                id="standard-basic cidade"
                 label="Cidade"
                 value={cidade}
                 onChange={(e) => {
@@ -99,9 +113,12 @@ const FormEndereco = ({
             />
             <TextField
                 className='form-inside-field form-item-p'
-                id="standard-basic"
+                id="standard-basic estado"
                 label="Estado"
                 value={estado}
+                inputProps={
+                    { maxLength: 2 }
+                }
                 onChange={(e) => {
                     setEstado(e.target.value)
                 }}
