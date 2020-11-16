@@ -1,15 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import moment from 'moment'
 
-const ClienteItem = ({ id, nome, telefone, email, dataDeNascimento }) => (
+
+const ClienteItem = ({ id, nome, telefone}) => (
     <div>
-        <Link to={`/editar/${id}`}>
+        <Link to={`/clientes/editar/${id}`}>
             <h3>{nome}</h3>
         </Link>
-        <p>{telefone} | {email} |
-        {moment(dataDeNascimento).format(` Do MMMM, YYYY`)}
-        </p>
+        <p>{telefone}</p>
 
     </div>
 )

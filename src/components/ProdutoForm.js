@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import CurrencyFormat from 'react-currency-format'
 
 let hasPopulated = false
 
@@ -23,7 +24,7 @@ const ProdutoForm = (props) => {
     if (props.produto && !hasPopulated) {
         setNome(props.produto.nome)
         setUnidade(props.produto.unidade)
-        setPeso(props.produto.email.peso)
+        setPeso(props.produto.peso)
         setValorCusto(props.produto.valorCusto)
         setStatus(props.produto.status || ['Ativo'])
         setValorVenda(props.produto.valorVenda)
@@ -90,11 +91,18 @@ const ProdutoForm = (props) => {
                     value={peso}
                     onChange={(e) => setPeso(e.target.value)}
                 />
-                <TextField
+                <CurrencyFormat
                     id="standard-basic"
                     label="Preço de Custo"
                     value={valorCusto}
-                    onChange={(e) => setValorCusto(e.target.value)}
+                    onValueChange={(e) => setValorCusto(e.value)}
+                    prefix={"R$"}
+                    thousandSeparator={"."}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    decimalSeparator={","}
+                    customInput={TextField}
+                    isNumericString={true}
                 />
                 <TextField
                     id="standard-basic"

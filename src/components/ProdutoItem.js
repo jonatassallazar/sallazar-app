@@ -4,7 +4,7 @@ import moment from 'moment'
 
 const ProdutoItem = ({ id, nome, valorVenda, status, createdAt }) => (
     <div>
-        <Link to={`/editar/${id}`}>
+        <Link to={`/produtos/editar/${id}`}>
             <h3>{nome}</h3>
         </Link>
         <p>{status} | {valorVenda} |

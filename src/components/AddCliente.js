@@ -7,11 +7,14 @@ const AddCliente = (props) => {
     const dispatch = useDispatch()
 
     return (
-        <ClienteForm onSubmit={data => {
-            dispatch(startAddCliente(data))
-            props.history.push('/clientes')
-        }}
-        />
+        <div>
+            <h1>Novo Cliente</h1>
+            <ClienteForm onSubmit={data => {
+                dispatch(startAddCliente(data))
+                props.history.push('/clientes')
+            }}
+            />
+        </div>
     )
 }
 
