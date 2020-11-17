@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import cep from 'cep-promise'
-import InputMask from 'react-input-mask'
-
+import CurrencyFormat from 'react-currency-format'
 
 let CEPerror = false
 
@@ -20,14 +19,10 @@ const FormEndereco = ({
     }, [])
 
     const gerarEndereco = (event) => {
-        
-        
-        if (event.length === 9) {
-            const cepLimpo = event.replace('-','')
 
-            console.log(cepLimpo);
 
-            cep(cepLimpo).then((valor) => {
+        if (event.length === 8) {
+            cep(event).then((valor) => {
                 setEndereco(valor.street)
                 setBairro(valor.neighborhood)
                 setCidade(valor.city)
@@ -44,26 +39,23 @@ const FormEndereco = ({
 
     return (
         <div className='general-form'>
-            <InputMask
-                mask="99999-999"
-                maskChar={null}
-                className='form-inside-field form-item-m'
-                id="standard-basic cep"
+            <CurrencyFormat
+                className='form-inside-field'
+                id="standard-basic"
                 label="CEP"
                 value={CEP}
+                onValueChange={(e) => {
+                    setCEP(e.value)
+                    gerarEndereco(e.value)
+                }}
+                customInput={TextField}
+                isNumericString={true}
+                format="##.###-###"
+                mask="_"
+                maxLength="8"
                 error={CEPerror}
                 helperText={CEPErrorText}
-                inputProps={
-                    { maxLength: 9 }
-                }
-                onChange={(e) => {
-                    setCEP(e.target.value)
-                    gerarEndereco(e.target.value)
-                }}
-            >
-                {(props) => <TextField {...props}/>}
-            </InputMask>
-            <TextField
+            /><TextField
                 className='form-inside-field form-item-gg'
                 id="standard-basic endereco"
                 label="Endereço"

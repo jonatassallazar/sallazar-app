@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 const ProdutoItem = ({ id, nome, valorVenda, status, createdAt }) => (
-    <div>
+    <div className="lista-itens">
         <Link to={`/produtos/editar/${id}`}>
             <h3>{nome}</h3>
         </Link>

@@ -9,9 +9,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Input from '@material-ui/core/Input'
 import Checkbox from '@material-ui/core/Checkbox'
 import ListItemText from '@material-ui/core/ListItemText'
-import InputMask from 'react-input-mask'
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import CurrencyFormat from 'react-currency-format'
 
 let hasPopulated = false
 
@@ -118,20 +118,17 @@ const ClienteForm = (props) => {
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                 />
-                <InputMask
-                    mask="(99)99999-9999"
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
+                <CurrencyFormat
                     className='form-inside-field'
-                    id="standard-basic tel"
+                    id="standard-basic"
                     label="Telefone"
-                    maskChar={null}
-                    inputProps={
-                        { maxLength: 14 , size: 14}
-                    }
-                >
-                    {(props) => <TextField {...props} type="tel" />}
-                </InputMask>
+                    value={telefone}
+                    onValueChange={(e) => setTelefone(e.value)}
+                    customInput={TextField}
+                    isNumericString={true}
+                    format="(##)#####-####"
+                    mask="_"
+                />
                 <TextField
                     className='form-inside-field'
                     id="standard-basic email"
@@ -201,7 +198,7 @@ const ClienteForm = (props) => {
                     startIcon={<SaveIcon />}
                 >Salvar</Button>
             </form>
-            { error ? <p>{error}</p> : null}
+            {error ? <p>{error}</p> : null}
         </div >
     )
 }

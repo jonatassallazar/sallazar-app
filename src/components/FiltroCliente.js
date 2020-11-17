@@ -4,6 +4,7 @@ import { setEmailFiltro, setNomeFiltro, setTelefoneFiltro, sortByNomeAsc, sortBy
 import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import CurrencyFormat from 'react-currency-format'
 
 const FiltroCliente = (props) => {
     const dispatch = useDispatch()
@@ -25,13 +26,17 @@ const FiltroCliente = (props) => {
                 onChange={(e) => {
                     dispatch(setEmailFiltro(e.target.value))
                 }} />
-            <Input
-                type="text"
+            <CurrencyFormat
+                className='form-inside-field'
+                id="standard-basic"
+                label="Telefone"
                 value={telefone}
-                placeholder="Telefone"
-                onChange={(e) => {
-                    dispatch(setTelefoneFiltro(e.target.value))
-                }} />
+                onValueChange={(e) => dispatch(setTelefoneFiltro(e.value))}
+                customInput={Input}
+                isNumericString={true}
+                format="(##)#####-####"
+                mask="_"
+            />
             <Select
                 value={sortBy}
                 onChange={(e) => {

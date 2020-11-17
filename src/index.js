@@ -9,6 +9,7 @@ import configureStore from './store/store'
 
 import './index.scss'
 import './css/forms.scss'
+import './css/lists.scss'
 
 const store = configureStore()
 const jsx = (

@@ -31,7 +31,9 @@ const Produto = () => {
                 Novo Produto
             </Button>
             <FiltroProduto />
-            {selection.map((produto) => <ProdutoItem key={produto.id} {...produto} />)}
+            <div className="lista-itens-janela">
+                {selection.map((produto) => <ProdutoItem key={produto.id} {...produto} />)}
+            </div>
         </div>
     )
 }

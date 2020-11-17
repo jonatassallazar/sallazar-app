@@ -31,7 +31,9 @@ const Clientes = () => {
                 Novo Cliente
             </Button>
             <FiltroCliente />
+            <div className="lista-itens-janela">
             {selection.map((cliente) => <ClienteItem key={cliente.id} {...cliente} />)}
+            </div>
         </div>
     )
 }

@@ -64,8 +64,9 @@ const ProdutoForm = (props) => {
 
     return (
         <div>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className='general-form'>
                 <Select
+                    className='form-inside-field'
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                 >
@@ -73,6 +74,7 @@ const ProdutoForm = (props) => {
                     <MenuItem value="Inativo">Inativo</MenuItem>
                 </Select>
                 <TextField
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Nome do Produto"
                     required={true}
@@ -80,18 +82,27 @@ const ProdutoForm = (props) => {
                     onChange={(e) => setNome(e.target.value)}
                 />
                 <TextField
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Unidade"
                     value={unidade}
                     onChange={(e) => setUnidade(e.target.value)}
                 />
-                <TextField
+                <CurrencyFormat
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Peso"
                     value={peso}
-                    onChange={(e) => setPeso(e.target.value)}
+                    onValueChange={(e) => setPeso(e.value)}
+                    suffix={"g"}
+                    thousandSeparator={"."}
+                    decimalScale={2}
+                    decimalSeparator={","}
+                    customInput={TextField}
+                    isNumericString={true}
                 />
                 <CurrencyFormat
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Preço de Custo"
                     value={valorCusto}
@@ -104,13 +115,22 @@ const ProdutoForm = (props) => {
                     customInput={TextField}
                     isNumericString={true}
                 />
-                <TextField
+                <CurrencyFormat
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Valor de Venda"
                     value={valorVenda}
-                    onChange={(e) => setValorVenda(e.target.value)}
+                    onValueChange={(e) => setValorVenda(e.value)}
+                    prefix={"R$"}
+                    thousandSeparator={"."}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    decimalSeparator={","}
+                    customInput={TextField}
+                    isNumericString={true}
                 />
                 <TextField
+                    className='form-inside-field'
                     id="standard-basic"
                     label="Fornecedor"
                     value={fornecedor}
