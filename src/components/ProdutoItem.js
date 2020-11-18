@@ -7,7 +7,7 @@ const ProdutoItem = ({ id, nome, valorVenda, status, createdAt }) => (
         <Link to={`/produtos/editar/${id}`}>
             <h3>{nome}</h3>
         </Link>
-        <p>{status} | {valorVenda} |
+        <p>{status} | R$ {valorVenda} |
         {moment(createdAt).format(` DD/MM/YY`)}
         </p>
 
