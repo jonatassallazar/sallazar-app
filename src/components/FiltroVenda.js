@@ -1,13 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { } from '../actions/filtrosVendas'
+import { setStatusFiltro, setClienteFiltro, setDataVendaInicialFiltro, setDataVendaFinalFiltro, sortByNomeAsc, sortByNomeDec, sortByCreatedAtAsc, sortByCreatedAtDec, sortByValorTotalAsc, sortByValorTotalDec } from '../actions/filtrosVendas'
 import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import { KeyboardDatePicker } from '@material-ui/pickers';
 
 const FiltroVenda = () => {
     const dispatch = useDispatch()
-    const { status, sortBy, cliente,  } = useSelector((state) => state.filtrosVendas)
+    const { status, sortBy, cliente, dataVendaInicial, dataVendaFinal } = useSelector((state) => state.filtrosVendas)
 
     return (
         <div>
@@ -18,18 +19,46 @@ const FiltroVenda = () => {
                 onChange={(e) => {
                     dispatch(setClienteFiltro(e.target.value))
                 }} />
-            <Input
-                type="text"
-                value={fornecedor}
-                placeholder="Fornecedor"
+            <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="DD/MM/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="De"
+                value={dataVendaInicial}
                 onChange={(e) => {
-                    dispatch(setFornecedorFiltro(e.target.value))
-                }} />
-            
+                    dispatch(setDataVendaInicialFiltro(e))
+                }}
+                KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                }}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+            />
+            <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="DD/MM/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Até"
+                value={dataVendaFinal}
+                onChange={(e) => {
+                    dispatch(setDataVendaFinalFiltro(e))
+                }}
+                KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                }}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+            />
             <Select
                 value={status}
                 onChange={(e) => dispatch(setStatusFiltro(e.target.value))}>
-                <MenuItem value="">Todos</MenuItem>
+                <MenuItem value="todos">Todos</MenuItem>
                 <MenuItem value="ativo">Ativo</MenuItem>
                 <MenuItem value="inativo">Inativo</MenuItem>
             </Select>
@@ -42,9 +71,9 @@ const FiltroVenda = () => {
                         case 'nomedec':
                             return dispatch(sortByNomeDec())
                         case 'precoasc':
-                            return dispatch(sortByPrecoAsc())
+                            return dispatch(sortByValorTotalAsc())
                         case 'precodec':
-                            return dispatch(sortByPrecoDec())
+                            return dispatch(sortByValorTotalDec())
                         case 'createdatasc':
                             return dispatch(sortByCreatedAtAsc())
                         case 'createdatdec':
@@ -55,8 +84,8 @@ const FiltroVenda = () => {
                 }}>
                 <MenuItem value="nomeasc">Nome A-Z</MenuItem>
                 <MenuItem value="nomedec">Nome Z-A</MenuItem>
-                <MenuItem value="precoasc">Preço Crescente</MenuItem>
-                <MenuItem value="precodec">Preço Decrescente</MenuItem>
+                <MenuItem value="precoasc">Valor Total Crescente</MenuItem>
+                <MenuItem value="precodec">Valor Total Decrescente</MenuItem>
                 <MenuItem value="createdatasc">Criado Crescente</MenuItem>
                 <MenuItem value="createdatdec">Criado Decrescente</MenuItem>
             </Select>

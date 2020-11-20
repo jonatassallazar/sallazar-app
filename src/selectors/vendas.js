@@ -1,10 +1,23 @@
-export default (vendas, { sortBy, cliente, status, dataVenda}) => {
+export default (vendas, { sortBy, cliente, status, dataVendaInicial, dataVendaFinal}) => {
     return vendas.filter((venda) => {
-        const dataVendaMatch = venda.dataVenda.toLowerCase().includes(dataVenda.toLowerCase())
+        const dataVendaMatch = true
+
+        if (dataVendaInicial < venda.dataVenda || dataVendaFinal > venda.dataVenda) {
+            return false
+        } 
+
         const clienteMatch = venda.cliente.toLowerCase().includes(cliente.toLowerCase())
         const statusMatch = venda.status.toLowerCase().includes(status.toLowerCase())
 
-        return dataVendaMatch && clienteMatch && statusMatch
+        let statusMatchText
+
+        if (statusMatch === 'todos') {
+            statusMatchText = ''
+        } else {
+            statusMatchText = statusMatch
+        }
+
+        return dataVendaMatch && clienteMatch && statusMatchText
         // eslint-disable-next-line
     }).sort((a, b) => {
         switch (sortBy) {

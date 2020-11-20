@@ -28,7 +28,7 @@ const Vendas = () => {
                 component={Link}
                 to="/vendas/novo"
             >
-                Novo Venda
+                Nova Venda
             </Button>
             <FiltroVenda />
             <div className="lista-itens-janela">

@@ -1,11 +1,16 @@
-export const setNomeFiltro = (nome = '') => ({
-    type: 'SET_NOME_FILTER',
-    nome
+export const setClienteFiltro = (cliente = '') => ({
+    type: 'SET_CLIENTE_FILTER',
+    cliente
 })
 
-export const setFornecedorFiltro = (fornecedor = '') => ({
-    type: 'SET_FORNECEDOR_FILTER',
-    fornecedor
+export const setDataVendaInicialFiltro = (dataVendaInicial = '') => ({
+    type: 'SET_DATAVENDA_INICIAL_FILTER',
+    dataVendaInicial
+})
+
+export const setDataVendaFinalFiltro = (dataVendaFinal = '') => ({
+    type: 'SET_DATAVENDA_FINAL_FILTER',
+    dataVendaFinal
 })
 
 export const setStatusFiltro = (status = '') => ({
@@ -21,12 +26,12 @@ export const sortByNomeDec = () => ({
     type: 'SORT_BY_NOME_DEC'
 })
 
-export const sortByPrecoAsc = () => ({
-    type: 'SORT_BY_PRECO_ASC'
+export const sortByValorTotalAsc = () => ({
+    type: 'SORT_BY_VALORTOTAL_ASC'
 })
 
-export const sortByPrecoDec = () => ({
-    type: 'SORT_BY_PRECO_DEC'
+export const sortByValorTotalDec = () => ({
+    type: 'SORT_BY_VALORTOTAL_DEC'
 })
 
 export const sortByCreatedAtAsc = () => ({

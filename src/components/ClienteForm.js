@@ -19,7 +19,7 @@ const ClienteForm = (props) => {
     const [nome, setNome] = useState('')
     const [telefone, setTelefone] = useState('')
     const [email, setEmail] = useState('')
-    const [dataDeNascimento, setDataDeNascimento] = useState(new Date())
+    const [dataDeNascimento, setDataDeNascimento] = useState(null)
     const [status, setStatus] = useState('Ativo')
     const [genero, setGenero] = useState('')
     //const [foto, setFoto] = useState('')
