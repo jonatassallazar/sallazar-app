@@ -5,34 +5,56 @@ import SaveIcon from '@material-ui/icons/Save'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import CurrencyFormat from 'react-currency-format'
+import { useSelector, useDispatch } from 'react-redux'
+import { startSetClientes } from '../actions/clientes'
+import { startSetProdutos } from '../actions/produtos'
+import { KeyboardDatePicker } from '@material-ui/pickers'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
 
 let hasPopulated = false
 
 const VendaForm = (props) => {
-    const [nome, setNome] = useState('')
-    const [unidade, setUnidade] = useState('')
-    const [peso, setPeso] = useState('')
-    const [valorCusto, setValorCusto] = useState('')
+    const dispatch = useDispatch()
+
+    const [numero, setNumero] = useState('')
+    const [cliente, setCliente] = useState('')
+    const [produtos, setProdutos] = useState([])
+    const [subTotal, setSubTotal] = useState('')
     const [status, setStatus] = useState('Ativo')
-    const [valorVenda, setValorVenda] = useState('')
-    const [fornecedor, setFornecedor] = useState('')
-    const [foto, setFoto] = useState('')
+    const [total, setTotal] = useState('')
+    const [frete, setFrete] = useState('')
+    const [desconto, setDesconto] = useState('')
+    const [observacoes, setObservacoes] = useState('')
+    const [dataVenda, setDataVenda] = useState('')
     const [createdAt, setCreatedAt] = useState(new Date())
     const [error, setError] = useState('')
 
+    useEffect(() => {
+        dispatch(startSetClientes())
+        dispatch(startSetProdutos())
+        // eslint-disable-next-line
+    }, [])
+
+    const clientes = useSelector((state) => state.clientes)
+    const produtosLista = useSelector((state) => state.produtos)
+
     //Popula os campos
     if (props.venda && !hasPopulated) {
-        setNome(props.venda.nome)
-        setUnidade(props.venda.unidade)
-        setPeso(props.venda.peso)
-        setValorCusto(props.venda.valorCusto)
+        setNumero(props.venda.numero)
+        setCliente(props.venda.cliente)
+        setProdutos(props.venda.produtos)
+        setSubTotal(props.venda.subTotal)
         setStatus(props.venda.status || ['Ativo'])
-        setValorVenda(props.venda.valorVenda)
-        setFornecedor(props.venda.fornecedor)
-        setFoto(props.venda.foto)
+        setTotal(props.venda.total)
+        setFrete(props.venda.frete)
+        setDesconto(props.venda.desconto)
+        setObservacoes(props.venda.observacoes)
+        setDataVenda(props.venda.dataVenda)
         setCreatedAt(props.venda.createdAt)
         hasPopulated = true
     }
+
 
     //Limpa a função de popular os campos
     useEffect(() => {
@@ -42,21 +64,23 @@ const VendaForm = (props) => {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!nome) {
-            setError('Digite um nome para o Venda')
+        if (!produtos) {
+            setError('Coloque os Produtos')
             // Set error state equal to 'Please provide description and amount.'
         } else {
             setError('')
             // Clear the error
             props.onSubmit({
-                nome,
-                unidade,
-                peso,
-                valorCusto,
+                numero,
+                cliente,
+                produtos,
+                dataVenda,
                 status,
-                valorVenda,
-                fornecedor,
-                foto,
+                observacoes,
+                subTotal,
+                total,
+                desconto,
+                frete,
                 createdAt: createdAt.valueOf()
             })
         }
@@ -65,6 +89,15 @@ const VendaForm = (props) => {
     return (
         <div>
             <form onSubmit={onSubmit} className='general-form'>
+                <TextField
+                    className='form-inside-field'
+                    id="standard-basic"
+                    label="Número"
+                    required={true}
+                    value={numero}
+                    onChange={(e) => setNumero(e.target.value)}
+                    disabled={true}
+                />
                 <Select
                     className='form-inside-field'
                     value={status}
@@ -73,40 +106,50 @@ const VendaForm = (props) => {
                     <MenuItem value="Ativo">Ativo</MenuItem>
                     <MenuItem value="Inativo">Inativo</MenuItem>
                 </Select>
-                <TextField
-                    className='form-inside-field'
-                    id="standard-basic"
-                    label="Nome do Venda"
-                    required={true}
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+                <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="DD/MM/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="De"
+                    value={dataVenda}
+                    onChange={(e) => setDataVenda(e)}
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
-                <TextField
+                <Select
                     className='form-inside-field'
-                    id="standard-basic"
-                    label="Unidade"
-                    value={unidade}
-                    onChange={(e) => setUnidade(e.target.value)}
-                />
+                    value={cliente}
+                    onChange={(e) => setCliente(e.target.value)}
+                >
+                    {clientes.map((cliente) => (
+                        <MenuItem value={cliente.id}>{cliente.nome}</MenuItem>
+                    ))}
+                </Select>
+                <FormControl>
+                    <InputLabel id="demo-simple-select-label">Produto</InputLabel>
+                    <Select
+                        autoWidth
+                        className='form-inside-field'
+                        value={produtos}
+                        onChange={(e) => setGenero(e.target.value)}
+                    >
+                        <MenuItem value="" disabled>Sexo</MenuItem>
+                        <MenuItem value="Masculino">Masculino</MenuItem>
+                        <MenuItem value="Feminino">Feminino</MenuItem>
+                    </Select>
+                </FormControl>
                 <CurrencyFormat
                     className='form-inside-field'
                     id="standard-basic"
-                    label="Peso"
-                    value={peso}
-                    onValueChange={(e) => setPeso(e.value)}
-                    suffix={"g"}
-                    thousandSeparator={"."}
-                    decimalScale={2}
-                    decimalSeparator={","}
-                    customInput={TextField}
-                    isNumericString={true}
-                />
-                <CurrencyFormat
-                    className='form-inside-field'
-                    id="standard-basic"
-                    label="Preço de Custo"
-                    value={valorCusto}
-                    onValueChange={(e) => setValorCusto(e.value)}
+                    label="Sub-Total"
+                    value={subTotal}
+                    onValueChange={(e) => setSubTotal(e.value)}
                     prefix={"R$"}
                     thousandSeparator={"."}
                     decimalScale={2}
@@ -118,9 +161,37 @@ const VendaForm = (props) => {
                 <CurrencyFormat
                     className='form-inside-field'
                     id="standard-basic"
-                    label="Valor de Venda"
-                    value={valorVenda}
-                    onValueChange={(e) => setValorVenda(e.value)}
+                    label="Total"
+                    value={frete}
+                    onValueChange={(e) => setFrete(e.value)}
+                    prefix={"R$"}
+                    thousandSeparator={"."}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    decimalSeparator={","}
+                    customInput={TextField}
+                    isNumericString={true}
+                />
+                <CurrencyFormat
+                    className='form-inside-field'
+                    id="standard-basic"
+                    label="Total"
+                    value={desconto}
+                    onValueChange={(e) => setDesconto(e.value)}
+                    prefix={"R$"}
+                    thousandSeparator={"."}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    decimalSeparator={","}
+                    customInput={TextField}
+                    isNumericString={true}
+                />
+                <CurrencyFormat
+                    className='form-inside-field'
+                    id="standard-basic"
+                    label="Total"
+                    value={total}
+                    onValueChange={(e) => setTotal(e.value)}
                     prefix={"R$"}
                     thousandSeparator={"."}
                     decimalScale={2}
@@ -132,9 +203,9 @@ const VendaForm = (props) => {
                 <TextField
                     className='form-inside-field'
                     id="standard-basic"
-                    label="Fornecedor"
-                    value={fornecedor}
-                    onChange={(e) => setFornecedor(e.target.value)}
+                    label="Observações"
+                    value={observacoes}
+                    onChange={(e) => setObservacoes(e.target.value)}
                 />
                 <Button
                     variant="contained"

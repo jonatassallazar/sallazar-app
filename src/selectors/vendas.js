@@ -1,10 +1,12 @@
 export default (vendas, { sortBy, cliente, status, dataVendaInicial, dataVendaFinal}) => {
     return vendas.filter((venda) => {
-        const dataVendaMatch = true
+        let dataVendaMatch
 
         if (dataVendaInicial < venda.dataVenda || dataVendaFinal > venda.dataVenda) {
-            return false
-        } 
+            dataVendaMatch = false
+        } else {
+            dataVendaMatch = true
+        }
 
         const clienteMatch = venda.cliente.toLowerCase().includes(cliente.toLowerCase())
         const statusMatch = venda.status.toLowerCase().includes(status.toLowerCase())

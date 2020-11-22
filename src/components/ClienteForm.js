@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react'
 import FormEndereco from './FormEndereco'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import { DatePicker } from '@material-ui/pickers';
+import { DatePicker } from '@material-ui/pickers'
 import SaveIcon from '@material-ui/icons/Save'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Input from '@material-ui/core/Input'
 import Checkbox from '@material-ui/core/Checkbox'
 import ListItemText from '@material-ui/core/ListItemText'
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
 import CurrencyFormat from 'react-currency-format'
 
 let hasPopulated = false

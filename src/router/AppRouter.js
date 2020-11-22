@@ -11,6 +11,8 @@ import PublicRoute from './PublicRoute'
 import Produtos from '../components/Produtos'
 import AddProduto from '../components/AddProduto'
 import Vendas from '../components/Vendas'
+import AddVendas from '../components/AddVendas'
+import EditarVendas from '../components/EditarVendas'
 import Relatorios from '../components/Relatorios'
 import Ajuda from '../components/Ajuda'
 import EditarProduto from '../components/EditarProduto'
@@ -36,7 +38,9 @@ const AppRouter = () => (
                 <PrivateRoute path="/produtos" component={Produtos} exact={true}/>
                 <PrivateRoute path="/produtos/novo" component={AddProduto} />
                 <PrivateRoute path="/produtos/editar/:id" component={EditarProduto} />
-                <PrivateRoute path="/vendas" component={Vendas} />
+                <PrivateRoute path="/vendas" component={Vendas} exact={true}/>
+                <PrivateRoute path="/vendas/novo" component={AddVendas} />
+                <PrivateRoute path="/vendas/editar/:id" component={EditarVendas} />
                 <PrivateRoute path="/relatorios" component={Relatorios} />
                 <PrivateRoute path="/ajuda" component={Ajuda} />
             </Switch>
