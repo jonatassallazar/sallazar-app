@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
+import VendaFormProdutos from './VendaFormProdutos'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
@@ -9,26 +10,103 @@ import { useSelector, useDispatch } from 'react-redux'
 import { startSetClientes } from '../actions/clientes'
 import { startSetProdutos } from '../actions/produtos'
 import { KeyboardDatePicker } from '@material-ui/pickers'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
+import Add from '@material-ui/icons/Add'
+
 
 let hasPopulated = false
+
 
 const VendaForm = (props) => {
     const dispatch = useDispatch()
 
     const [numero, setNumero] = useState('')
     const [cliente, setCliente] = useState('')
-    const [produtos, setProdutos] = useState([])
     const [subTotal, setSubTotal] = useState('')
     const [status, setStatus] = useState('Ativo')
     const [total, setTotal] = useState('')
     const [frete, setFrete] = useState('')
     const [desconto, setDesconto] = useState('')
     const [observacoes, setObservacoes] = useState('')
-    const [dataVenda, setDataVenda] = useState('')
+    const [dataVenda, setDataVenda] = useState(null)
     const [createdAt, setCreatedAt] = useState(new Date())
     const [error, setError] = useState('')
+
+    const initialStateProduto = [{
+        id: '',
+        nome: '',
+        unidade: '',
+        quantidade: '',
+        valorVenda: '',
+        valorTotal: ''
+    }]
+
+    const reducerProdutos = (state, action) => {
+        switch (action.type) {
+            case 'ADD_PRODUTO':
+                return [
+                    ...state,
+                    {
+                        id: '',
+                        nome: '',
+                        unidade: '',
+                        quantidade: '',
+                        valorVenda: '',
+                        valorTotal: ''
+                    }
+                ]
+            case 'ADD_PRODUTO_INFORMACAO':
+                const {
+                    id = '',
+                    nome,
+                    unidade,
+                    quantidade = 1,
+                    valorVenda,
+                    valorTotal = quantidade * valorVenda
+                } = action.produto
+
+                return state.map((produto, index) => {
+                    if (index === action.index) {
+                        return {
+                            ...produto,
+                            ...{
+                                id, nome, unidade, quantidade, valorVenda, valorTotal
+                            }
+                        }
+                    } else {
+                        return produto
+                    }
+                })
+            case 'REMOVER_PRODUTO':
+                return state.filter(({ id }) => id !== action.produto.id)
+            case 'EDITAR_PRODUTO':
+                return state.map((produto, index) => {
+                    if (index === action.index) {
+                        let {
+                            quantidade = produto.quantidade,
+                            valorVenda = produto.valorVenda,
+                            valorTotal = produto.valorTotal
+                        } = action
+
+                        if (produto.quantidade !== quantidade || produto.valorVenda !== valorVenda) {
+                            valorTotal = quantidade * valorVenda
+                        }
+
+                        return {
+                            ...produto,
+                            ...{
+                                quantidade, valorVenda, valorTotal
+                            }
+                        }
+                    } else {
+                        return produto
+                    }
+                })
+            default:
+                return state
+        }
+    }
+
+    const [state, dispatchProdutos] = useReducer(reducerProdutos, initialStateProduto)
 
     useEffect(() => {
         dispatch(startSetClientes())
@@ -36,14 +114,22 @@ const VendaForm = (props) => {
         // eslint-disable-next-line
     }, [])
 
+    useEffect(() => {
+        setSubTotal(() => {
+            const subTotalProdutos = state.reduce((acumulador, produto) => acumulador + produto.valorTotal, 0);
+            return subTotalProdutos
+        })
+    }, [state])
+
+
     const clientes = useSelector((state) => state.clientes)
-    const produtosLista = useSelector((state) => state.produtos)
+
 
     //Popula os campos
     if (props.venda && !hasPopulated) {
         setNumero(props.venda.numero)
         setCliente(props.venda.cliente)
-        setProdutos(props.venda.produtos)
+        //setProdutos(props.venda.produtos)
         setSubTotal(props.venda.subTotal)
         setStatus(props.venda.status || ['Ativo'])
         setTotal(props.venda.total)
@@ -58,13 +144,15 @@ const VendaForm = (props) => {
 
     //Limpa a função de popular os campos
     useEffect(() => {
-        return () => hasPopulated = false
+        return () => {
+            hasPopulated = false
+        }
     }, [])
 
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!produtos) {
+        if (true) {
             setError('Coloque os Produtos')
             // Set error state equal to 'Please provide description and amount.'
         } else {
@@ -73,7 +161,7 @@ const VendaForm = (props) => {
             props.onSubmit({
                 numero,
                 cliente,
-                produtos,
+                //produto: state.produto,
                 dataVenda,
                 status,
                 observacoes,
@@ -85,6 +173,19 @@ const VendaForm = (props) => {
             })
         }
     }
+
+    // const onChangeQuantidade = () => {
+    //     if (!produtos[0]) {
+    //         return null
+    //     }
+    //     const soma = produtos[0].valorVenda * produtos[0].quantidade
+
+    //     produtos.map((produto) => {
+    //         if (produto.id === produtos[0].id) {
+    //             return produtos[0].valorTotal = soma
+    //         }
+    //     })
+    // }
 
     return (
         <div>
@@ -131,37 +232,38 @@ const VendaForm = (props) => {
                         <MenuItem value={cliente.id}>{cliente.nome}</MenuItem>
                     ))}
                 </Select>
-                <FormControl>
-                    <InputLabel id="demo-simple-select-label">Produto</InputLabel>
-                    <Select
-                        autoWidth
-                        className='form-inside-field'
-                        value={produtos}
-                        onChange={(e) => setGenero(e.target.value)}
-                    >
-                        <MenuItem value="" disabled>Sexo</MenuItem>
-                        <MenuItem value="Masculino">Masculino</MenuItem>
-                        <MenuItem value="Feminino">Feminino</MenuItem>
-                    </Select>
-                </FormControl>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<Add />}
+                    onClick={() => {
+                        dispatchProdutos({type: 'ADD_PRODUTO'})
+                    }}
+                >
+                    Produto
+            </Button>
+                {
+                    state.map((produto, index) => (
+                        <VendaFormProdutos index={index} produto={produto} dispatchProdutos={dispatchProdutos} />
+                    ))
+                }
                 <CurrencyFormat
                     className='form-inside-field'
                     id="standard-basic"
                     label="Sub-Total"
                     value={subTotal}
-                    onValueChange={(e) => setSubTotal(e.value)}
+                    disabled={true}
                     prefix={"R$"}
                     thousandSeparator={"."}
                     decimalScale={2}
                     fixedDecimalScale={true}
                     decimalSeparator={","}
                     customInput={TextField}
-                    isNumericString={true}
                 />
                 <CurrencyFormat
                     className='form-inside-field'
                     id="standard-basic"
-                    label="Total"
+                    label="Frete"
                     value={frete}
                     onValueChange={(e) => setFrete(e.value)}
                     prefix={"R$"}
@@ -175,7 +277,7 @@ const VendaForm = (props) => {
                 <CurrencyFormat
                     className='form-inside-field'
                     id="standard-basic"
-                    label="Total"
+                    label="Desconto"
                     value={desconto}
                     onValueChange={(e) => setDesconto(e.value)}
                     prefix={"R$"}
