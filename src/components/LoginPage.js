@@ -1,19 +1,19 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
-import { startGoogleLogin } from '../actions/auth'
+import { useDispatch } from 'react-redux';
+import { startGoogleLogin } from '../actions/auth';
 
 export const LoginPage = () => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-    const startLogin = () => {
-        dispatch(startGoogleLogin())
-    }
+  const startLogin = () => {
+    dispatch(startGoogleLogin());
+  };
 
-    return (
-        <div>
-            <button onClick={startLogin}>Login</button>
-        </div>
-    )
-}
+  return (
+    <div>
+      <button onClick={startLogin}>Login</button>
+    </div>
+  );
+};
 
-
+export default LoginPage;

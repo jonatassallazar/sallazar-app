@@ -1,12 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Ajuda = () => {
+  return <div></div>;
+};
 
-    return (
-        <div>
-            
-        </div>
-    )
-}
-
-export { Ajuda as default }
+export { Ajuda as default };

@@ -1,0 +1,13 @@
+export { default as LoginPage } from './LoginPage';
+export { default as Dashboard } from './Dashboard';
+export { default as AddCliente } from './Cliente/AddCliente';
+export { default as Clientes } from './Cliente/Clientes';
+export { default as EditarCliente } from './Cliente/EditarCliente';
+export { default as Produtos } from './Produto/Produtos';
+export { default as AddProduto } from './Produto/AddProduto';
+export { default as Vendas } from './Vendas/Vendas';
+export { default as AddVendas } from './Vendas/AddVendas';
+export { default as EditarVendas } from './Vendas/EditarVendas';
+export { default as Relatorios } from './Relatorios';
+export { default as Ajuda } from './Ajuda';
+export { default as EditarProduto } from './Produto/EditarProduto';

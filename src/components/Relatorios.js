@@ -1,12 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Relatorios = () => {
+  return <div></div>;
+};
 
-    return (
-        <div>
-            
-        </div>
-    )
-}
-
-export { Relatorios as default }
+export { Relatorios as default };
