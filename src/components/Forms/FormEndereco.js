@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import cep from 'cep-promise';
 import CurrencyFormat from 'react-currency-format';
+import Form from './Form';
 
 let CEPerror = false;
 
@@ -49,9 +50,8 @@ const FormEndereco = ({
   };
 
   return (
-    <div className="general-form">
+    <Form>
       <CurrencyFormat
-        className="form-inside-field"
         id="standard-basic"
         label="CEP"
         value={CEP}
@@ -68,7 +68,7 @@ const FormEndereco = ({
         helperText={CEPErrorText}
       />
       <TextField
-        className="form-inside-field form-item-gg"
+        className="form-item-gg"
         id="standard-basic endereco"
         label="Endereço"
         value={endereco}
@@ -78,7 +78,7 @@ const FormEndereco = ({
         InputLabelProps={{ shrink: true }}
       />
       <TextField
-        className="form-inside-field form-item-p"
+        className="form-item-p"
         id="standard-basic numero"
         label="Número"
         value={numero}
@@ -87,7 +87,7 @@ const FormEndereco = ({
         }}
       />
       <TextField
-        className="form-inside-field form-item-m"
+        className="form-item-m"
         id="standard-basic complemento"
         label="Complemento"
         value={complemento}
@@ -96,7 +96,7 @@ const FormEndereco = ({
         }}
       />
       <TextField
-        className="form-inside-field form-item-g"
+        className="form-item-g"
         id="standard-basic bairro"
         label="Bairro"
         value={bairro}
@@ -106,7 +106,7 @@ const FormEndereco = ({
         InputLabelProps={{ shrink: true }}
       />
       <TextField
-        className="form-inside-field form-item-g"
+        className="form-item-g"
         id="standard-basic cidade"
         label="Cidade"
         value={cidade}
@@ -116,7 +116,7 @@ const FormEndereco = ({
         InputLabelProps={{ shrink: true }}
       />
       <TextField
-        className="form-inside-field form-item-p"
+        className="form-item-p"
         id="standard-basic estado"
         label="Estado"
         value={estado}
@@ -126,7 +126,7 @@ const FormEndereco = ({
         }}
         InputLabelProps={{ shrink: true }}
       />
-    </div>
+    </Form>
   );
 };
 

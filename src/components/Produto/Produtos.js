@@ -7,6 +7,7 @@ import selectProdutos from '../../selectors/produtos';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetProdutos } from '../../actions/produtos';
+import ListaItens from '../Listas/ListaItens';
 
 const Produto = () => {
   const selection = useSelector((state) =>
@@ -32,11 +33,11 @@ const Produto = () => {
         Novo Produto
       </Button>
       <FiltroProduto />
-      <div className="lista-itens-janela">
+      <ListaItens>
         {selection.map((produto) => (
           <ProdutoItem key={produto.id} {...produto} />
         ))}
-      </div>
+      </ListaItens>
     </div>
   );
 };

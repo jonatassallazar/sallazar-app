@@ -3,6 +3,19 @@ import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import Menu from '../components/Menu';
+import styled from 'styled-components';
+
+const Conteudo = styled.div`
+  display: flex;
+  flex-direction: row;
+  min-height: 100%;
+  left: 0;
+  right: 0;
+`;
+
+Conteudo.Selecionado = styled.div`
+  margin: 2rem;
+`;
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
   const isAuthenticated = useSelector((state) => {
@@ -17,15 +30,15 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
       {...rest}
       component={(props) =>
         isAuthenticated ? (
-          <div className="app">
+          <>
             <Header />
-            <div className="conteudo-app">
+            <Conteudo>
               <Menu />
-              <div className="conteudo-page">
+              <Conteudo.Selecionado>
                 <Component {...props} />
-              </div>
-            </div>
-          </div>
+              </Conteudo.Selecionado>
+            </Conteudo>
+          </>
         ) : (
           <Redirect to="/" />
         )

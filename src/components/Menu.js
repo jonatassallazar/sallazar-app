@@ -2,10 +2,26 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+import styled from 'styled-components';
+
+const MenuLateral = styled.div`
+  display: flex;
+  position: relative;
+  width: 200px;
+  min-height: 100%;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  box-shadow: #d2d2d2 3px 6px 6px;
+  z-index: 2;
+
+  a.active {
+    background-color: #f1f1f1;
+}
+`;
 
 const Menu = () => {
   return (
-    <div className="menu-lateral">
+    <MenuLateral>
       <MenuList className="menu-lateral-paginacao">
         <MenuItem component={NavLink} to="/dashboard">
           Dashboard
@@ -26,7 +42,7 @@ const Menu = () => {
           Ajuda
         </MenuItem>
       </MenuList>
-    </div>
+    </MenuLateral>
   );
 };
 

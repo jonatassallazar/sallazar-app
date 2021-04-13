@@ -30,7 +30,7 @@ export default (
         case 'craetedatdec':
           return a.createdAt < b.createdAt ? 1 : -1;
         default:
-          break;
+          return undefined;
       }
     });
 };

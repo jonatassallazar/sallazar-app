@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Form from '../Forms/Form';
+import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import CurrencyFormat from 'react-currency-format';
 
 let hasPopulated = false;
@@ -63,18 +61,13 @@ const ProdutoForm = (props) => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmit} className="general-form">
-        <Select
-          className="form-inside-field"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
+    <>
+      <Form onSubmit={onSubmit}>
+        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
           <MenuItem value="Ativo">Ativo</MenuItem>
           <MenuItem value="Inativo">Inativo</MenuItem>
         </Select>
         <TextField
-          className="form-inside-field"
           id="standard-basic"
           label="Nome do Produto"
           required={true}
@@ -82,14 +75,12 @@ const ProdutoForm = (props) => {
           onChange={(e) => setNome(e.target.value)}
         />
         <TextField
-          className="form-inside-field"
           id="standard-basic"
           label="Unidade"
           value={unidade}
           onChange={(e) => setUnidade(e.target.value)}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Peso"
           value={peso}
@@ -102,7 +93,6 @@ const ProdutoForm = (props) => {
           isNumericString={true}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Preço de Custo"
           value={valorCusto}
@@ -116,7 +106,6 @@ const ProdutoForm = (props) => {
           isNumericString={true}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Valor de Venda"
           value={valorVenda}
@@ -130,7 +119,6 @@ const ProdutoForm = (props) => {
           isNumericString={true}
         />
         <TextField
-          className="form-inside-field"
           id="standard-basic"
           label="Fornecedor"
           value={fornecedor}
@@ -144,9 +132,9 @@ const ProdutoForm = (props) => {
         >
           Salvar
         </Button>
-      </form>
+      </Form>
       {error ? <p>{error}</p> : null}
-    </div>
+    </>
   );
 };
 

@@ -30,7 +30,7 @@ export const history = createHistory();
 const AppRouter = () => (
   <Router history={history}>
     <GlobalStyle />
-    <div className="app">
+    <>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Switch>
           <PublicRoute path="/" component={LoginPage} exact={true} />
@@ -48,7 +48,7 @@ const AppRouter = () => (
           <PrivateRoute path="/ajuda" component={Ajuda} />
         </Switch>
       </MuiPickersUtilsProvider>
-    </div>
+    </>
   </Router>
 );
 

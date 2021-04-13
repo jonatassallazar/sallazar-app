@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ListaItens from '../Listas/ListaItens';
 
 const ClienteItem = ({ id, nome, telefone }) => (
-  <div className="lista-itens">
+  <ListaItens.Item>
     <Link to={`/clientes/editar/${id}`}>
       <h3>{nome}</h3>
     </Link>
     <p>{telefone}</p>
-  </div>
+  </ListaItens.Item>
 );
 
 export { ClienteItem as default };

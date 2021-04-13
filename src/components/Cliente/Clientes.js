@@ -7,6 +7,7 @@ import FiltroCliente from './FiltroCliente';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetClientes } from '../../actions/clientes';
+import ListaItens from '../Listas/ListaItens';
 
 const Clientes = () => {
   const selection = useSelector((state) =>
@@ -32,11 +33,11 @@ const Clientes = () => {
         Novo Cliente
       </Button>
       <FiltroCliente />
-      <div className="lista-itens-janela">
+      <ListaItens>
         {selection.map((cliente) => (
           <ClienteItem key={cliente.id} {...cliente} />
         ))}
-      </div>
+      </ListaItens>
     </div>
   );
 };

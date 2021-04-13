@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import VendaFormProdutos from './VendaFormProdutos';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import SaveIcon from '@material-ui/icons/Save';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import CurrencyFormat from 'react-currency-format';
 import { useSelector, useDispatch } from 'react-redux';
+import Form from '../Forms/Form';
 import { startSetClientes } from '../../actions/clientes';
 import { startSetProdutos } from '../../actions/produtos';
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import VendaFormProdutos from './VendaFormProdutos';
+import { Button, TextField, Select, MenuItem } from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
 import Add from '@material-ui/icons/Add';
+import { KeyboardDatePicker } from '@material-ui/pickers';
+import CurrencyFormat from 'react-currency-format';
 
 let hasPopulated = false;
 
@@ -201,8 +199,8 @@ const VendaForm = (props) => {
   // }
 
   return (
-    <div>
-      <form onSubmit={onSubmit} className="general-form">
+    <>
+      <Form onSubmit={onSubmit} className="general-form">
         <TextField
           className="form-inside-field"
           id="standard-basic"
@@ -332,9 +330,9 @@ const VendaForm = (props) => {
         >
           Salvar
         </Button>
-      </form>
+      </Form>
       {error ? <p>{error}</p> : null}
-    </div>
+    </>
   );
 };
 

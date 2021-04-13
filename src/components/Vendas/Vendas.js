@@ -7,6 +7,7 @@ import selectVendas from '../../selectors/vendas';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetVendas } from '../../actions/vendas';
+import ListaItens from '../Listas/ListaItens';
 
 const Vendas = () => {
   const selection = useSelector((state) =>
@@ -32,11 +33,11 @@ const Vendas = () => {
         Nova Venda
       </Button>
       <FiltroVenda />
-      <div className="lista-itens-janela">
+      <ListaItens>
         {selection.map((venda) => (
           <VendaItem key={venda.id} {...venda} />
         ))}
-      </div>
+      </ListaItens>
     </div>
   );
 };

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import FormEndereco from './FormEndereco';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import FormEndereco from '../Forms/FormEndereco';
+import Form from '../Forms/Form';
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  Input,
+  Checkbox,
+  ListItemText,
+  FormControl,
+  InputLabel,
+} from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
 import SaveIcon from '@material-ui/icons/Save';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Input from '@material-ui/core/Input';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItemText from '@material-ui/core/ListItemText';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import CurrencyFormat from 'react-currency-format';
 
 let hasPopulated = false;
@@ -95,11 +98,10 @@ const ClienteForm = (props) => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmit} className="general-form">
+    <>
+      <Form onSubmit={onSubmit}>
         <Select
           id="status"
-          className="form-inside-field"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         >
@@ -107,7 +109,6 @@ const ClienteForm = (props) => {
           <MenuItem value="Inativo">Inativo</MenuItem>
         </Select>
         <TextField
-          className="form-inside-field"
           id="standard-basic nome"
           label="Nome Completo"
           required={true}
@@ -115,7 +116,6 @@ const ClienteForm = (props) => {
           onChange={(e) => setNome(e.target.value)}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Telefone"
           value={telefone}
@@ -126,7 +126,6 @@ const ClienteForm = (props) => {
           mask="_"
         />
         <TextField
-          className="form-inside-field"
           id="standard-basic email"
           label="Email"
           value={email}
@@ -136,7 +135,6 @@ const ClienteForm = (props) => {
           <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
           <Select
             autoWidth
-            className="form-inside-field"
             value={genero}
             onChange={(e) => setGenero(e.target.value)}
           >
@@ -148,7 +146,6 @@ const ClienteForm = (props) => {
           </Select>
         </FormControl>
         <DatePicker
-          className="form-inside-field"
           id="date"
           label="Data de Nascimento"
           format="DD/MM/YYYY"
@@ -158,7 +155,6 @@ const ClienteForm = (props) => {
         <FormControl>
           <InputLabel id="demo-simple-select-label">Tags</InputLabel>
           <Select
-            className="form-inside-field"
             multiple
             value={selectedTags}
             onChange={(e) => setSelectedTags(e.target.value)}
@@ -197,9 +193,9 @@ const ClienteForm = (props) => {
         >
           Salvar
         </Button>
-      </form>
+      </Form>
       {error ? <p>{error}</p> : null}
-    </div>
+    </>
   );
 };
 

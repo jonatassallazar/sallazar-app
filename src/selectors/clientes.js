@@ -17,6 +17,9 @@ export default (clientes, { nome, sortBy, email, telefone }) => {
         return a.nome > b.nome ? 1 : -1;
       } else if (sortBy === 'nomedec') {
         return a.nome < b.nome ? 1 : -1;
+      } else {
+        return undefined;
       }
+      ;
     });
 };
