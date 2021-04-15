@@ -12,9 +12,8 @@ import {
   sortByValorTotalAsc,
   sortByValorTotalDec,
 } from '../../actions/filtrosVendas';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Form from '../forms/Form';
+import { Input, Select, MenuItem } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
 const FiltroVenda = () => {
@@ -28,7 +27,7 @@ const FiltroVenda = () => {
   } = useSelector((state) => state.filtrosVendas);
 
   return (
-    <div>
+    <Form>
       <Input
         type="text"
         value={cliente}
@@ -109,7 +108,7 @@ const FiltroVenda = () => {
         <MenuItem value="createdatasc">Criado Crescente</MenuItem>
         <MenuItem value="createdatdec">Criado Decrescente</MenuItem>
       </Select>
-    </div>
+    </Form>
   );
 };
 

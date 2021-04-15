@@ -11,9 +11,8 @@ import {
   sortByPrecoAsc,
   sortByPrecoDec,
 } from '../../actions/filtrosProdutos';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Form from '../forms/Form';
+import {Input, Select, MenuItem} from '@material-ui/core';
 
 const FiltroProduto = () => {
   const dispatch = useDispatch();
@@ -22,7 +21,7 @@ const FiltroProduto = () => {
   );
 
   return (
-    <div>
+    <Form>
       <Input
         type="text"
         value={nome}
@@ -76,7 +75,7 @@ const FiltroProduto = () => {
         <MenuItem value="createdatasc">Criado Crescente</MenuItem>
         <MenuItem value="createdatdec">Criado Decrescente</MenuItem>
       </Select>
-    </div>
+    </Form>
   );
 };
 

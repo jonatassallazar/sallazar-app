@@ -7,9 +7,8 @@ import {
   sortByNomeAsc,
   sortByNomeDec,
 } from '../../actions/filtrosClientes';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Form from '../forms/Form';
+import { Input, Select, MenuItem } from '@material-ui/core';
 import CurrencyFormat from 'react-currency-format';
 
 const FiltroCliente = (props) => {
@@ -19,7 +18,7 @@ const FiltroCliente = (props) => {
   );
 
   return (
-    <div>
+    <Form>
       <Input
         type="text"
         value={nome}
@@ -37,7 +36,6 @@ const FiltroCliente = (props) => {
         }}
       />
       <CurrencyFormat
-        className="form-inside-field"
         id="standard-basic"
         label="Telefone"
         value={telefone}
@@ -60,7 +58,7 @@ const FiltroCliente = (props) => {
         <MenuItem value="nomeasc">Crescente</MenuItem>
         <MenuItem value="nomedec">Decrescente</MenuItem>
       </Select>
-    </div>
+    </Form>
   );
 };
 
