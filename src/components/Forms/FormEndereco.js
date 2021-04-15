@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import cep from 'cep-promise';
 import CurrencyFormat from 'react-currency-format';
-import Form from './Form';
 
 let CEPerror = false;
 
@@ -50,7 +49,7 @@ const FormEndereco = ({
   };
 
   return (
-    <Form>
+    <>
       <CurrencyFormat
         id="standard-basic"
         label="CEP"
@@ -126,7 +125,7 @@ const FormEndereco = ({
         }}
         InputLabelProps={{ shrink: true }}
       />
-    </Form>
+    </>
   );
 };
 
