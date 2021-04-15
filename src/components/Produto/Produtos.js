@@ -7,7 +7,7 @@ import selectProdutos from '../../selectors/produtos';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetProdutos } from '../../actions/produtos';
-import ListaItens from '../Listas/ListaItens';
+import ListaItens from '../listas/ListaItens';
 
 const Produto = () => {
   const selection = useSelector((state) =>

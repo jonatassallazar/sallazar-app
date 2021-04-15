@@ -7,7 +7,7 @@ import FiltroCliente from './FiltroCliente';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetClientes } from '../../actions/clientes';
-import ListaItens from '../Listas/ListaItens';
+import ListaItens from '../listas/ListaItens';
 
 const Clientes = () => {
   const selection = useSelector((state) =>

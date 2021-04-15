@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import ListaItens from '../Listas/ListaItens';
+import ListaItens from '../listas/ListaItens';
 
 const VendaItem = ({ id, numero, total, status, vendaData, cliente }) => (
   <ListaItens.Item>

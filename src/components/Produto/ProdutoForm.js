@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Form from '../Forms/Form';
+import Form from '../forms/Form';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import CurrencyFormat from 'react-currency-format';

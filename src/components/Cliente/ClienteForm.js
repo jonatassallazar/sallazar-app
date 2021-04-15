@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import FormEndereco from '../Forms/FormEndereco';
-import Form from '../Forms/Form';
+import FormEndereco from '../forms/FormEndereco';
+import Form from '../forms/Form';
 import {
   Button,
   TextField,

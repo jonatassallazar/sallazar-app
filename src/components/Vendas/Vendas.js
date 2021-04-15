@@ -7,7 +7,7 @@ import selectVendas from '../../selectors/vendas';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetVendas } from '../../actions/vendas';
-import ListaItens from '../Listas/ListaItens';
+import ListaItens from '../listas/ListaItens';
 
 const Vendas = () => {
   const selection = useSelector((state) =>

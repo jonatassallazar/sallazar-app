@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Form from '../Forms/Form';
+import Form from '../forms/Form';
 import { startSetClientes } from '../../actions/clientes';
 import { startSetProdutos } from '../../actions/produtos';
 import VendaFormProdutos from './VendaFormProdutos';

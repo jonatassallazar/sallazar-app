@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ListaItens from '../Listas/ListaItens';
+import ListaItens from '../listas/ListaItens';
 
 const ClienteItem = ({ id, nome, telefone }) => (
   <ListaItens.Item>
