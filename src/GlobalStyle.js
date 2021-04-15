@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     min-width: 100vw;
   }
   html {
-    font-size: 10px;
+    font-size: 16px;
   }
 
   #root {
