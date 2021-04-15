@@ -1,41 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Form from '../forms/Form';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import { Save, Delete } from '@material-ui/icons';
 import CurrencyFormat from 'react-currency-format';
 
-let hasPopulated = false;
-
 const ProdutoForm = (props) => {
-  const [nome, setNome] = useState('');
-  const [unidade, setUnidade] = useState('');
-  const [peso, setPeso] = useState('');
-  const [valorCusto, setValorCusto] = useState('');
-  const [status, setStatus] = useState('Ativo');
-  const [valorVenda, setValorVenda] = useState('');
-  const [fornecedor, setFornecedor] = useState('');
-  const [foto, setFoto] = useState('');
-  const [createdAt, setCreatedAt] = useState(new Date());
+  const [nome, setNome] = useState(props.produto?.nome || '');
+  const [unidade, setUnidade] = useState(props.produto?.unidade || '');
+  const [peso, setPeso] = useState(props.produto?.peso || '');
+  const [valorCusto, setValorCusto] = useState(props.produto?.valorCusto || '');
+  const [status, setStatus] = useState(props.produto?.status || ['Ativo']);
+  const [valorVenda, setValorVenda] = useState(props.produto?.valorVenda || '');
+  const [fornecedor, setFornecedor] = useState(props.produto?.fornecedor || '');
+  const [createdAt] = useState(props.produto?.createdAt || new Date());
   const [error, setError] = useState('');
-
-  //Popula os campos
-  if (props.produto && !hasPopulated) {
-    setNome(props.produto.nome);
-    setUnidade(props.produto.unidade);
-    setPeso(props.produto.peso);
-    setValorCusto(props.produto.valorCusto);
-    setStatus(props.produto.status || ['Ativo']);
-    setValorVenda(props.produto.valorVenda);
-    setFornecedor(props.produto.fornecedor);
-    setFoto(props.produto.foto);
-    setCreatedAt(props.produto.createdAt);
-    hasPopulated = true;
-  }
-
-  //Limpa a função de popular os campos
-  useEffect(() => {
-    return () => (hasPopulated = false);
-  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -54,7 +32,6 @@ const ProdutoForm = (props) => {
         status,
         valorVenda,
         fornecedor,
-        foto,
         createdAt: createdAt.valueOf(),
       });
     }
@@ -124,15 +101,25 @@ const ProdutoForm = (props) => {
           value={fornecedor}
           onChange={(e) => setFornecedor(e.target.value)}
         />
+      </Form>
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        startIcon={<Save />}
+      >
+        Salvar
+      </Button>
+      {props.handleDelete && (
         <Button
           variant="contained"
-          color="primary"
-          type="submit"
-          startIcon={<SaveIcon />}
+          color="secondary"
+          startIcon={<Delete />}
+          onClick={props.handleDelete}
         >
-          Salvar
+          Remove
         </Button>
-      </Form>
+      )}
       {error ? <p>{error}</p> : null}
     </>
   );

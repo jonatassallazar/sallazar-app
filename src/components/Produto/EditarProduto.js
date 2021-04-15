@@ -6,8 +6,6 @@ import {
   startSetProdutos,
 } from '../../actions/produtos';
 import ProdutoForm from './ProdutoForm';
-import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const EditarProduto = (props) => {
   const dispatch = useDispatch();
@@ -29,22 +27,20 @@ const EditarProduto = (props) => {
     );
   };
 
+  const handleDelete = () => {
+    dispatch(startRemoveProduto({ id: produto.id })).then(() => {
+      props.history.push('/produtos');
+    });
+  };
+
   return (
     <div>
       <h1>Editar Produto</h1>
-      <ProdutoForm produto={produto} onSubmit={onSubmit} />
-      <Button
-        variant="contained"
-        color="secondary"
-        startIcon={<DeleteIcon />}
-        onClick={() => {
-          dispatch(startRemoveProduto({ id: produto.id })).then(() => {
-            props.history.push('/produtos');
-          });
-        }}
-      >
-        Remove
-      </Button>
+      <ProdutoForm
+        produto={produto}
+        onSubmit={onSubmit}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

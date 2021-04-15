@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import FormEndereco from '../forms/FormEndereco';
 import Form from '../forms/Form';
 import {
@@ -13,51 +13,45 @@ import {
   InputLabel,
 } from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
-import SaveIcon from '@material-ui/icons/Save';
+import { Save, Delete } from '@material-ui/icons';
 import CurrencyFormat from 'react-currency-format';
 
-let hasPopulated = false;
-
 const ClienteForm = (props) => {
-  const [nome, setNome] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [email, setEmail] = useState('');
-  const [dataDeNascimento, setDataDeNascimento] = useState(null);
-  const [status, setStatus] = useState('Ativo');
-  const [genero, setGenero] = useState('');
+  const [nome, setNome] = useState(props.cliente?.nome || '');
+  const [telefone, setTelefone] = useState(props.cliente?.telefone || '');
+  const [email, setEmail] = useState(props.cliente?.email || '');
+  const [dataDeNascimento, setDataDeNascimento] = useState(
+    props.cliente?.dataDeNascimento || null
+  );
+  const [status, setStatus] = useState(props.cliente?.status || ['Ativo']);
+  const [genero, setGenero] = useState(props.cliente?.genero || '');
   //const [foto, setFoto] = useState('')
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [CEP, setCEP] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [numero, setNumero] = useState('');
-  const [complemento, setComplemento] = useState('');
-  const [bairro, setBairro] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [estado, setEstado] = useState('');
-  const [createdAt, setCreatedAt] = useState(new Date());
+  const [selectedTags, setSelectedTags] = useState(
+    props.cliente?.selectedTags || []
+  );
+  const [CEP, setCEP] = useState(props.cliente?.enderecoCompleto.CEP || '');
+  const [endereco, setEndereco] = useState(
+    props.cliente?.enderecoCompleto.endereco || ''
+  );
+  const [numero, setNumero] = useState(
+    props.cliente?.enderecoCompleto.numero || ''
+  );
+  const [complemento, setComplemento] = useState(
+    props.cliente?.enderecoCompleto.complemento || ''
+  );
+  const [bairro, setBairro] = useState(
+    props.cliente?.enderecoCompleto.bairro || ''
+  );
+  const [cidade, setCidade] = useState(
+    props.cliente?.enderecoCompleto.cidade || ''
+  );
+  const [estado, setEstado] = useState(
+    props.cliente?.enderecoCompleto.estado || ''
+  );
+  const [createdAt] = useState(props.cliente?.createdAt || new Date());
   const [error, setError] = useState('');
 
   const tags = ['Teste', 'Pagador', 'Devedor'];
-
-  //Popula os campos
-  if (props.cliente && !hasPopulated) {
-    setNome(props.cliente.nome);
-    setTelefone(props.cliente.telefone);
-    setEmail(props.cliente.email);
-    setDataDeNascimento(props.cliente.dataDeNascimento);
-    setStatus(props.cliente.status || ['Ativo']);
-    setGenero(props.cliente.genero || '');
-    setSelectedTags(props.cliente.selectedTags || []);
-    setCEP(props.cliente.enderecoCompleto.CEP || '');
-    setEndereco(props.cliente.enderecoCompleto.endereco || '');
-    setNumero(props.cliente.enderecoCompleto.numero || '');
-    setComplemento(props.cliente.enderecoCompleto.complemento || '');
-    setBairro(props.cliente.enderecoCompleto.bairro || '');
-    setCidade(props.cliente.enderecoCompleto.cidade || '');
-    setEstado(props.cliente.enderecoCompleto.estado || '');
-    setCreatedAt(props.cliente.createdAt);
-    hasPopulated = true;
-  }
 
   const enderecoCompleto = {
     CEP,
@@ -68,11 +62,6 @@ const ClienteForm = (props) => {
     cidade,
     estado,
   };
-
-  //Limpa a função de popular os campos
-  useEffect(() => {
-    return () => (hasPopulated = false);
-  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -185,16 +174,26 @@ const ClienteForm = (props) => {
           estado={estado}
           setEstado={setEstado}
         />
+      </Form>
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        startIcon={<Save />}
+      >
+        Salvar
+      </Button>
+      {props?.handleDelete && (
         <Button
           variant="contained"
-          color="primary"
-          type="submit"
-          startIcon={<SaveIcon />}
+          color="secondary"
+          startIcon={<Delete />}
+          onClick={props?.handleDelete}
         >
-          Salvar
+          Remove
         </Button>
-      </Form>
-      {error ? <p>{error}</p> : null}
+      )}
+      {error && <p>{error}</p>}
     </>
   );
 };

@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import {
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+} from '@material-ui/core';
 import CurrencyFormat from 'react-currency-format';
-import TextField from '@material-ui/core/TextField';
 
 const VendaFormProdutos = ({ index, produto, dispatchProdutos }) => {
   const produtosLista = useSelector((state) => state.produtos);
@@ -18,8 +19,7 @@ const VendaFormProdutos = ({ index, produto, dispatchProdutos }) => {
   };
 
   return (
-    <div>
-      <FormControl>
+    <>
         <InputLabel id="demo-simple-select-label">Produto</InputLabel>
         <Select
           autoWidth
@@ -38,14 +38,12 @@ const VendaFormProdutos = ({ index, produto, dispatchProdutos }) => {
           ))}
         </Select>
         <TextField
-          className="form-inside-field"
           id="standard-basic"
           label="Unidade"
           value={produto.unidade}
           disabled={true}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Quantidade"
           value={produto.quantidade}
@@ -63,7 +61,6 @@ const VendaFormProdutos = ({ index, produto, dispatchProdutos }) => {
           isNumericString={true}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Valor de Venda"
           value={produto.valorVenda}
@@ -83,7 +80,6 @@ const VendaFormProdutos = ({ index, produto, dispatchProdutos }) => {
           isNumericString={true}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Valor Total"
           value={produto.valorTotal}
@@ -95,8 +91,7 @@ const VendaFormProdutos = ({ index, produto, dispatchProdutos }) => {
           decimalSeparator={','}
           customInput={TextField}
         />
-      </FormControl>
-    </div>
+    </>
   );
 };
 

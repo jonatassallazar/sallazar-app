@@ -5,26 +5,25 @@ import { startSetClientes } from '../../actions/clientes';
 import { startSetProdutos } from '../../actions/produtos';
 import VendaFormProdutos from './VendaFormProdutos';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
-import Add from '@material-ui/icons/Add';
+import { Save, Add } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import CurrencyFormat from 'react-currency-format';
-
-let hasPopulated = false;
 
 const VendaForm = (props) => {
   const dispatch = useDispatch();
 
-  const [numero, setNumero] = useState('');
-  const [cliente, setCliente] = useState('');
-  const [subTotal, setSubTotal] = useState('');
-  const [status, setStatus] = useState('Ativo');
-  const [total, setTotal] = useState('');
-  const [frete, setFrete] = useState('');
-  const [desconto, setDesconto] = useState('');
-  const [observacoes, setObservacoes] = useState('');
-  const [dataVenda, setDataVenda] = useState(null);
-  const [createdAt, setCreatedAt] = useState(new Date());
+  const [numero, setNumero] = useState(props.venda?.numero || '');
+  const [cliente, setCliente] = useState(props.venda?.cliente || '');
+  const [subTotal, setSubTotal] = useState(props.venda?.subTotal || '');
+  const [status, setStatus] = useState(props.venda?.status || ['Ativo']);
+  const [total, setTotal] = useState(props.venda?.total || '');
+  const [frete, setFrete] = useState(props.venda?.frete || '');
+  const [desconto, setDesconto] = useState(props.venda?.desconto || '');
+  const [observacoes, setObservacoes] = useState(
+    props.venda?.observacoes || ''
+  );
+  const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
+  const [createdAt] = useState(props.venda?.createdAt || new Date());
   const [error, setError] = useState('');
 
   const initialStateProduto = [
@@ -136,29 +135,6 @@ const VendaForm = (props) => {
   }, [state]);
 
   const clientes = useSelector((state) => state.clientes);
-
-  //Popula os campos
-  if (props.venda && !hasPopulated) {
-    setNumero(props.venda.numero);
-    setCliente(props.venda.cliente);
-    //setProdutos(props.venda.produtos)
-    setSubTotal(props.venda.subTotal);
-    setStatus(props.venda.status || ['Ativo']);
-    setTotal(props.venda.total);
-    setFrete(props.venda.frete);
-    setDesconto(props.venda.desconto);
-    setObservacoes(props.venda.observacoes);
-    setDataVenda(props.venda.dataVenda);
-    setCreatedAt(props.venda.createdAt);
-    hasPopulated = true;
-  }
-
-  //Limpa a função de popular os campos
-  useEffect(() => {
-    return () => {
-      hasPopulated = false;
-    };
-  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -326,7 +302,7 @@ const VendaForm = (props) => {
           variant="contained"
           color="primary"
           type="submit"
-          startIcon={<SaveIcon />}
+          startIcon={<Save />}
         >
           Salvar
         </Button>
