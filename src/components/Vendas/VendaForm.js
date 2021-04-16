@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Form from '../forms/Form';
 import { startSetClientes } from '../../actions/clientes';
@@ -9,115 +9,38 @@ import { Save, Add } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import CurrencyFormat from 'react-currency-format';
 
+const baseItem = {
+  id: '',
+  unidade: '',
+  quantidade: '',
+  valorVenda: 0,
+  valorTotal: 0,
+};
+
 const VendaForm = (props) => {
   const dispatch = useDispatch();
 
   const [numero, setNumero] = useState(props.venda?.numero || '');
-  const [cliente, setCliente] = useState(props.venda?.cliente || '');
-  const [subTotal, setSubTotal] = useState(props.venda?.subTotal || '');
   const [status, setStatus] = useState(props.venda?.status || ['Ativo']);
-  const [total, setTotal] = useState(props.venda?.total || '');
+  const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
+  const [cliente, setCliente] = useState(props.venda?.cliente || '');
+
+  const [itensVendidos, setItensVendidos] = useState(
+    props.venda?.itensVendidos || [baseItem]
+  );
+
+  const [subTotal, setSubTotal] = useState(props.venda?.subTotal || 0);
   const [frete, setFrete] = useState(props.venda?.frete || '');
   const [desconto, setDesconto] = useState(props.venda?.desconto || '');
+  const [total, setTotal] = useState(props.venda?.total || '');
   const [observacoes, setObservacoes] = useState(
     props.venda?.observacoes || ''
   );
-  const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
+
   const [createdAt] = useState(props.venda?.createdAt || new Date());
   const [error, setError] = useState('');
 
-  const initialStateProduto = [
-    {
-      id: '',
-      nome: '',
-      unidade: '',
-      quantidade: '',
-      valorVenda: '',
-      valorTotal: '',
-    },
-  ];
-
-  const reducerProdutos = (state, action) => {
-    switch (action.type) {
-      case 'ADD_PRODUTO':
-        return [
-          ...state,
-          {
-            id: '',
-            nome: '',
-            unidade: '',
-            quantidade: '',
-            valorVenda: '',
-            valorTotal: '',
-          },
-        ];
-      case 'ADD_PRODUTO_INFORMACAO':
-        const {
-          id = '',
-          nome,
-          unidade,
-          quantidade = 1,
-          valorVenda,
-          valorTotal = quantidade * valorVenda,
-        } = action.produto;
-
-        return state.map((produto, index) => {
-          if (index === action.index) {
-            return {
-              ...produto,
-              ...{
-                id,
-                nome,
-                unidade,
-                quantidade,
-                valorVenda,
-                valorTotal,
-              },
-            };
-          } else {
-            return produto;
-          }
-        });
-      case 'REMOVER_PRODUTO':
-        return state.filter(({ id }) => id !== action.produto.id);
-      case 'EDITAR_PRODUTO':
-        return state.map((produto, index) => {
-          if (index === action.index) {
-            let {
-              quantidade = produto.quantidade,
-              valorVenda = produto.valorVenda,
-              valorTotal = produto.valorTotal,
-            } = action;
-
-            if (
-              produto.quantidade !== quantidade ||
-              produto.valorVenda !== valorVenda
-            ) {
-              valorTotal = quantidade * valorVenda;
-            }
-
-            return {
-              ...produto,
-              ...{
-                quantidade,
-                valorVenda,
-                valorTotal,
-              },
-            };
-          } else {
-            return produto;
-          }
-        });
-      default:
-        return state;
-    }
-  };
-
-  const [state, dispatchProdutos] = useReducer(
-    reducerProdutos,
-    initialStateProduto
-  );
-
+  //Get recent data
   useEffect(() => {
     dispatch(startSetClientes());
     dispatch(startSetProdutos());
@@ -125,16 +48,17 @@ const VendaForm = (props) => {
   }, []);
 
   useEffect(() => {
-    setSubTotal(() => {
-      const subTotalProdutos = state.reduce(
-        (acumulador, produto) => acumulador + produto.valorTotal,
-        0
-      );
-      return subTotalProdutos;
-    });
-  }, [state]);
+    const newValue = itensVendidos.reduce(
+      (acc, cur) => acc + cur.valorTotal,
+      0
+    );
+
+    setSubTotal(newValue);
+  }, [itensVendidos]);
 
   const clientes = useSelector((state) => state.clientes);
+
+  const produtos = useSelector((state) => state.produtos);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -161,24 +85,10 @@ const VendaForm = (props) => {
     }
   };
 
-  // const onChangeQuantidade = () => {
-  //     if (!produtos[0]) {
-  //         return null
-  //     }
-  //     const soma = produtos[0].valorVenda * produtos[0].quantidade
-
-  //     produtos.map((produto) => {
-  //         if (produto.id === produtos[0].id) {
-  //             return produtos[0].valorTotal = soma
-  //         }
-  //     })
-  // }
-
   return (
     <>
       <Form onSubmit={onSubmit} className="general-form">
         <TextField
-          className="form-inside-field"
           id="standard-basic"
           label="Número"
           required={true}
@@ -186,11 +96,7 @@ const VendaForm = (props) => {
           onChange={(e) => setNumero(e.target.value)}
           disabled={true}
         />
-        <Select
-          className="form-inside-field"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
+        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
           <MenuItem value="Ativo">Ativo</MenuItem>
           <MenuItem value="Inativo">Inativo</MenuItem>
         </Select>
@@ -210,34 +116,33 @@ const VendaForm = (props) => {
             shrink: true,
           }}
         />
-        <Select
-          className="form-inside-field"
-          value={cliente}
-          onChange={(e) => setCliente(e.target.value)}
-        >
-          {clientes.map((cliente) => (
+        <Select value={cliente} onChange={(e) => setCliente(e.target.value)}>
+          {clientes?.map((cliente) => (
             <MenuItem value={cliente.id}>{cliente.nome}</MenuItem>
           ))}
         </Select>
+
+        {/* Products listing */}
+        {itensVendidos?.map((item, index) => (
+          <Form>
+            <VendaFormProdutos
+              produtos={produtos}
+              index={index}
+              itensVendidos={itensVendidos}
+              setItensVendidos={setItensVendidos}
+            />
+          </Form>
+        ))}
         <Button
           variant="contained"
           color="primary"
           startIcon={<Add />}
-          onClick={() => {
-            dispatchProdutos({ type: 'ADD_PRODUTO' });
-          }}
+          onClick={() => setItensVendidos([...itensVendidos, baseItem])}
         >
           Produto
         </Button>
-        {state.map((produto, index) => (
-          <VendaFormProdutos
-            index={index}
-            produto={produto}
-            dispatchProdutos={dispatchProdutos}
-          />
-        ))}
+
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Sub-Total"
           value={subTotal}
@@ -250,7 +155,6 @@ const VendaForm = (props) => {
           customInput={TextField}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Frete"
           value={frete}
@@ -264,7 +168,6 @@ const VendaForm = (props) => {
           isNumericString={true}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Desconto"
           value={desconto}
@@ -278,7 +181,6 @@ const VendaForm = (props) => {
           isNumericString={true}
         />
         <CurrencyFormat
-          className="form-inside-field"
           id="standard-basic"
           label="Total"
           value={total}
@@ -292,7 +194,6 @@ const VendaForm = (props) => {
           isNumericString={true}
         />
         <TextField
-          className="form-inside-field"
           id="standard-basic"
           label="Observações"
           value={observacoes}
