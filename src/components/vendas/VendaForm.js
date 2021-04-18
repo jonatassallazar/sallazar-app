@@ -4,10 +4,17 @@ import Form from '../forms/Form';
 import { startSetClientes } from '../../actions/clientes';
 import { startSetProdutos } from '../../actions/produtos';
 import VendaFormProdutos from './VendaFormProdutos';
-import { Button, TextField, Select, MenuItem } from '@material-ui/core';
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from '@material-ui/core';
 import { Save, Add } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import CurrencyFormat from 'react-currency-format';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 const baseItem = {
   id: '',
@@ -20,23 +27,27 @@ const baseItem = {
 const VendaForm = (props) => {
   const dispatch = useDispatch();
 
+  //Parte base da venda
   const [numero, setNumero] = useState(props.venda?.numero || '');
   const [status, setStatus] = useState(props.venda?.status || ['Ativo']);
   const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
   const [cliente, setCliente] = useState(props.venda?.cliente || '');
 
+  //Itens vendidos
   const [itensVendidos, setItensVendidos] = useState(
     props.venda?.itensVendidos || [baseItem]
   );
 
-  const [subTotal, setSubTotal] = useState(props.venda?.subTotal || 0);
-  const [frete, setFrete] = useState(props.venda?.frete || '');
-  const [desconto, setDesconto] = useState(props.venda?.desconto || '');
+  //Resumo da Venda
+  const [subTotal, setSubTotal] = useState(props.venda?.subTotal || '0');
+  const [frete, setFrete] = useState(props.venda?.frete || '0');
+  const [desconto, setDesconto] = useState(props.venda?.desconto || '0');
   const [total, setTotal] = useState(props.venda?.total || '');
   const [observacoes, setObservacoes] = useState(
     props.venda?.observacoes || ''
   );
 
+  //States básicos
   const [createdAt] = useState(props.venda?.createdAt || new Date());
   const [error, setError] = useState('');
 
@@ -47,6 +58,7 @@ const VendaForm = (props) => {
     // eslint-disable-next-line
   }, []);
 
+  //Calculate the subTotal
   useEffect(() => {
     const newValue = itensVendidos.reduce(
       (acc, cur) => acc + cur.valorTotal,
@@ -56,15 +68,44 @@ const VendaForm = (props) => {
     setSubTotal(newValue);
   }, [itensVendidos]);
 
+  //Calculate the total amount
+  useEffect(() => {
+    const newValue = parseInt(subTotal) + parseInt(frete) - parseInt(desconto);
+
+    setTotal(newValue);
+  }, [subTotal, desconto, frete]);
+
   const clientes = useSelector((state) => state.clientes);
 
   const produtos = useSelector((state) => state.produtos);
 
+  const handleFrete = (e, value) => {
+    if (value < 0 || value === '') {
+      return setFrete(0);
+    }
+    setFrete(value);
+  };
+
+  const handleDesconto = (e, value) => {
+    if (value < 0 || value === '') {
+      return setDesconto(0);
+    }
+    setDesconto(value);
+  };
+
+  const handleAddNewItem = () => {
+    if (itensVendidos[itensVendidos.length - 1].id === '') {
+      return;
+    }
+
+    setItensVendidos([...itensVendidos, baseItem]);
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (true) {
-      setError('Coloque os Produtos');
+    if (itensVendidos[0].id === '') {
+      setError('Coloque os Itens vendidos');
       // Set error state equal to 'Please provide description and amount.'
     } else {
       setError('');
@@ -72,7 +113,7 @@ const VendaForm = (props) => {
       props.onSubmit({
         numero,
         cliente,
-        //produto: state.produto,
+        itensVendidos,
         dataVenda,
         status,
         observacoes,
@@ -89,24 +130,32 @@ const VendaForm = (props) => {
     <>
       <Form onSubmit={onSubmit} className="general-form">
         <TextField
-          id="standard-basic"
+          className="form-item-p"
           label="Número"
           required={true}
           value={numero}
           onChange={(e) => setNumero(e.target.value)}
           disabled={true}
         />
-        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <MenuItem value="Ativo">Ativo</MenuItem>
-          <MenuItem value="Inativo">Inativo</MenuItem>
-        </Select>
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Status</InputLabel>
+          <Select
+            className="form-item-m"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <MenuItem value="Ativo">Ativo</MenuItem>
+            <MenuItem value="Inativo">Inativo</MenuItem>
+          </Select>
+        </FormControl>
         <KeyboardDatePicker
+          className="form-item-p"
           disableToolbar
           variant="inline"
           format="DD/MM/yyyy"
           margin="normal"
           id="date-picker-inline"
-          label="De"
+          label="Data da Venda"
           value={dataVenda}
           onChange={(e) => setDataVenda(e)}
           KeyboardButtonProps={{
@@ -116,89 +165,100 @@ const VendaForm = (props) => {
             shrink: true,
           }}
         />
-        <Select value={cliente} onChange={(e) => setCliente(e.target.value)}>
-          {clientes?.map((cliente) => (
-            <MenuItem value={cliente.id}>{cliente.nome}</MenuItem>
-          ))}
-        </Select>
-
-        {/* Products listing */}
-        {itensVendidos?.map((item, index) => (
-          <Form>
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
+          <Select
+            className="form-item-m"
+            value={cliente}
+            onChange={(e) => setCliente(e.target.value)}
+          >
+            {clientes?.map((cliente) => (
+              <MenuItem key={cliente.id} value={cliente.id}>
+                {cliente.nome}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Form.List>
+          <p>Itens Vendidos</p>
+          {/* Itens purchased listing */}
+          {itensVendidos?.map((item, index) => (
             <VendaFormProdutos
+              key={item.id}
               produtos={produtos}
               index={index}
               itensVendidos={itensVendidos}
               setItensVendidos={setItensVendidos}
             />
-          </Form>
-        ))}
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Add />}
-          onClick={() => setItensVendidos([...itensVendidos, baseItem])}
-        >
-          Produto
-        </Button>
+          ))}
+        </Form.List>
 
-        <CurrencyFormat
-          id="standard-basic"
-          label="Sub-Total"
-          value={subTotal}
+        <Form>
+          <Button
+            className="form-item-p"
+            variant="contained"
+            color="primary"
+            startIcon={<Add />}
+            onClick={handleAddNewItem}
+          >
+            Item
+          </Button>
+        </Form>
+
+        <CurrencyTextField
+          className="form-item-p"
+          label="SubTotal"
           disabled={true}
-          prefix={'R$'}
-          thousandSeparator={'.'}
-          decimalScale={2}
-          fixedDecimalScale={true}
-          decimalSeparator={','}
-          customInput={TextField}
+          variant="standard"
+          currencySymbol="R$"
+          outputFormat="string"
+          decimalCharacter=","
+          digitGroupSeparator="."
+          value={subTotal}
         />
-        <CurrencyFormat
-          id="standard-basic"
+        <CurrencyTextField
+          className="form-item-p"
           label="Frete"
+          variant="standard"
+          currencySymbol="R$"
+          outputFormat="string"
+          decimalCharacter=","
+          digitGroupSeparator="."
           value={frete}
-          onValueChange={(e) => setFrete(e.value)}
-          prefix={'R$'}
-          thousandSeparator={'.'}
-          decimalScale={2}
-          fixedDecimalScale={true}
-          decimalSeparator={','}
-          customInput={TextField}
-          isNumericString={true}
+          onChange={handleFrete}
         />
-        <CurrencyFormat
-          id="standard-basic"
+        <CurrencyTextField
+          className="form-item-p"
           label="Desconto"
+          variant="standard"
+          currencySymbol="R$"
+          outputFormat="string"
+          decimalCharacter=","
+          digitGroupSeparator="."
           value={desconto}
-          onValueChange={(e) => setDesconto(e.value)}
-          prefix={'R$'}
-          thousandSeparator={'.'}
-          decimalScale={2}
-          fixedDecimalScale={true}
-          decimalSeparator={','}
-          customInput={TextField}
-          isNumericString={true}
+          onChange={handleDesconto}
         />
-        <CurrencyFormat
-          id="standard-basic"
+        <CurrencyTextField
+          className="form-item-p"
           label="Total"
+          disabled={true}
+          variant="standard"
+          currencySymbol="R$"
+          outputFormat="string"
+          decimalCharacter=","
+          digitGroupSeparator="."
           value={total}
-          onValueChange={(e) => setTotal(e.value)}
-          prefix={'R$'}
-          thousandSeparator={'.'}
-          decimalScale={2}
-          fixedDecimalScale={true}
-          decimalSeparator={','}
-          customInput={TextField}
-          isNumericString={true}
         />
-        <TextField
-          id="standard-basic"
-          label="Observações"
-          value={observacoes}
-          onChange={(e) => setObservacoes(e.target.value)}
-        />
+        <Form>
+          <TextField
+            label="Observações"
+            multiline
+            rows={4}
+            value={observacoes}
+            onChange={(e) => setObservacoes(e.target.value)}
+          />
+        </Form>
+        {error && <p>{error}</p>}
         <Button
           variant="contained"
           color="primary"
@@ -208,7 +268,6 @@ const VendaForm = (props) => {
           Salvar
         </Button>
       </Form>
-      {error ? <p>{error}</p> : null}
     </>
   );
 };

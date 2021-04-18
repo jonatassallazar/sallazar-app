@@ -12,16 +12,15 @@ const GlobalStyle = createGlobalStyle`
   }
   html, body {
     min-height: 100vh;
-    min-width: 100vw;
+    max-width: 100vw;
   }
   html {
     font-size: 16px;
   }
 
   #root {
-    height: 100%;
-    position: fixed;
-    width: 100%;
+    min-height: 100%;
+    max-width: 100%;
 	}
 
 `;

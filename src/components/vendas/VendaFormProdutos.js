@@ -6,7 +6,8 @@ import {
   TextField,
   FormControl,
 } from '@material-ui/core';
-import CurrencyFormat from 'react-currency-format';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import Form from '../forms/Form';
 
 const VendaFormProdutos = (props) => {
   const handleSelectProduto = (e) => {
@@ -32,9 +33,9 @@ const VendaFormProdutos = (props) => {
     props.setItensVendidos(newArray);
   };
 
-  const handleQuantidade = (e) => {
+  const handleQuantidade = (e, value) => {
     const indexMaster = props.index;
-    const newValue = e.value;
+    const newValue = value;
 
     const newArray = props.itensVendidos?.map((i, index) => {
       if (index !== indexMaster) {
@@ -50,9 +51,9 @@ const VendaFormProdutos = (props) => {
     props.setItensVendidos(newArray);
   };
 
-  const handleValorVenda = (e) => {
+  const handleValorVenda = (e, value) => {
     const indexMaster = props.index;
-    const newValue = e.value;
+    const newValue = value;
 
     const newArray = props.itensVendidos?.map((i, index) => {
       if (index !== indexMaster) {
@@ -69,8 +70,8 @@ const VendaFormProdutos = (props) => {
   };
 
   return (
-    <>
-      <FormControl>
+    <Form.Item>
+      <FormControl className="form-item-g">
         <InputLabel id="demo-simple-select-label">Produto</InputLabel>
         <Select
           autoWidth
@@ -78,54 +79,51 @@ const VendaFormProdutos = (props) => {
           onChange={handleSelectProduto}
         >
           {props.produtos?.map((i) => (
-            <MenuItem value={i.id}>{i.nome}</MenuItem>
+            <MenuItem key={i.id} value={i.id}>{i.nome}</MenuItem>
           ))}
         </Select>
       </FormControl>
       <TextField
-        id="standard-basic"
+        className="form-item-p"
         label="Unidade"
         value={props.itensVendidos[props.index].unidade}
         disabled={true}
         InputLabelProps={{ shrink: true }}
       />
-      <CurrencyFormat
-        id="standard-basic"
+      <CurrencyTextField
+        className="form-item-p"
         label="Quantidade"
+        variant="standard"
+        currencySymbol="R$"
+        outputFormat="string"
+        decimalCharacter=","
+        digitGroupSeparator="."
         value={props.itensVendidos[props.index].quantidade}
-        onValueChange={handleQuantidade}
-        thousandSeparator={'.'}
-        decimalScale={3}
-        decimalSeparator={','}
-        customInput={TextField}
-        isNumericString={true}
+        onChange={handleQuantidade}
       />
-      <CurrencyFormat
-        id="standard-basic"
+      <CurrencyTextField
+        className="form-item-p"
         label="Valor de Venda"
+        variant="standard"
+        currencySymbol="R$"
+        outputFormat="string"
+        decimalCharacter=","
+        digitGroupSeparator="."
         value={props.itensVendidos[props.index].valorVenda}
-        onValueChange={handleValorVenda}
-        prefix={'R$'}
-        thousandSeparator={'.'}
-        decimalScale={2}
-        fixedDecimalScale={true}
-        decimalSeparator={','}
-        customInput={TextField}
-        isNumericString={true}
+        onChange={handleValorVenda}
       />
-      <CurrencyFormat
-        id="standard-basic"
+      <CurrencyTextField
+        className="form-item-p"
         label="Valor Total"
-        value={props.itensVendidos[props.index].valorTotal}
         disabled={true}
-        prefix={'R$'}
-        fixedDecimalScale={true}
-        thousandSeparator={'.'}
-        decimalScale={2}
-        decimalSeparator={','}
-        customInput={TextField}
+        variant="standard"
+        currencySymbol="R$"
+        outputFormat="string"
+        decimalCharacter=","
+        digitGroupSeparator="."
+        value={props.itensVendidos[props.index].valorTotal}
       />
-    </>
+    </Form.Item>
   );
 };
 

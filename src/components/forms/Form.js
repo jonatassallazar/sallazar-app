@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -8,25 +8,37 @@ const Form = styled.div`
   justify-content: space-between;
 
   > div {
-    margin: 1.2rem 0.8rem !important;
+    margin: 1rem 0.8rem;
     flex-grow: 1;
   }
 
   .form-item-p {
-    flex-grow: 1;
+    flex: 1;
   }
 
   .form-item-m {
-    flex-grow: 3;
+    flex: 2;
   }
 
   .form-item-g {
-    flex-grow: 5;
+    flex: 3;
   }
 
   .form-item-gg {
-    flex-grow: 10;
+    flex: 4;
   }
 `;
+
+Form.List = styled.div`
+  border-radius: 8px;
+  border-top: #3f51b5 solid 4px;
+  border-bottom: #3f51b5 solid 4px;
+
+  p {
+    text-align: center;
+  }
+`;
+
+Form.Item = styled(Form)``;
 
 export default Form;
