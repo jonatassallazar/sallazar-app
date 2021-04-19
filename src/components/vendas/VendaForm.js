@@ -28,8 +28,8 @@ const VendaForm = (props) => {
   const dispatch = useDispatch();
 
   //Parte base da venda
-  const [numero, setNumero] = useState(props.venda?.numero || '');
-  const [status, setStatus] = useState(props.venda?.status || ['Ativo']);
+  const [numero, setNumero] = useState(props.venda?.numero || props.numero);
+  const [status, setStatus] = useState(props.venda?.status || 'Em Andamento');
   const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
   const [cliente, setCliente] = useState(props.venda?.cliente || '');
 
@@ -50,6 +50,10 @@ const VendaForm = (props) => {
   //States básicos
   const [createdAt] = useState(props.venda?.createdAt || new Date());
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setNumero(props.numero);
+  }, [props.vendas, props.numero]);
 
   //Get recent data
   useEffect(() => {
@@ -76,7 +80,6 @@ const VendaForm = (props) => {
   }, [subTotal, desconto, frete]);
 
   const clientes = useSelector((state) => state.clientes);
-
   const produtos = useSelector((state) => state.produtos);
 
   const handleFrete = (e, value) => {
@@ -95,9 +98,11 @@ const VendaForm = (props) => {
 
   const handleAddNewItem = () => {
     if (itensVendidos[itensVendidos.length - 1].id === '') {
+      setError('Selecione um produto, para adicionar um novo item vendido.');
       return;
     }
 
+    setError('');
     setItensVendidos([...itensVendidos, baseItem]);
   };
 
@@ -114,7 +119,7 @@ const VendaForm = (props) => {
         numero,
         cliente,
         itensVendidos,
-        dataVenda,
+        dataVenda: dataVenda.valueOf(),
         status,
         observacoes,
         subTotal,
@@ -129,71 +134,76 @@ const VendaForm = (props) => {
   return (
     <>
       <Form onSubmit={onSubmit} className="general-form">
-        <TextField
-          className="form-item-p"
-          label="Número"
-          required={true}
-          value={numero}
-          onChange={(e) => setNumero(e.target.value)}
-          disabled={true}
-        />
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Status</InputLabel>
-          <Select
-            className="form-item-m"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <MenuItem value="Ativo">Ativo</MenuItem>
-            <MenuItem value="Inativo">Inativo</MenuItem>
-          </Select>
-        </FormControl>
-        <KeyboardDatePicker
-          className="form-item-p"
-          disableToolbar
-          variant="inline"
-          format="DD/MM/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Data da Venda"
-          value={dataVenda}
-          onChange={(e) => setDataVenda(e)}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
-          <Select
-            className="form-item-m"
-            value={cliente}
-            onChange={(e) => setCliente(e.target.value)}
-          >
-            {clientes?.map((cliente) => (
-              <MenuItem key={cliente.id} value={cliente.id}>
-                {cliente.nome}
-              </MenuItem>
+        <Form.Division>
+          <TextField
+            className="form-item-p"
+            label="Número da Venda"
+            required={true}
+            value={numero}
+            onChange={(e) => setNumero(e.target.value)}
+            disabled={true}
+          />
+          <FormControl>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+              className="form-item-m"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <MenuItem value="Em Andamento">Em Andamento</MenuItem>
+              <MenuItem value="Orçamento">Orçamento</MenuItem>
+              <MenuItem value="À Receber">À Receber</MenuItem>
+              <MenuItem value="Concluída">Concluída</MenuItem>
+            </Select>
+          </FormControl>
+          <KeyboardDatePicker
+            className="form-item-p"
+            disableToolbar
+            variant="inline"
+            format="DD/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="Data da Venda"
+            value={dataVenda}
+            onChange={(e) => setDataVenda(e)}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <FormControl>
+            <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
+            <Select
+              className="form-item-m"
+              value={cliente}
+              onChange={(e) => setCliente(e.target.value)}
+            >
+              {clientes?.map((cliente) => (
+                <MenuItem key={cliente.id} value={cliente.id}>
+                  {cliente.nome}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Form.Division>
+        <Form.Division>
+          <Form.List>
+            <p>Itens Vendidos</p>
+            {/* Itens purchased listing */}
+            {itensVendidos?.map((item, index) => (
+              <VendaFormProdutos
+                key={item.id}
+                produtos={produtos}
+                index={index}
+                itensVendidos={itensVendidos}
+                setItensVendidos={setItensVendidos}
+              />
             ))}
-          </Select>
-        </FormControl>
-        <Form.List>
-          <p>Itens Vendidos</p>
-          {/* Itens purchased listing */}
-          {itensVendidos?.map((item, index) => (
-            <VendaFormProdutos
-              key={item.id}
-              produtos={produtos}
-              index={index}
-              itensVendidos={itensVendidos}
-              setItensVendidos={setItensVendidos}
-            />
-          ))}
-        </Form.List>
-
-        <Form>
+          </Form.List>
+        </Form.Division>
+        <Form.Division>
           <Button
             className="form-item-p"
             variant="contained"
@@ -203,53 +213,54 @@ const VendaForm = (props) => {
           >
             Item
           </Button>
-        </Form>
-
-        <CurrencyTextField
-          className="form-item-p"
-          label="SubTotal"
-          disabled={true}
-          variant="standard"
-          currencySymbol="R$"
-          outputFormat="string"
-          decimalCharacter=","
-          digitGroupSeparator="."
-          value={subTotal}
-        />
-        <CurrencyTextField
-          className="form-item-p"
-          label="Frete"
-          variant="standard"
-          currencySymbol="R$"
-          outputFormat="string"
-          decimalCharacter=","
-          digitGroupSeparator="."
-          value={frete}
-          onChange={handleFrete}
-        />
-        <CurrencyTextField
-          className="form-item-p"
-          label="Desconto"
-          variant="standard"
-          currencySymbol="R$"
-          outputFormat="string"
-          decimalCharacter=","
-          digitGroupSeparator="."
-          value={desconto}
-          onChange={handleDesconto}
-        />
-        <CurrencyTextField
-          className="form-item-p"
-          label="Total"
-          disabled={true}
-          variant="standard"
-          currencySymbol="R$"
-          outputFormat="string"
-          decimalCharacter=","
-          digitGroupSeparator="."
-          value={total}
-        />
-        <Form>
+        </Form.Division>
+        <Form.Division>
+          <CurrencyTextField
+            className="form-item-p"
+            label="SubTotal"
+            disabled={true}
+            variant="standard"
+            currencySymbol="R$"
+            outputFormat="string"
+            decimalCharacter=","
+            digitGroupSeparator="."
+            value={subTotal}
+          />
+          <CurrencyTextField
+            className="form-item-p"
+            label="Frete"
+            variant="standard"
+            currencySymbol="R$"
+            outputFormat="string"
+            decimalCharacter=","
+            digitGroupSeparator="."
+            value={frete}
+            onChange={handleFrete}
+          />
+          <CurrencyTextField
+            className="form-item-p"
+            label="Desconto"
+            variant="standard"
+            currencySymbol="R$"
+            outputFormat="string"
+            decimalCharacter=","
+            digitGroupSeparator="."
+            value={desconto}
+            onChange={handleDesconto}
+          />
+          <CurrencyTextField
+            className="form-item-p"
+            label="Total"
+            disabled={true}
+            variant="standard"
+            currencySymbol="R$"
+            outputFormat="string"
+            decimalCharacter=","
+            digitGroupSeparator="."
+            value={total}
+          />
+        </Form.Division>
+        <Form.Division>
           <TextField
             label="Observações"
             multiline
@@ -257,8 +268,8 @@ const VendaForm = (props) => {
             value={observacoes}
             onChange={(e) => setObservacoes(e.target.value)}
           />
-        </Form>
-        {error && <p>{error}</p>}
+        </Form.Division>
+        {error && <Form.Error>{error}</Form.Error>}
         <Button
           variant="contained"
           color="primary"

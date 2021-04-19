@@ -13,7 +13,7 @@ export const startAddVenda = (vendaData = {}) => {
     const {
       numero = '',
       cliente = '',
-      produtos = [],
+      itensVendidos = [],
       subTotal = '',
       total = '',
       frete = '',
@@ -25,7 +25,7 @@ export const startAddVenda = (vendaData = {}) => {
     const venda = {
       numero,
       cliente,
-      produtos,
+      itensVendidos,
       subTotal,
       total,
       frete,

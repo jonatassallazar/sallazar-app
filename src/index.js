@@ -6,6 +6,7 @@ import { firebase } from './database/firebase';
 import { login, logout } from './actions/auth';
 import { Provider } from 'react-redux';
 import configureStore from './store/store';
+import LoadingPage from './components/LoadingPage';
 
 const store = configureStore();
 const jsx = (
@@ -22,7 +23,7 @@ const renderApp = () => {
   }
 };
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById('root'));
+ReactDOM.render(<LoadingPage />, document.getElementById('root'));
 
 firebase.auth().onIdTokenChanged((user) => {
   if (user) {

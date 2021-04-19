@@ -33,9 +33,13 @@ const VendaFormProdutos = (props) => {
     props.setItensVendidos(newArray);
   };
 
-  const handleQuantidade = (e, value) => {
+  const handleQuantidade = (e) => {
     const indexMaster = props.index;
-    const newValue = value;
+    const newValue = e.target.value;
+
+    if (newValue < 0) {
+      return;
+    }
 
     const newArray = props.itensVendidos?.map((i, index) => {
       if (index !== indexMaster) {
@@ -90,14 +94,12 @@ const VendaFormProdutos = (props) => {
         disabled={true}
         InputLabelProps={{ shrink: true }}
       />
-      <CurrencyTextField
+      <TextField
         className="form-item-p"
         label="Quantidade"
         variant="standard"
-        currencySymbol="R$"
-        outputFormat="string"
-        decimalCharacter=","
-        digitGroupSeparator="."
+        type="number"
+        InputLabelProps={{ shrink: true }}
         value={props.itensVendidos[props.index].quantidade}
         onChange={handleQuantidade}
       />
