@@ -52,7 +52,10 @@ const VendaForm = (props) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    setNumero(props.numero);
+    if (!props.venda?.numero) {
+      setNumero(props.numero);
+    }
+    // eslint-disable-next-line
   }, [props.vendas, props.numero]);
 
   //Get recent data
