@@ -1,9 +1,11 @@
+import moment from "moment";
+
 const statePadraoFiltroVendas = {
   cliente: '',
-  dataVendaInicial: null,
-  dataVendaFinal: null,
+  dataVendaInicial: moment().subtract(90, 'days').valueOf(),
+  dataVendaFinal: moment().valueOf(),
   status: 'todos',
-  sortBy: 'createdatasc',
+  sortBy: 'numerodec',
 };
 
 export default (state = statePadraoFiltroVendas, action) => {
@@ -13,15 +15,15 @@ export default (state = statePadraoFiltroVendas, action) => {
         ...state,
         cliente: action.cliente,
       };
-    case 'SORT_BY_NOME_ASC':
+    case 'SORT_BY_NUMERO_ASC':
       return {
         ...state,
-        sortBy: 'nomeasc',
+        sortBy: 'numeroasc',
       };
-    case 'SORT_BY_NOME_DEC':
+    case 'SORT_BY_NUMEO_DEC':
       return {
         ...state,
-        sortBy: 'nomedec',
+        sortBy: 'numerodec',
       };
     case 'SORT_BY_VALORTOTAL_ASC':
       return {

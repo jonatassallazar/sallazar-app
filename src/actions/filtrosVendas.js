@@ -18,12 +18,12 @@ export const setStatusFiltro = (status = '') => ({
   status,
 });
 
-export const sortByNomeAsc = () => ({
-  type: 'SORT_BY_NOME_ASC',
+export const sortByNumeroAsc = () => ({
+  type: 'SORT_BY_NUMERO_ASC',
 });
 
-export const sortByNomeDec = () => ({
-  type: 'SORT_BY_NOME_DEC',
+export const sortByNumeroDec = () => ({
+  type: 'SORT_BY_NUMERO_DEC',
 });
 
 export const sortByValorTotalAsc = () => ({

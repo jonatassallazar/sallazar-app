@@ -12,7 +12,7 @@ export const startAddVenda = (vendaData = {}) => {
     const uid = getState().auth.uid;
     const {
       numero = '',
-      cliente = '',
+      cliente = {},
       itensVendidos = [],
       subTotal = '',
       total = '',

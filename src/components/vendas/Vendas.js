@@ -10,11 +10,12 @@ import { startSetVendas } from '../../actions/vendas';
 import ListaItens from '../listas/ListaItens';
 
 const Vendas = () => {
-  const selection = useSelector((state) =>
+  const dispatch = useDispatch();
+  const vendas = useSelector((state) =>
     selectVendas(state.vendas, state.filtrosVendas)
   );
-  const dispatch = useDispatch();
 
+  console.log(vendas);
   useEffect(() => {
     dispatch(startSetVendas());
     // eslint-disable-next-line
@@ -34,7 +35,7 @@ const Vendas = () => {
       </Button>
       <FiltroVenda />
       <ListaItens>
-        {selection.map((venda) => (
+        {vendas.map((venda) => (
           <VendaItem key={venda.id} {...venda} />
         ))}
       </ListaItens>

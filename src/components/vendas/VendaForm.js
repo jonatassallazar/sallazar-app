@@ -31,7 +31,7 @@ const VendaForm = (props) => {
   const [numero, setNumero] = useState(props.venda?.numero || props.numero);
   const [status, setStatus] = useState(props.venda?.status || 'Em Andamento');
   const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
-  const [cliente, setCliente] = useState(props.venda?.cliente || '');
+  const [cliente, setCliente] = useState(props.venda?.cliente || {id: ''});
 
   //Itens vendidos
   const [itensVendidos, setItensVendidos] = useState(
@@ -180,8 +180,10 @@ const VendaForm = (props) => {
             <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
             <Select
               className="form-item-m"
-              value={cliente}
-              onChange={(e) => setCliente(e.target.value)}
+              value={cliente?.id}
+              onChange={(e) => {
+                const clienteSelecionado = clientes.find((cliente) => cliente.id === e.target.value)
+                setCliente({id: clienteSelecionado.id, nome:clienteSelecionado.nome})}}
             >
               {clientes?.map((cliente) => (
                 <MenuItem key={cliente.id} value={cliente.id}>

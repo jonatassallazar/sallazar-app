@@ -10,23 +10,23 @@ export default (
         dataVendaInicial < venda.dataVenda ||
         dataVendaFinal > venda.dataVenda
       ) {
-        dataVendaMatch = false;
-      } else {
         dataVendaMatch = true;
+      } else {
+        dataVendaMatch = false;
       }
 
-      const clienteMatch = venda.cliente
+      const clienteMatch = venda.cliente.nome
         .toLowerCase()
         .includes(cliente.toLowerCase());
-      const statusMatch = venda.status
-        .toLowerCase()
-        .includes(status.toLowerCase());
 
-      let statusMatchText;
-
-      if (statusMatch === 'todos') {
-        statusMatchText = '';
-      } else {
+        let statusMatchText;
+        
+        if (status === 'todos') {
+          statusMatchText = true;
+        } else {
+        const statusMatch = venda.status
+          .toLowerCase()
+          .includes(status.toLowerCase());
         statusMatchText = statusMatch;
       }
 
@@ -35,6 +35,10 @@ export default (
     })
     .sort((a, b) => {
       switch (sortBy) {
+        case 'numeroasc':
+          return a.numero > b.numero ? 1 : -1;
+        case 'numerodec':
+          return a.numero > b.numero ? 1 : -1;
         case 'dataVendaasc':
           return a.dataVenda > b.dataVenda ? 1 : -1;
         case 'dataVendadec':
