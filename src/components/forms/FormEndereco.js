@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import cep from 'cep-promise';
-import CurrencyFormat from 'react-currency-format';
+import InputMask from 'react-input-mask';
+import Form from './Form';
 
-let CEPerror = false;
+//let CEPerror = false;
 
 const FormEndereco = ({
   CEP,
@@ -21,14 +22,7 @@ const FormEndereco = ({
   estado,
   setEstado,
 }) => {
-  const [CEPErrorText, setCEPErrorText] = useState(undefined);
-
-  useEffect(() => {
-    return () => {
-      CEPerror = false;
-    };
-    // eslint-disable-next-line
-  }, []);
+  //const [CEPErrorText, setCEPErrorText] = useState(undefined);
 
   const gerarEndereco = (event) => {
     if (event.length === 8) {
@@ -38,36 +32,34 @@ const FormEndereco = ({
           setBairro(valor.neighborhood);
           setCidade(valor.city);
           setEstado(valor.state);
-          CEPerror = false;
-          setCEPErrorText(undefined);
         })
         .catch((e) => {
-          CEPerror = true;
-          setCEPErrorText('CEP Inválido');
         });
     }
   };
 
+  const handleCEP = (e) => {
+    const newValue = e.target.value;
+    const rawValue = newValue.replace(/(-)/, "");
+    
+    setCEP(newValue);
+    gerarEndereco(rawValue);
+  }
+
   return (
     <>
-      <CurrencyFormat
-        id="standard-basic"
+    <Form.Division>
+      <InputMask
         label="CEP"
         value={CEP}
-        onValueChange={(e) => {
-          setCEP(e.value);
-          gerarEndereco(e.value);
-        }}
-        customInput={TextField}
-        isNumericString={true}
-        format="##.###-###"
-        mask="_"
-        maxLength="8"
-        error={CEPerror}
-        helperText={CEPErrorText}
-      />
+        onChange={handleCEP}
+        mask="99999-999"
+        maskChar=""
+      >
+        {(inputProps) => <TextField {...inputProps} />}
+      </InputMask>
       <TextField
-        className="form-item-gg"
+        className="form-item-g"
         id="standard-basic endereco"
         label="Endereço"
         value={endereco}
@@ -93,7 +85,9 @@ const FormEndereco = ({
         onChange={(e) => {
           setComplemento(e.target.value);
         }}
-      />
+        />
+        </Form.Division>
+        <Form.Division>
       <TextField
         className="form-item-g"
         id="standard-basic bairro"
@@ -103,7 +97,7 @@ const FormEndereco = ({
           setBairro(e.target.value);
         }}
         InputLabelProps={{ shrink: true }}
-      />
+        />
       <TextField
         className="form-item-g"
         id="standard-basic cidade"
@@ -124,7 +118,8 @@ const FormEndereco = ({
           setEstado(e.target.value);
         }}
         InputLabelProps={{ shrink: true }}
-      />
+        />
+        </Form.Division>
     </>
   );
 };

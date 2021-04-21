@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startEditCliente, startRemoveCliente } from '../../actions/clientes';
+import { startEditCliente, startRemoveCliente, startSetClientes } from '../../actions/clientes';
 import ClienteForm from './ClienteForm';
-import { startSetClientes } from '../../actions/clientes';
 
 const EditarCliente = (props) => {
   const dispatch = useDispatch();
@@ -21,7 +20,7 @@ const EditarCliente = (props) => {
   const onSubmit = (data) => {
     dispatch(startEditCliente(cliente.id, data)).then(() =>
       props.history.push(`/clientes`)
-    );
+    ).catch((err) => console.log(err))
   };
 
   const handleDelete = () => {

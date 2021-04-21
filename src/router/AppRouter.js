@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Router } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import {
   Dashboard,
   Clientes,
@@ -25,7 +25,7 @@ import GlobalStyle from '../GlobalStyle';
 // pick a date util library
 import MomentUtils from '@date-io/moment';
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 
 const AppRouter = () => (
   <Router history={history}>
