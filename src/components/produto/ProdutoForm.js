@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Form from '../forms/Form';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import { Save, Delete } from '@material-ui/icons';
-import CurrencyFormat from 'react-currency-format';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 const ProdutoForm = (props) => {
   const [nome, setNome] = useState(props.produto?.nome || '');
@@ -38,70 +38,69 @@ const ProdutoForm = (props) => {
   };
 
   return (
-    <>
-      <Form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
+      <Form.Division>
         <Select value={status} onChange={(e) => setStatus(e.target.value)}>
           <MenuItem value="Ativo">Ativo</MenuItem>
           <MenuItem value="Inativo">Inativo</MenuItem>
         </Select>
         <TextField
-          id="standard-basic"
+          className="form-item-g"
           label="Nome do Produto"
           required={true}
           value={nome}
           onChange={(e) => setNome(e.target.value)}
         />
         <TextField
-          id="standard-basic"
-          label="Unidade"
+          className="form-item-p"
+          label="Unidade (Kg, Un, Pct...)"
           value={unidade}
           onChange={(e) => setUnidade(e.target.value)}
         />
-        <CurrencyFormat
-          id="standard-basic"
-          label="Peso"
+      </Form.Division>
+      <Form.Division>
+        <CurrencyTextField
+          variant="standard"
+          currencySymbol="g"
+          outputFormat="string"
+          decimalCharacter=","
+          digitGroupSeparator="."
+          decimalPlaces="0"
+          className="form-item-m"
+          label="Peso em gramas"
           value={peso}
-          onValueChange={(e) => setPeso(e.value)}
-          suffix={'g'}
-          thousandSeparator={'.'}
-          decimalScale={2}
-          decimalSeparator={','}
-          customInput={TextField}
-          isNumericString={true}
+          onChange={(e, value) => setPeso(value)}
         />
-        <CurrencyFormat
-          id="standard-basic"
+        <CurrencyTextField
+          className="form-item-m"
+          variant="standard"
           label="Preço de Custo"
           value={valorCusto}
-          onValueChange={(e) => setValorCusto(e.value)}
-          prefix={'R$'}
-          thousandSeparator={'.'}
-          decimalScale={2}
-          fixedDecimalScale={true}
-          decimalSeparator={','}
-          customInput={TextField}
-          isNumericString={true}
+          onChange={(e, value) => setValorCusto(value)}
+          currencySymbol="R$"
+          outputFormat="string"
+          decimalCharacter=","
+          digitGroupSeparator="."
         />
-        <CurrencyFormat
-          id="standard-basic"
+        <CurrencyTextField
+          className="form-item-m"
+          variant="standard"
           label="Valor de Venda"
           value={valorVenda}
-          onValueChange={(e) => setValorVenda(e.value)}
-          prefix={'R$'}
-          thousandSeparator={'.'}
-          decimalScale={2}
-          fixedDecimalScale={true}
-          decimalSeparator={','}
-          customInput={TextField}
-          isNumericString={true}
+          onChange={(e, value) => setValorVenda(value)}
+          currencySymbol="R$"
+          outputFormat="string"
+          decimalCharacter=","
+          digitGroupSeparator="."
         />
         <TextField
-          id="standard-basic"
+          className="form-item-g"
           label="Fornecedor"
           value={fornecedor}
           onChange={(e) => setFornecedor(e.target.value)}
         />
-      </Form>
+      </Form.Division>
+      {error && <p>{error}</p>}
       <Button
         variant="contained"
         color="primary"
@@ -120,8 +119,7 @@ const ProdutoForm = (props) => {
           Remove
         </Button>
       )}
-      {error ? <p>{error}</p> : null}
-    </>
+    </Form>
   );
 };
 
