@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   html, body {
-    min-height: 100vh;
+    height: 100vh;
     max-width: 100vw;
   }
   html {
@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #root {
-    min-height: 100%;
+    height: 100%;
     max-width: 100%;
 	}
 

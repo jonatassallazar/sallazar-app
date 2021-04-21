@@ -8,6 +8,7 @@ const MenuLateral = styled.div`
   display: flex;
   position: relative;
   width: 200px;
+  min-width: 200px;
   min-height: 100%;
   flex-direction: column;
   background-color: #f9f9f9;

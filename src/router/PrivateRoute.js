@@ -8,13 +8,14 @@ import styled from 'styled-components';
 const Conteudo = styled.div`
   display: flex;
   flex-direction: row;
-  min-height: 100%;
+  min-height: calc(100% - 80px);
   left: 0;
   right: 0;
 `;
 
 Conteudo.Selecionado = styled.div`
   margin: 2rem;
+  width: calc(100% - 200px);
 `;
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
