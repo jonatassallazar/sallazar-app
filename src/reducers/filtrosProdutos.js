@@ -1,7 +1,7 @@
 const statePadraoFiltroProdutos = {
   nome: '',
   fornecedor: '',
-  status: '',
+  status: 'todos',
   sortBy: 'createdatasc',
 };
 

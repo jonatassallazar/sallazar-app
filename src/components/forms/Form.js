@@ -26,6 +26,7 @@ Form.Division = styled.div`
   > div {
     flex: 1;
     margin: 1rem 0.8rem;
+    justify-content: flex-end;
   }
 
   .form-item-p {
@@ -52,6 +53,24 @@ Form.Error = styled.span`
   text-align: center;
   color: #e02828;
   font-variant-caps: all-petite-caps;
+  font-size: 1.2rem;
+`;
+
+Form.Filtro = styled.div`
+  border: #3f51b5 solid 1px;
+  width: 100%;
+  border-radius: 8px;
+  margin: 2rem auto;
+`;
+
+Form.Filtro.Title = styled.p`
+  margin: 0 0 -28px 0;
+  position: relative;
+  top: -13px;
+  left: 50px;
+  background-color: white;
+  width: 70px;
+  text-align: center;
   font-size: 1.2rem;
 `;
 

@@ -19,11 +19,11 @@ export default (
         .toLowerCase()
         .includes(cliente.toLowerCase());
 
-        let statusMatchText;
-        
-        if (status === 'todos') {
-          statusMatchText = true;
-        } else {
+      let statusMatchText;
+
+      if (status === 'todos') {
+        statusMatchText = true;
+      } else {
         const statusMatch = venda.status
           .toLowerCase()
           .includes(status.toLowerCase());

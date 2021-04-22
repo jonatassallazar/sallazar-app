@@ -8,11 +8,19 @@ export default (
       const fornecedorMatch = produto.fornecedor
         .toLowerCase()
         .includes(fornecedor.toLowerCase());
-      const statusMatch = produto.status
-        .toLowerCase()
-        .includes(status.toLowerCase());
+      
+        let statusMatchText;
 
-      return nomeMatch && fornecedorMatch && statusMatch;
+      if (status === 'todos') {
+        statusMatchText = true;
+      } else {
+        const statusMatch = produto.status
+          .toLowerCase()
+          .includes(status.toLowerCase());
+        statusMatchText = statusMatch;
+      }
+
+      return nomeMatch && fornecedorMatch && statusMatchText;
       // eslint-disable-next-line
     })
     .sort((a, b) => {
