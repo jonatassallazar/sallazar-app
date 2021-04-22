@@ -24,7 +24,6 @@ const EditarVenda = (props) => {
   console.log(venda);
 
   const onSubmit = (data) => {
-    console.log(venda);
     dispatch(startEditVenda(venda.id, data)).then(() =>
       props.history.push(`/vendas`)
     );
