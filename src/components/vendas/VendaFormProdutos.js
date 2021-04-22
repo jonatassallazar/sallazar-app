@@ -1,20 +1,12 @@
 import React from 'react';
-import {
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  FormControl,
-} from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import Form from '../forms/Form';
 
 const VendaFormProdutos = (props) => {
-  const handleSelectProduto = (e) => {
+  const handleSelectProduto = (e, newValue) => {
     const indexMaster = props.index;
-    const newID = e.target.value;
-
-    const produtoSelecionado = props.produtos?.find((i) => i.id === newID);
 
     const newArray = props.itensVendidos?.map((i, index) => {
       if (index !== indexMaster) {
@@ -22,11 +14,12 @@ const VendaFormProdutos = (props) => {
       }
       return {
         ...i,
-        id: newID,
-        unidade: produtoSelecionado?.unidade,
+        id: newValue.id,
+        nome: newValue.nome,
+        unidade: newValue.unidade,
         quantidade: 1,
-        valorVenda: produtoSelecionado?.valorVenda,
-        valorTotal: produtoSelecionado?.valorVenda * 1,
+        valorVenda: newValue.valorVenda,
+        valorTotal: newValue.valorVenda * 1,
       };
     });
 
@@ -75,18 +68,16 @@ const VendaFormProdutos = (props) => {
 
   return (
     <Form.Item>
-      <FormControl className="form-item-g">
-        <InputLabel id="demo-simple-select-label">Produto</InputLabel>
-        <Select
-          autoWidth
-          value={props.itensVendidos[props.index].id}
-          onChange={handleSelectProduto}
-        >
-          {props.produtos?.map((i) => (
-            <MenuItem key={i.id} value={i.id}>{i.nome}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <Autocomplete
+        className="form-item-g"
+        options={props.produtos}
+        getOptionLabel={(option) => option.nome}
+        value={props.itensVendidos[props.index]}
+        onChange={handleSelectProduto}
+        renderInput={(inputProps) => (
+          <TextField label="Selecione o Produto" {...inputProps} />
+        )}
+      />
       <TextField
         className="form-item-p"
         label="Unidade"

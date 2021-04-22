@@ -12,6 +12,7 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Save, Add } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
@@ -31,7 +32,7 @@ const VendaForm = (props) => {
   const [numero, setNumero] = useState(props.venda?.numero || props.numero);
   const [status, setStatus] = useState(props.venda?.status || 'Em Andamento');
   const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
-  const [cliente, setCliente] = useState(props.venda?.cliente || {id: ''});
+  const [cliente, setCliente] = useState(props.venda?.cliente || { id: '', nome: '' });
 
   //Itens vendidos
   const [itensVendidos, setItensVendidos] = useState(
@@ -176,22 +177,21 @@ const VendaForm = (props) => {
               shrink: true,
             }}
           />
-          <FormControl>
-            <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
-            <Select
-              className="form-item-m"
-              value={cliente?.id}
-              onChange={(e) => {
-                const clienteSelecionado = clientes.find((cliente) => cliente.id === e.target.value)
-                setCliente({id: clienteSelecionado.id, nome:clienteSelecionado.nome})}}
-            >
-              {clientes?.map((cliente) => (
-                <MenuItem key={cliente.id} value={cliente.id}>
-                  {cliente.nome}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Autocomplete
+            className="form-item-m"
+            options={clientes}
+            getOptionLabel={(option) => option.nome}
+            value={cliente}
+            onChange={(e, newValue) => {
+              setCliente({
+                id: newValue.id,
+                nome: newValue.nome,
+              });
+            }}
+            renderInput={(inputProps) => (
+              <TextField label="Selecione o Cliente" {...inputProps} />
+            )}
+          />
         </Form.Division>
         <Form.Division>
           <Form.List>
