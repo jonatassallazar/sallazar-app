@@ -5,7 +5,6 @@ import { startSetClientes } from '../../actions/clientes';
 import { startSetProdutos } from '../../actions/produtos';
 import VendaFormProdutos from './VendaFormProdutos';
 import {
-  Button,
   TextField,
   Select,
   MenuItem,
@@ -13,9 +12,10 @@ import {
   InputLabel,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { Save, Add } from '@material-ui/icons';
+import { Save, Add, Delete } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import { StyledButton } from '../forms/elements';
 
 const baseItem = {
   id: '',
@@ -32,7 +32,9 @@ const VendaForm = (props) => {
   const [numero, setNumero] = useState(props.venda?.numero || props.numero);
   const [status, setStatus] = useState(props.venda?.status || 'Em Andamento');
   const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
-  const [cliente, setCliente] = useState(props.venda?.cliente || { id: '', nome: '' });
+  const [cliente, setCliente] = useState(
+    props.venda?.cliente || { id: '', nome: '' }
+  );
 
   //Itens vendidos
   const [itensVendidos, setItensVendidos] = useState(
@@ -209,7 +211,7 @@ const VendaForm = (props) => {
           </Form.List>
         </Form.Division>
         <Form.Division>
-          <Button
+          <StyledButton
             className="form-item-p"
             variant="contained"
             color="primary"
@@ -217,7 +219,7 @@ const VendaForm = (props) => {
             onClick={handleAddNewItem}
           >
             Item
-          </Button>
+          </StyledButton>
         </Form.Division>
         <Form.Division>
           <CurrencyTextField
@@ -275,14 +277,26 @@ const VendaForm = (props) => {
           />
         </Form.Division>
         {error && <Form.Error>{error}</Form.Error>}
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          startIcon={<Save />}
-        >
-          Salvar
-        </Button>
+        <Form.Actions>
+          <StyledButton
+            variant="contained"
+            color="primary"
+            type="submit"
+            startIcon={<Save />}
+          >
+            Salvar
+          </StyledButton>
+          {props?.handleDelete && (
+            <StyledButton.Secundary
+              variant="contained"
+              color="secondary"
+              startIcon={<Delete />}
+              onClick={props.handleDelete}
+            >
+              Remove
+            </StyledButton.Secundary>
+          )}
+        </Form.Actions>
       </Form>
     </>
   );

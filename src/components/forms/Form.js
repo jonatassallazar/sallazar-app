@@ -8,8 +8,8 @@ const Form = styled.form`
 
 Form.List = styled.div`
   border-radius: 8px;
-  border-top: #3f51b5 solid 4px;
-  border-bottom: #3f51b5 solid 4px;
+  border-top: ${({ theme }) => theme.colors.pLight} solid 4px;
+  border-bottom: ${({ theme }) => theme.colors.pLight} solid 4px;
 
   p {
     text-align: center;
@@ -48,6 +48,15 @@ Form.Division = styled.div`
 
 Form.Item = styled(Form.Division)``;
 
+Form.Actions = styled.div`
+  width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin: ${({ theme }) => theme.spacing.large} 0;
+`;
+
 Form.Error = styled.span`
   width: 100%;
   text-align: center;
@@ -57,9 +66,9 @@ Form.Error = styled.span`
 `;
 
 Form.Filtro = styled.div`
-  border: #3f51b5 solid 1px;
+  border: ${({ theme }) => theme.colors.primary} solid 2px;
   width: 100%;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.boxes.borderRadius};
   margin: 2rem auto;
 `;
 

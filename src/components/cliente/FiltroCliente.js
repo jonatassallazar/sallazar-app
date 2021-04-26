@@ -15,6 +15,7 @@ import {
   FormControl,
   FormHelperText,
 } from '@material-ui/core';
+import { StyledTextField } from '../forms/elements';
 import InputMask from 'react-input-mask';
 
 const FiltroCliente = (props) => {
@@ -28,7 +29,7 @@ const FiltroCliente = (props) => {
       <Form.Filtro>
         <Form.Filtro.Title>Filtrar</Form.Filtro.Title>
         <Form.Division>
-          <TextField
+          <StyledTextField
             type="text"
             value={nome}
             label="Nome"
@@ -36,7 +37,7 @@ const FiltroCliente = (props) => {
               dispatch(setNomeFiltro(e.target.value));
             }}
           />
-          <TextField
+          <StyledTextField
             type="text"
             value={email}
             label="Email"

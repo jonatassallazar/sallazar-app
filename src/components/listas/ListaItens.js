@@ -7,11 +7,12 @@ const ListaItens = styled.div`
 `;
 
 ListaItens.Item = styled.div`
-  background-color: white;
-  border-radius: 10px;
-  padding: 1rem 2rem;
-  margin: 0.4rem 0;
-  box-shadow: #b3b3b3 1px 1px 3px;
+  background-color: ${({ theme }) => theme.colors.bgColorDark};;
+  border-radius: ${({ theme }) => theme.boxes.borderRadius};;
+  padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.large};
+  margin: ${({ theme }) => theme.spacing.small} 0;
+  box-shadow: ${({ theme }) => theme.boxes.boxShadow};
+  border-left: ${({ theme }) => theme.colors.primary} solid 8px;
 
   a {
     color: #1d1d1d;
