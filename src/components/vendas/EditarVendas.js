@@ -6,8 +6,6 @@ import {
   startSetVendas,
 } from '../../actions/vendas';
 import VendaForm from './VendaForm';
-import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const EditarVenda = (props) => {
   const dispatch = useDispatch();
@@ -29,22 +27,16 @@ const EditarVenda = (props) => {
     );
   };
 
+  const handleDelete = () => {
+    dispatch(startRemoveVenda({ id: venda.id })).then(() => {
+      props.history.push('/vendas');
+    });
+  }
+
   return (
     <div>
       <h1>Editar Venda</h1>
-      <VendaForm venda={venda} onSubmit={onSubmit} />
-      <Button
-        variant="contained"
-        color="secondary"
-        startIcon={<DeleteIcon />}
-        onClick={() => {
-          dispatch(startRemoveVenda({ id: venda.id })).then(() => {
-            props.history.push('/vendas');
-          });
-        }}
-      >
-        Remove
-      </Button>
+      <VendaForm venda={venda} onSubmit={onSubmit} handleDelete={handleDelete}/>
     </div>
   );
 };

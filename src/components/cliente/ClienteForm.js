@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import FormEndereco from '../forms/FormEndereco';
 import Form from '../forms/Form';
 import {
-  Button,
   TextField,
   Select,
   MenuItem,
@@ -12,6 +11,7 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
+import { StyledButton } from '../forms/elements';
 import { DatePicker } from '@material-ui/pickers';
 import { Save, Delete } from '@material-ui/icons';
 import InputMask from 'react-input-mask';
@@ -194,24 +194,26 @@ const ClienteForm = (props) => {
           setEstado={setEstado}
         />
         {error && <p>{error}</p>}
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          startIcon={<Save />}
-        >
-          Salvar
-        </Button>
-        {props?.handleDelete && (
-          <Button
+        <Form.Actions>
+          <StyledButton
             variant="contained"
-            color="secondary"
-            startIcon={<Delete />}
-            onClick={props?.handleDelete}
+            color="primary"
+            type="submit"
+            startIcon={<Save />}
           >
-            Remove
-          </Button>
-        )}
+            Salvar
+          </StyledButton>
+          {props?.handleDelete && (
+            <StyledButton.Secundary
+              variant="contained"
+              color="secondary"
+              startIcon={<Delete />}
+              onClick={props?.handleDelete}
+            >
+              Remove
+            </StyledButton.Secundary>
+          )}
+        </Form.Actions>
       </Form>
     </>
   );

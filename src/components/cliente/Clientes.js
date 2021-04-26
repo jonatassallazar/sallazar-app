@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import selectClientes from '../../selectors/clientes';
-import ClienteItem from './ClienteItem';
-import FiltroCliente from './FiltroCliente';
-import Button from '@material-ui/core/Button';
+import { ClienteItem, FiltroCliente } from '../../components';
+import { StyledButton } from '../forms/elements';
+import { Listagem, ListaItens } from '../listas';
 import Add from '@material-ui/icons/Add';
 import { startSetClientes } from '../../actions/clientes';
-import ListaItens from '../listas/ListaItens';
 
 const Clientes = () => {
   const selection = useSelector((state) =>
@@ -21,9 +20,9 @@ const Clientes = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Clientes</h1>
-      <Button
+    <Listagem>
+      <Listagem.Title>Lista de Clientes</Listagem.Title>
+      <StyledButton
         variant="contained"
         color="primary"
         startIcon={<Add />}
@@ -31,14 +30,14 @@ const Clientes = () => {
         to="/clientes/novo"
       >
         Novo Cliente
-      </Button>
+      </StyledButton>
       <FiltroCliente />
       <ListaItens>
         {selection.map((cliente) => (
           <ClienteItem key={cliente.id} {...cliente} />
         ))}
       </ListaItens>
-    </div>
+    </Listagem>
   );
 };
 

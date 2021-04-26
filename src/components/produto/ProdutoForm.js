@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Form from '../forms/Form';
-import { Button, TextField, Select, MenuItem } from '@material-ui/core';
+import { TextField, Select, MenuItem } from '@material-ui/core';
 import { Save, Delete } from '@material-ui/icons';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import { StyledButton } from '../forms/elements';
 
 const ProdutoForm = (props) => {
   const [nome, setNome] = useState(props.produto?.nome || '');
@@ -101,24 +102,26 @@ const ProdutoForm = (props) => {
         />
       </Form.Division>
       {error && <p>{error}</p>}
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        startIcon={<Save />}
-      >
-        Salvar
-      </Button>
-      {props.handleDelete && (
-        <Button
+      <Form.Actions>
+        <StyledButton
           variant="contained"
-          color="secondary"
-          startIcon={<Delete />}
-          onClick={props.handleDelete}
+          color="primary"
+          type="submit"
+          startIcon={<Save />}
         >
-          Remove
-        </Button>
-      )}
+          Salvar
+        </StyledButton>
+        {props.handleDelete && (
+          <StyledButton.Secundary
+            variant="contained"
+            color="secondary"
+            startIcon={<Delete />}
+            onClick={props.handleDelete}
+          >
+            Remove
+          </StyledButton.Secundary>
+        )}
+      </Form.Actions>
     </Form>
   );
 };

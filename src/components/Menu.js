@@ -11,12 +11,12 @@ const MenuLateral = styled.div`
   min-width: 200px;
   min-height: 100%;
   flex-direction: column;
-  background-color: #f9f9f9;
-  box-shadow: #d2d2d2 3px 6px 6px;
+  color: ${({ theme }) => theme.colors.sText};
+  background-color: ${({ theme }) => theme.colors.text};
   z-index: 2;
 
   a.active {
-    background-color: #f1f1f1;
+    background-color: ${({ theme }) => theme.colors.textLight};
 }
 `;
 

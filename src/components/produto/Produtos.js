@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import FiltroProduto from './FiltroProduto';
 import ProdutoItem from './ProdutoItem';
 import selectProdutos from '../../selectors/produtos';
-import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetProdutos } from '../../actions/produtos';
 import ListaItens from '../listas/ListaItens';
+import { StyledButton } from '../forms/elements';
 
 const Produto = () => {
   const selection = useSelector((state) =>
@@ -22,8 +22,8 @@ const Produto = () => {
 
   return (
     <div>
-      <h1>Produtos</h1>
-      <Button
+      <h1>Lista de Produtos</h1>
+      <StyledButton
         variant="contained"
         color="primary"
         startIcon={<Add />}
@@ -31,7 +31,7 @@ const Produto = () => {
         to="/produtos/novo"
       >
         Novo Produto
-      </Button>
+      </StyledButton>
       <FiltroProduto />
       <ListaItens>
         {selection.map((produto) => (

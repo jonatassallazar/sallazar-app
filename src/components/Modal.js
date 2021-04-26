@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import { StyledButton } from './forms/elements';
 
 const Modal = styled.div`
   background-color: #0000009e;
@@ -48,14 +48,14 @@ const ModalPage = ({
         <Modal.Title>{title}</Modal.Title>
         <Modal.Description>{description}</Modal.Description>
         {btnPrimary && (
-          <Button
+          <StyledButton
             startIcon={btnPrimaryIcon || undefined}
             variant="contained"
             color="primary"
             onClick={btnPrimaryFunction}
           >
             {btnPrimary}
-          </Button>
+          </StyledButton>
         )}
       </Modal.Content>
     </Modal>

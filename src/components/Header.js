@@ -1,15 +1,18 @@
 import React from 'react';
 import { startLogout } from '../actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '@material-ui/core/Button';
+import { StyledButton } from './forms/elements';
 import styled from 'styled-components';
 
 const HeaderBar = styled.div`
+  background-color: ${({ theme }) => theme.colors.bgColor};
+  border-top: ${({ theme }) => theme.colors.pDark} solid 12px;
+  box-shadow: ${({ theme }) => theme.boxes.boxShadow};
+  color: ${({ theme }) => theme.colors.text};
   height: 5rem;
   position: relative;
   display: flex;
   padding: 0.8rem;
-  box-shadow: #ececec 0px 4px 5px;
   justify-content: flex-end;
   z-index: 3;
 `;
@@ -50,7 +53,7 @@ const Header = () => {
         <HeaderBar.Profile.Email>{email}</HeaderBar.Profile.Email>
       </HeaderBar.Profile>
       <HeaderBar.Profile.Picture src={photoURL} alt={displayName} />
-      <Button onClick={logout}>Sair</Button>
+      <StyledButton.Outlined onClick={logout}>Sair</StyledButton.Outlined>
     </HeaderBar>
   );
 };

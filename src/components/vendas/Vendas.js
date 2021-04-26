@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import FiltroVenda from './FiltroVenda';
 import VendaItem from './VendaItem';
 import selectVendas from '../../selectors/vendas';
-import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { startSetVendas } from '../../actions/vendas';
 import ListaItens from '../listas/ListaItens';
+import { StyledButton } from '../forms/elements';
 
 const Vendas = () => {
   const dispatch = useDispatch();
@@ -23,8 +23,8 @@ const Vendas = () => {
 
   return (
     <div>
-      <h1>Vendas</h1>
-      <Button
+      <h1>Vendas Realizadas</h1>
+      <StyledButton
         variant="contained"
         color="primary"
         startIcon={<Add />}
@@ -32,7 +32,7 @@ const Vendas = () => {
         to="/vendas/novo"
       >
         Nova Venda
-      </Button>
+      </StyledButton>
       <FiltroVenda />
       <ListaItens>
         {vendas.map((venda) => (
