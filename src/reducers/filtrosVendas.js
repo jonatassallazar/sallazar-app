@@ -20,20 +20,30 @@ export default (state = statePadraoFiltroVendas, action) => {
         ...state,
         sortBy: 'numeroasc',
       };
-    case 'SORT_BY_NUMEO_DEC':
+    case 'SORT_BY_NUMERO_DEC':
       return {
         ...state,
         sortBy: 'numerodec',
       };
+      case 'SORT_BY_DATAVENDA_ASC':
+        return {
+          ...state,
+          sortBy: 'datavendaasc',
+        };
+      case 'SORT_BY_DATAVENDA_DEC':
+        return {
+          ...state,
+          sortBy: 'datavendadec',
+        };
     case 'SORT_BY_VALORTOTAL_ASC':
       return {
         ...state,
-        sortBy: 'valorTotalasc',
+        sortBy: 'totalasc',
       };
     case 'SORT_BY_VALORTOTAL_DEC':
       return {
         ...state,
-        sortBy: 'valorTotaldec',
+        sortBy: 'totaldec',
       };
     case 'SORT_BY_CREATEDAT_ASC':
       return {

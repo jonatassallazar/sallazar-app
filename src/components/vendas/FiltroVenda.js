@@ -11,6 +11,8 @@ import {
   sortByCreatedAtDec,
   sortByValorTotalAsc,
   sortByValorTotalDec,
+  sortByDataVendaAsc,
+  sortByDataVendaDec,
 } from '../../actions/filtrosVendas';
 import Form from '../forms/Form';
 import {
@@ -32,6 +34,7 @@ const FiltroVenda = () => {
     dataVendaFinal,
   } = useSelector((state) => state.filtrosVendas);
 
+
   return (
     <Form>
       <Form.Filtro>
@@ -41,9 +44,7 @@ const FiltroVenda = () => {
             type="text"
             value={cliente}
             placeholder="Cliente"
-            onChange={(e) => {
-              dispatch(setClienteFiltro(e.target.value));
-            }}
+            onChange={(e) => dispatch(setClienteFiltro(e.target.value))}
           />
           <KeyboardDatePicker
             disableToolbar
@@ -83,10 +84,7 @@ const FiltroVenda = () => {
           />
           <FormControl>
             <FormHelperText>Status da Venda</FormHelperText>
-            <Select
-              value={status}
-              onChange={(e) => dispatch(setStatusFiltro(e.target.value))}
-            >
+            <Select value={status} onChange={(e) => dispatch(setStatusFiltro(e.target.value))}>
               <MenuItem value="todos">Todos</MenuItem>
               <MenuItem value="em andamento">Em Andamento</MenuItem>
               <MenuItem value="orçamento">Orçamento</MenuItem>
@@ -104,9 +102,13 @@ const FiltroVenda = () => {
                     return dispatch(sortByNumeroAsc());
                   case 'numerodec':
                     return dispatch(sortByNumeroDec());
-                  case 'precoasc':
+                  case 'datavendaasc':
+                    return dispatch(sortByDataVendaAsc());
+                  case 'datavendadec':
+                    return dispatch(sortByDataVendaDec());
+                  case 'totalasc':
                     return dispatch(sortByValorTotalAsc());
-                  case 'precodec':
+                  case 'totaldec':
                     return dispatch(sortByValorTotalDec());
                   case 'createdatasc':
                     return dispatch(sortByCreatedAtAsc());
@@ -117,12 +119,14 @@ const FiltroVenda = () => {
                 }
               }}
             >
-              <MenuItem value="numeroasc">Número Crescente</MenuItem>
-              <MenuItem value="numerodec">Número Decrescent</MenuItem>
-              <MenuItem value="precoasc">Valor Total Crescente</MenuItem>
-              <MenuItem value="precodec">Valor Total Decrescente</MenuItem>
-              <MenuItem value="createdatasc">Criado Crescente</MenuItem>
-              <MenuItem value="createdatdec">Criado Decrescente</MenuItem>
+              <MenuItem value="numeroasc">Número ↓</MenuItem>
+              <MenuItem value="numerodec">Número ↑</MenuItem>
+              <MenuItem value="datavendaasc">Data da Venda ↓</MenuItem>
+              <MenuItem value="datavendadec">Data da Venda ↑</MenuItem>
+              <MenuItem value="totalasc">Valor Total ↓</MenuItem>
+              <MenuItem value="totaldec">Valor Total ↑</MenuItem>
+              <MenuItem value="createdatasc">Criado ↓</MenuItem>
+              <MenuItem value="createdatdec">Criado ↑</MenuItem>
             </Select>
           </FormControl>
         </Form.Division>

@@ -15,7 +15,6 @@ const Vendas = () => {
     selectVendas(state.vendas, state.filtrosVendas)
   );
 
-  console.log(vendas);
   useEffect(() => {
     dispatch(startSetVendas());
     // eslint-disable-next-line

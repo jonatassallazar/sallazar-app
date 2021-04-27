@@ -17,7 +17,14 @@ export default (
 
       const clienteMatch = venda.cliente.nome
         .toLowerCase()
-        .includes(cliente.toLowerCase());
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .includes(
+          cliente
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+        );
 
       let statusMatchText;
 
@@ -38,10 +45,10 @@ export default (
         case 'numeroasc':
           return a.numero > b.numero ? 1 : -1;
         case 'numerodec':
-          return a.numero > b.numero ? 1 : -1;
-        case 'dataVendaasc':
+          return a.numero < b.numero ? 1 : -1;
+        case 'datavendaasc':
           return a.dataVenda > b.dataVenda ? 1 : -1;
-        case 'dataVendadec':
+        case 'datavendadec':
           return a.dataVenda < b.dataVenda ? 1 : -1;
         case 'totalasc':
           return a.total > b.total ? 1 : -1;
@@ -49,7 +56,7 @@ export default (
           return a.total < b.total ? 1 : -1;
         case 'createdatasc':
           return a.createdAt > b.createdAt ? 1 : -1;
-        case 'craetedatdec':
+        case 'createdatdec':
           return a.createdAt < b.createdAt ? 1 : -1;
         default:
           return undefined;

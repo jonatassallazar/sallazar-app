@@ -1,7 +1,16 @@
 export default (clientes, { nome, sortBy, email, telefone }) => {
   return clientes
     .filter((cliente) => {
-      const nomeMatch = cliente.nome.toLowerCase().includes(nome.toLowerCase());
+      const nomeMatch = cliente.nome
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .includes(
+          nome
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+        );
       const emailMatch = cliente.email
         .toLowerCase()
         .includes(email.toLowerCase());
@@ -20,6 +29,5 @@ export default (clientes, { nome, sortBy, email, telefone }) => {
       } else {
         return undefined;
       }
-      ;
     });
 };

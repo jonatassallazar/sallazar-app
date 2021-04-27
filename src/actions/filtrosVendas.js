@@ -26,6 +26,14 @@ export const sortByNumeroDec = () => ({
   type: 'SORT_BY_NUMERO_DEC',
 });
 
+export const sortByDataVendaAsc = () => ({
+  type: 'SORT_BY_DATAVENDA_ASC',
+});
+
+export const sortByDataVendaDec = () => ({
+  type: 'SORT_BY_DATAVENDA_DEC',
+});
+
 export const sortByValorTotalAsc = () => ({
   type: 'SORT_BY_VALORTOTAL_ASC',
 });
