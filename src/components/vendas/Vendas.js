@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FiltroVenda from './FiltroVenda';
 import VendaItem from './VendaItem';
-import selectVendas from '../../selectors/vendas';
-import Add from '@material-ui/icons/Add';
-import { startSetVendas } from '../../actions/vendas';
 import ListaItens from '../listas/ListaItens';
+import { startSetVendas } from '../../actions/vendas';
+import selectVendas from '../../selectors/vendas';
 import { StyledButton } from '../forms/elements';
+import Add from '@material-ui/icons/Add';
 
 const Vendas = () => {
   const dispatch = useDispatch();
@@ -35,6 +35,13 @@ const Vendas = () => {
       </StyledButton>
       <FiltroVenda />
       <ListaItens>
+        <ListaItens.Header>
+        <h6>Status</h6>
+        <h6>Nº</h6>
+        <h6>Cliente</h6>
+        <h6>Data</h6>
+        <h6>Valor</h6>
+        </ListaItens.Header>
         {vendas.map((venda) => (
           <VendaItem key={venda.id} {...venda} />
         ))}

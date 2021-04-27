@@ -20,10 +20,10 @@ const theme = {
     huge: '3.2rem',
   },
   font: {
-    small: '0.5rem',
-    medium: '1rem',
-    large: '2rem',
-    huge: '4rem',
+    small: '1rem',
+    medium: '1.4rem',
+    large: '1.8rem',
+    huge: '2.4rem',
   },
   boxes: {
     borderRadius: '8px',

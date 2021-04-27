@@ -88,8 +88,10 @@ const FiltroVenda = () => {
               onChange={(e) => dispatch(setStatusFiltro(e.target.value))}
             >
               <MenuItem value="todos">Todos</MenuItem>
-              <MenuItem value="Em Andamento">Em Andamento</MenuItem>
-              <MenuItem value="inativo">Inativo</MenuItem>
+              <MenuItem value="em andamento">Em Andamento</MenuItem>
+              <MenuItem value="orçamento">Orçamento</MenuItem>
+              <MenuItem value="a receber">À Receber</MenuItem>
+              <MenuItem value="concluida">Concluído</MenuItem>
             </Select>
           </FormControl>
           <FormControl>

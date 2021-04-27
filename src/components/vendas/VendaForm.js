@@ -80,7 +80,7 @@ const VendaForm = (props) => {
 
   //Calculate the total amount
   useEffect(() => {
-    const newValue = parseInt(subTotal) + parseInt(frete) - parseInt(desconto);
+    const newValue = subTotal + (frete - desconto);
 
     setTotal(newValue);
   }, [subTotal, desconto, frete]);
