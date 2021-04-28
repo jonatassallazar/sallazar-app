@@ -76,7 +76,7 @@ const ClienteForm = (props) => {
         nome,
         email,
         telefone,
-        dataDeNascimento: dataDeNascimento.valueOf(),
+        dataDeNascimento: dataDeNascimento?.valueOf() || null,
         status,
         genero,
         selectedTags,
