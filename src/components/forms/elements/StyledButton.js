@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const StyledButton = styled(Button)`
   && {
@@ -34,6 +35,24 @@ StyledButton.Outlined = styled(Button)`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.pText};
 }
+`;
+
+StyledButton.OnlyIcon = styled(Button)`
+  && {
+  margin: 0;
+  min-width: 30px;
+  padding: 0 ${({ theme }) => theme.spacing.small} 0 0;
+  background: none;
+  }
+
+  &&:hover {
+  background: none;
+  }
+  
+`;
+
+StyledButton.Link = styled(Link)`
+  color: inherit;
 `;
 
 export default StyledButton;

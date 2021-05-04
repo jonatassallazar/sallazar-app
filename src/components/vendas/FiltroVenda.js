@@ -5,14 +5,6 @@ import {
   setClienteFiltro,
   setDataVendaInicialFiltro,
   setDataVendaFinalFiltro,
-  sortByNumeroAsc,
-  sortByNumeroDec,
-  sortByCreatedAtAsc,
-  sortByCreatedAtDec,
-  sortByValorTotalAsc,
-  sortByValorTotalDec,
-  sortByDataVendaAsc,
-  sortByDataVendaDec,
 } from '../../actions/filtrosVendas';
 import Form from '../forms/Form';
 import {
@@ -28,7 +20,6 @@ const FiltroVenda = () => {
   const dispatch = useDispatch();
   const {
     status,
-    sortBy,
     cliente,
     dataVendaInicial,
     dataVendaFinal,
@@ -92,7 +83,7 @@ const FiltroVenda = () => {
               <MenuItem value="concluida">Concluído</MenuItem>
             </Select>
           </FormControl>
-          <FormControl>
+          {/* <FormControl>
             <FormHelperText>Ordenar</FormHelperText>
             <Select
               value={sortBy}
@@ -128,7 +119,7 @@ const FiltroVenda = () => {
               <MenuItem value="createdatasc">Criado ↓</MenuItem>
               <MenuItem value="createdatdec">Criado ↑</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
         </Form.Division>
       </Form.Filtro>
     </Form>

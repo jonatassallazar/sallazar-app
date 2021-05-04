@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import selectClientes from '../../selectors/clientes';
-import { ClienteItem, FiltroCliente } from '../../components';
+import { FiltroCliente } from '../../components';
 import { StyledButton } from '../forms/elements';
-import { Listagem, ListaItens } from '../listas';
-import Add from '@material-ui/icons/Add';
-import { startSetClientes } from '../../actions/clientes';
+import { Listagem, Tabela } from '../listas';
+import { startRemoveCliente, startSetClientes } from '../../actions/clientes';
+import { useGetStatus, useGetEndereco } from '../listas/utils';
+import { Delete, Edit, Add } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
 
-const Clientes = () => {
-  const selection = useSelector((state) =>
+const Clientes = (props) => {
+  const clientes = useSelector((state) =>
     selectClientes(state.clientes, state.filtrosClientes)
   );
   const dispatch = useDispatch();
@@ -19,9 +21,56 @@ const Clientes = () => {
     // eslint-disable-next-line
   }, []);
 
+  const handleDelete = useMemo(
+    (id) => (id) => {
+      dispatch(startRemoveCliente({ id })).then(() => {
+        props.history.push('/clientes');
+      });
+    },
+    [dispatch, props.history]
+  );
+
+  const getAcoes = useMemo(
+    (props) => ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <>
+          <StyledButton.Link to={`/produtos/editar/${id}`}>
+            <StyledButton.OnlyIcon className="primary">
+              <Edit />
+            </StyledButton.OnlyIcon>
+          </StyledButton.Link>
+          <StyledButton.OnlyIcon
+            className="secondary"
+            onClick={() => handleDelete(id)}
+          >
+            <Delete />
+          </StyledButton.OnlyIcon>
+        </>
+      );
+    },
+    [handleDelete]
+  );
+
+  const header = [
+    { accessor: 'status', Header: 'Status', Cell: useGetStatus },
+    {
+      accessor: 'nome',
+      Header: 'Nome',
+    },
+    {
+      accessor: 'telefone',
+      Header: 'Telefone',
+    },
+    { accessor: 'email', Header: 'Email' },
+    { accessor: 'enderecoCompleto', Header: 'Endereço', Cell: useGetEndereco },
+    { accessor: 'acoes', Header: 'Ações', Cell: getAcoes, disableSortBy: true },
+  ];
+
   return (
     <Listagem>
-      <Listagem.Title>Lista de Clientes</Listagem.Title>
+      <Typography variant="h1">Lista de Clientes</Typography>
       <StyledButton
         variant="contained"
         color="primary"
@@ -32,11 +81,11 @@ const Clientes = () => {
         Novo Cliente
       </StyledButton>
       <FiltroCliente />
-      <ListaItens>
-        {selection.map((cliente) => (
-          <ClienteItem key={cliente.id} {...cliente} />
-        ))}
-      </ListaItens>
+      <Tabela
+        header={header}
+        dataArray={clientes}
+        columnSortedDefault={{ id: 'nome', desc: false }}
+      />
     </Listagem>
   );
 };

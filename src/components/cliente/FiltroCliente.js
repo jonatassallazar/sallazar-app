@@ -4,23 +4,15 @@ import {
   setEmailFiltro,
   setNomeFiltro,
   setTelefoneFiltro,
-  sortByNomeAsc,
-  sortByNomeDec,
 } from '../../actions/filtrosClientes';
 import Form from '../forms/Form';
-import {
-  Select,
-  MenuItem,
-  TextField,
-  FormControl,
-  FormHelperText,
-} from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { StyledTextField } from '../forms/elements';
 import InputMask from 'react-input-mask';
 
 const FiltroCliente = (props) => {
   const dispatch = useDispatch();
-  const { nome, email, telefone, sortBy } = useSelector(
+  const { nome, email, telefone } = useSelector(
     (state) => state.filtrosClientes
   );
 
@@ -59,22 +51,6 @@ const FiltroCliente = (props) => {
               />
             )}
           </InputMask>
-          <FormControl>
-            <FormHelperText>Ordenar</FormHelperText>
-            <Select
-              value={sortBy}
-              onChange={(e) => {
-                if (e.target.value === 'nomeasc') {
-                  dispatch(sortByNomeAsc());
-                } else if (e.target.value === 'nomedec') {
-                  dispatch(sortByNomeDec());
-                }
-              }}
-            >
-              <MenuItem value="nomeasc">Crescente</MenuItem>
-              <MenuItem value="nomedec">Decrescente</MenuItem>
-            </Select>
-          </FormControl>
         </Form.Division>
       </Form.Filtro>
     </Form>

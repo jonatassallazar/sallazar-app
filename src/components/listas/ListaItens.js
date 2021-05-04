@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
-const ListaItens = styled.div`
+const ListaItens = styled.table`
   width: 100%;
-  display: flex;
-  flex-flow: column;
 `;
 
-ListaItens.Header = styled.div`
+ListaItens.Header = styled.tr`
   width: 100%;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -15,14 +13,11 @@ ListaItens.Header = styled.div`
   box-shadow: ${({ theme }) => theme.boxes.boxShadow};
   color: ${({ theme }) => theme.colors.pText};
   display: inline-grid;
-  grid-template-columns: 15% 5% 20%;
   margin: ${({ theme }) => theme.spacing.small} 0;
   padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.small};
-  column-gap: ${({ theme }) => theme.spacing.medium}; 
-  grid-auto-flow: column;
   justify-items: center;
 
-  h6 {
+  th {
     margin: 0;
     font-size: ${({ theme }) => theme.font.small};
   }
@@ -35,7 +30,7 @@ ListaItens.Item = styled.div`
   border-left: ${({ theme }) => theme.colors.primary} solid 8px;
   box-shadow: ${({ theme }) => theme.boxes.boxShadow};
   display: inline-grid;
-  grid-template-columns: 15% 5% 20%;
+  grid-template-columns: 6fr 5fr 20fr;
   margin: 0.25rem 0;
   padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.small};
   column-gap: ${({ theme }) => theme.spacing.medium}; 

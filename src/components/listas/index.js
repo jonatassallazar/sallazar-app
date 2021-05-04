@@ -1,2 +1,3 @@
-export { default as Listagem } from '../listas/Listagem';
-export { default as ListaItens } from '../listas/ListaItens';
+export { default as Listagem } from './Listagem';
+export { default as ListaItens } from './ListaItens';
+export { default as Tabela } from './Tabela'

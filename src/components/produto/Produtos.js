@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FiltroProduto from './FiltroProduto';
-import ProdutoItem from './ProdutoItem';
 import selectProdutos from '../../selectors/produtos';
 import Add from '@material-ui/icons/Add';
-import { startSetProdutos } from '../../actions/produtos';
-import ListaItens from '../listas/ListaItens';
+import { startRemoveProduto, startSetProdutos } from '../../actions/produtos';
 import { StyledButton } from '../forms/elements';
+import Tabela from '../listas/Tabela';
+import { Delete, Edit } from '@material-ui/icons';
+import { useGetData, useGetStatus, useGetValorEmReal } from '../listas/utils';
+import { Typography } from '@material-ui/core';
 
-const Produto = () => {
-  const selection = useSelector((state) =>
+const Produto = (props) => {
+  const produtos = useSelector((state) =>
     selectProdutos(state.produtos, state.filtrosProdutos)
   );
   const dispatch = useDispatch();
@@ -20,9 +22,60 @@ const Produto = () => {
     // eslint-disable-next-line
   }, []);
 
+  const handleDelete = useMemo(
+    (id) => (id) => {
+      dispatch(startRemoveProduto({ id })).then(() => {
+        props.history.push('/produtos');
+      });
+    },
+    [dispatch, props.history]
+  );
+
+  const getAcoes = useMemo(
+    (props) => ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <>
+          <StyledButton.Link to={`/produtos/editar/${id}`}>
+            <StyledButton.OnlyIcon className="primary">
+              <Edit />
+            </StyledButton.OnlyIcon>
+          </StyledButton.Link>
+          <StyledButton.OnlyIcon
+            className="secondary"
+            onClick={() => handleDelete(id)}
+          >
+            <Delete />
+          </StyledButton.OnlyIcon>
+        </>
+      );
+    },
+    [handleDelete]
+  );
+
+  const header = [
+    { accessor: 'status', Header: 'Status', Cell: useGetStatus },
+    {
+      accessor: 'nome',
+      Header: 'Nome',
+    },
+    {
+      accessor: 'createdAt',
+      Header: 'Adicionado em',
+      Cell: useGetData,
+    },
+    {
+      accessor: 'valorVenda',
+      Header: 'Valor de Venda',
+      Cell: useGetValorEmReal,
+    },
+    { accessor: 'acoes', Header: 'Ações', Cell: getAcoes, disableSortBy: true },
+  ];
+
   return (
     <div>
-      <h1>Lista de Produtos</h1>
+      <Typography variant="h1">Lista de Produtos</Typography>
       <StyledButton
         variant="contained"
         color="primary"
@@ -33,11 +86,11 @@ const Produto = () => {
         Novo Produto
       </StyledButton>
       <FiltroProduto />
-      <ListaItens>
-        {selection.map((produto) => (
-          <ProdutoItem key={produto.id} {...produto} />
-        ))}
-      </ListaItens>
+      <Tabela
+        header={header}
+        dataArray={produtos}
+        columnSortedDefault={{ id: 'nome', desc: false }}
+      />
     </div>
   );
 };
