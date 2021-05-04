@@ -1,4 +1,4 @@
-export default (
+const produtosSelector = (
   produtos,
   { nome, sortBy, fornecedor, status, valorVenda, createdAt }
 ) => {
@@ -49,3 +49,5 @@ export default (
       }
     });
 };
+
+export default produtosSelector;

@@ -1,4 +1,4 @@
-export default (state = [], action) => {
+const clientesReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_CLIENTE':
       return [...state, action.cliente];
@@ -21,3 +21,5 @@ export default (state = [], action) => {
       return state;
   }
 };
+
+export default clientesReducer;

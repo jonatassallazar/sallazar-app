@@ -1,4 +1,4 @@
-export default (
+const vendasSelector = (
   vendas,
   { sortBy, cliente, status, dataVendaInicial, dataVendaFinal }
 ) => {
@@ -63,3 +63,5 @@ export default (
       }
     });
 };
+
+export default vendasSelector;

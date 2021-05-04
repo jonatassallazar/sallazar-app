@@ -8,7 +8,7 @@ const statePadraoFiltroVendas = {
   sortBy: 'numerodec',
 };
 
-export default (state = statePadraoFiltroVendas, action) => {
+const filtrosVendasReducer = (state = statePadraoFiltroVendas, action) => {
   switch (action.type) {
     case 'SET_CLIENTE_FILTER':
       return {
@@ -74,3 +74,5 @@ export default (state = statePadraoFiltroVendas, action) => {
       return state;
   }
 };
+
+export default filtrosVendasReducer;

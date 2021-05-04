@@ -5,7 +5,7 @@ const statePadraoFiltroProdutos = {
   sortBy: 'createdatasc',
 };
 
-export default (state = statePadraoFiltroProdutos, action) => {
+const filtrosProdutosReducer = (state = statePadraoFiltroProdutos, action) => {
   switch (action.type) {
     case 'SET_NOME_FILTER':
       return {
@@ -56,3 +56,5 @@ export default (state = statePadraoFiltroProdutos, action) => {
       return state;
   }
 };
+
+export default filtrosProdutosReducer;

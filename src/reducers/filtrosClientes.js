@@ -7,7 +7,7 @@ const statePadraoFiltroClientes = {
   sortBy: 'nomeasc',
 };
 
-export default (state = statePadraoFiltroClientes, action) => {
+const filtrosClientesReducer = (state = statePadraoFiltroClientes, action) => {
   switch (action.type) {
     case 'SET_NOME_FILTER':
       return {
@@ -38,3 +38,5 @@ export default (state = statePadraoFiltroClientes, action) => {
       return state;
   }
 };
+
+export default filtrosClientesReducer;

@@ -1,4 +1,4 @@
-export default (clientes, { nome, sortBy, email, telefone }) => {
+const clientesSelector = (clientes, { nome, sortBy, email, telefone }) => {
   return clientes
     .filter((cliente) => {
       const nomeMatch = cliente.nome
@@ -31,3 +31,5 @@ export default (clientes, { nome, sortBy, email, telefone }) => {
       }
     });
 };
+
+export default clientesSelector;
