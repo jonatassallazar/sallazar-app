@@ -160,10 +160,11 @@ const VendaForm = (props) => {
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <MenuItem value="Em Andamento">Em Andamento</MenuItem>
-              <MenuItem value="Orçamento">Orçamento</MenuItem>
-              <MenuItem value="À Receber">À Receber</MenuItem>
-              <MenuItem value="Concluída">Concluída</MenuItem>
+              <MenuItem value="em andamento">Em Andamento</MenuItem>
+              <MenuItem value="orcamento">Orçamento</MenuItem>
+              <MenuItem value="a receber">À Receber</MenuItem>
+              <MenuItem value="concluida">Concluída</MenuItem>
+              <MenuItem value="cancelada">Cancelada</MenuItem>
             </Select>
           </FormControl>
           <KeyboardDatePicker

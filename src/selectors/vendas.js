@@ -29,7 +29,10 @@ const vendasSelector = (
       let statusMatchText;
 
       if (status === 'todos') {
-        statusMatchText = true;
+        const statusMatch = !venda.status
+          .toLowerCase()
+          .includes('cancelada');
+        statusMatchText = statusMatch;
       } else {
         const statusMatch = venda.status
           .toLowerCase()

@@ -78,11 +78,12 @@ const FiltroVenda = () => {
           <FormControl>
             <FormHelperText>Status da Venda</FormHelperText>
             <Select value={status} onChange={(e) => dispatch(setStatusFiltro(e.target.value))}>
-              <MenuItem value="todos">Todos</MenuItem>
+              <MenuItem value="todos">Todas</MenuItem>
               <MenuItem value="em andamento">Em Andamento</MenuItem>
               <MenuItem value="orçamento">Orçamento</MenuItem>
               <MenuItem value="a receber">À Receber</MenuItem>
               <MenuItem value="concluida">Concluído</MenuItem>
+              <MenuItem value="cancelada">Canceladas</MenuItem>
             </Select>
           </FormControl>
           {/* <FormControl>

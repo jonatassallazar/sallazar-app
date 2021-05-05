@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FiltroVenda from './FiltroVenda';
-import { startRemoveVenda, startSetVendas } from '../../actions/vendas';
+import { startEditVenda, startSetVendas } from '../../actions/vendas';
 import selectVendas from '../../selectors/vendas';
 import { StyledButton } from '../forms/elements';
 import { Add, Delete, Edit } from '@material-ui/icons';
@@ -27,9 +27,9 @@ const Vendas = (props) => {
 
   const handleDelete = useMemo(
     (id) => (id) => {
-      dispatch(startRemoveVenda({ id })).then(() => {
-        props.history.push('/vendas');
-      });
+      dispatch(startEditVenda(id, {status: 'Cancelada'})).then(() =>
+      props.history.push(`/vendas`)
+    );
     },
     [dispatch, props.history]
   );
