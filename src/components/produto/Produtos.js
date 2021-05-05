@@ -6,10 +6,9 @@ import selectProdutos from '../../selectors/produtos';
 import Add from '@material-ui/icons/Add';
 import { startRemoveProduto, startSetProdutos } from '../../actions/produtos';
 import { StyledButton } from '../forms/elements';
-import Tabela from '../listas/Tabela';
+import { Tabela, Listagem } from '../listas';
 import { Delete, Edit } from '@material-ui/icons';
 import { useGetData, useGetStatus, useGetValorEmReal } from '../listas/utils';
-import { Typography } from '@material-ui/core';
 
 const Produto = (props) => {
   const produtos = useSelector((state) =>
@@ -75,7 +74,7 @@ const Produto = (props) => {
 
   return (
     <div>
-      <Typography variant="h1">Lista de Produtos</Typography>
+      <Listagem.Title>Lista de Produtos</Listagem.Title>
       <StyledButton
         variant="contained"
         color="primary"

@@ -8,7 +8,6 @@ import { Listagem, Tabela } from '../listas';
 import { startRemoveCliente, startSetClientes } from '../../actions/clientes';
 import { useGetStatus, useGetEndereco } from '../listas/utils';
 import { Delete, Edit, Add } from '@material-ui/icons';
-import { Typography } from '@material-ui/core';
 
 const Clientes = (props) => {
   const clientes = useSelector((state) =>
@@ -70,7 +69,7 @@ const Clientes = (props) => {
 
   return (
     <Listagem>
-      <Typography variant="h1">Lista de Clientes</Typography>
+      <Listagem.Title>Lista de Clientes</Listagem.Title>
       <StyledButton
         variant="contained"
         color="primary"
