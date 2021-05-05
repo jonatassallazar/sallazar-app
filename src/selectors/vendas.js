@@ -1,14 +1,14 @@
 const vendasSelector = (
   vendas,
-  { sortBy, cliente, status, dataVendaInicial, dataVendaFinal }
+  { cliente, status, dataVendaInicial, dataVendaFinal }
 ) => {
   return vendas
     .filter((venda) => {
       let dataVendaMatch;
 
       if (
-        dataVendaInicial < venda.dataVenda ||
-        dataVendaFinal > venda.dataVenda
+        dataVendaInicial <= venda.dataVenda &&
+        dataVendaFinal >= venda.dataVenda
       ) {
         dataVendaMatch = true;
       } else {
@@ -36,32 +36,11 @@ const vendasSelector = (
           .includes(status.toLowerCase());
         statusMatchText = statusMatch;
       }
+      console.log(dataVendaMatch);
 
       return dataVendaMatch && clienteMatch && statusMatchText;
       // eslint-disable-next-line
     })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'numeroasc':
-          return a.numero > b.numero ? 1 : -1;
-        case 'numerodec':
-          return a.numero < b.numero ? 1 : -1;
-        case 'datavendaasc':
-          return a.dataVenda > b.dataVenda ? 1 : -1;
-        case 'datavendadec':
-          return a.dataVenda < b.dataVenda ? 1 : -1;
-        case 'totalasc':
-          return a.total > b.total ? 1 : -1;
-        case 'totaldec':
-          return a.total < b.total ? 1 : -1;
-        case 'createdatasc':
-          return a.createdAt > b.createdAt ? 1 : -1;
-        case 'createdatdec':
-          return a.createdAt < b.createdAt ? 1 : -1;
-        default:
-          return undefined;
-      }
-    });
 };
 
 export default vendasSelector;
