@@ -85,8 +85,12 @@ const VendaForm = (props) => {
     setTotal(newValue);
   }, [subTotal, desconto, frete]);
 
-  const clientes = useSelector((state) => state.clientes);
-  const produtos = useSelector((state) => state.produtos);
+  const clientes = useSelector((state) => state.clientes).sort((a, b) =>
+    a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
+  );
+  const produtos = useSelector((state) => state.produtos).sort((a, b) =>
+    a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
+  );
 
   const handleFrete = (e, value) => {
     if (value < 0 || value === '') {
