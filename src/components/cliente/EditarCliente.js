@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startEditCliente, startRemoveCliente, startSetClientes } from '../../actions/clientes';
 import ClienteForm from './ClienteForm';
+import { StyledButton } from '../forms/elements';
+import { ArrowBackIos } from '@material-ui/icons';
 
 const EditarCliente = (props) => {
   const dispatch = useDispatch();
@@ -31,6 +33,11 @@ const EditarCliente = (props) => {
 
   return (
     <div>
+      <StyledButton.Link to="/clientes">
+        <StyledButton.OnlyIcon>
+          <ArrowBackIos />
+        </StyledButton.OnlyIcon>
+      </StyledButton.Link>
       <h1>Editar Cliente</h1>
       <ClienteForm cliente={cliente} onSubmit={onSubmit} handleDelete={handleDelete}/>
     </div>

@@ -6,6 +6,8 @@ import {
   startSetVendas,
 } from '../../actions/vendas';
 import VendaForm from './VendaForm';
+import { StyledButton } from '../forms/elements';
+import { ArrowBackIos } from '@material-ui/icons';
 
 const EditarVenda = (props) => {
   const dispatch = useDispatch();
@@ -35,6 +37,11 @@ const EditarVenda = (props) => {
 
   return (
     <div>
+      <StyledButton.Link to="/vendas">
+        <StyledButton.OnlyIcon>
+          <ArrowBackIos />
+        </StyledButton.OnlyIcon>
+      </StyledButton.Link>
       <h1>Editar Venda</h1>
       <VendaForm venda={venda} onSubmit={onSubmit} handleDelete={handleDelete}/>
     </div>

@@ -6,6 +6,8 @@ import {
   startSetProdutos,
 } from '../../actions/produtos';
 import ProdutoForm from './ProdutoForm';
+import { StyledButton } from '../forms/elements';
+import { ArrowBackIos } from '@material-ui/icons';
 
 const EditarProduto = (props) => {
   const dispatch = useDispatch();
@@ -35,6 +37,11 @@ const EditarProduto = (props) => {
 
   return (
     <div>
+      <StyledButton.Link to="/produtos">
+        <StyledButton.OnlyIcon>
+          <ArrowBackIos />
+        </StyledButton.OnlyIcon>
+      </StyledButton.Link>
       <h1>Editar Produto</h1>
       <ProdutoForm
         produto={produto}

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startAddVenda, startSetVendas } from '../../actions/vendas';
+import { StyledButton } from '../forms/elements';
+import { ArrowBackIos } from '@material-ui/icons';
 import VendaForm from './VendaForm';
 
 const AddVenda = (props) => {
@@ -17,13 +19,17 @@ const AddVenda = (props) => {
   useEffect(() => {
     const numero = '00000' + vendas.length;
     const numeroVenda = numero.substr(numero.length - 5);
-    setNumeroVenda(numeroVenda)
+    setNumeroVenda(numeroVenda);
     // eslint-disable-next-line
   }, [vendas]);
 
-
   return (
     <div>
+      <StyledButton.Link to="/vendas">
+        <StyledButton.OnlyIcon>
+          <ArrowBackIos />
+        </StyledButton.OnlyIcon>
+      </StyledButton.Link>
       <h1>Nova Venda</h1>
       <VendaForm
         vendas={vendas}
