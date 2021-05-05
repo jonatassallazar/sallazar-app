@@ -163,6 +163,7 @@ const VendaForm = (props) => {
             </Select>
           </FormControl>
           <KeyboardDatePicker
+            autoOk={true}
             className="form-item-p"
             disableToolbar
             variant="inline"
@@ -293,7 +294,7 @@ const VendaForm = (props) => {
               startIcon={<Delete />}
               onClick={props.handleDelete}
             >
-              Remove
+              Remover
             </StyledButton.Secundary>
           )}
         </Form.Actions>

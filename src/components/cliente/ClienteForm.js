@@ -153,6 +153,7 @@ const ClienteForm = (props) => {
             </Select>
           </FormControl>
           <DatePicker
+            autoOk={true}
             id="date"
             label="Data de Nascimento"
             format="DD/MM/YYYY"

@@ -36,7 +36,7 @@ const Clientes = (props) => {
 
       return (
         <>
-          <StyledButton.Link to={`/produtos/editar/${id}`}>
+          <StyledButton.Link to={`/clientes/editar/${id}`}>
             <StyledButton.OnlyIcon className="primary">
               <Edit />
             </StyledButton.OnlyIcon>

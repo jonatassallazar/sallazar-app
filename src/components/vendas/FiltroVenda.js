@@ -39,6 +39,7 @@ const FiltroVenda = () => {
           />
           <KeyboardDatePicker
             disableToolbar
+            autoOk={true}
             variant="inline"
             format="DD/MM/yyyy"
             margin="normal"
@@ -57,6 +58,7 @@ const FiltroVenda = () => {
           />
           <KeyboardDatePicker
             disableToolbar
+            autoOk={true}
             variant="inline"
             format="DD/MM/yyyy"
             margin="normal"
