@@ -118,8 +118,8 @@ const VendaForm = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (itensVendidos[0].id === '') {
-      setError('Coloque os Itens vendidos');
+    if (itensVendidos[0]?.id === '' || !dataVenda || !cliente) {
+      setError('Preencha todas as informações obrigatórias');
       // Set error state equal to 'Please provide description and amount.'
     } else {
       setError('');
@@ -156,6 +156,45 @@ const VendaForm = (props) => {
     });
   };
 
+  const addClienteButton = (
+    <StyledButton.Borderless
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        handleNovoCliente();
+      }}
+      title="Clique aqui para criar um novo cliente"
+    >
+      + adicionar novo cliente
+    </StyledButton.Borderless>
+  );
+
+  const handleSelectProduto = (e, newValue, index) => {
+    const indexMaster = index;
+
+    const newArray = itensVendidos?.map((i, index) => {
+      if (index !== indexMaster) {
+        return { ...i };
+      }
+      return {
+        ...i,
+        id: newValue?.id || '',
+        nome: newValue?.nome || '',
+        unidade: newValue?.unidade || '',
+        quantidade: newValue ? 1 : '',
+        valorVenda: newValue?.valorVenda || '',
+        valorTotal: newValue?.valorVenda * 1 || '',
+      };
+    });
+
+    setItensVendidos(newArray);
+  };
+
+  const handleProdutoSubmit = (data) => {
+    setModalShow(undefined);
+    const index = itensVendidos?.findIndex((i) => !i.id);
+    handleSelectProduto(undefined, data, index);
+  };
+
   return (
     <>
       {modalShow === 'cliente' ? (
@@ -166,8 +205,11 @@ const VendaForm = (props) => {
           />
         </Modal>
       ) : modalShow === 'produto' ? (
-        <Modal>
-          <AddProduto />
+        <Modal width="80%" alignment="left" handleClose={props.handleClose}>
+          <AddProduto
+            handleSubmit={handleProdutoSubmit}
+            showBackButton={true}
+          />
         </Modal>
       ) : undefined}
       <Form onSubmit={onSubmit} className="general-form">
@@ -211,13 +253,9 @@ const VendaForm = (props) => {
             InputLabelProps={{
               shrink: true,
             }}
+            required
           />
-          <StyledButton.Icon
-            onClick={handleNovoCliente}
-            title="Clique aqui para criar um novo cliente"
-          >
-            +
-          </StyledButton.Icon>
+
           <Autocomplete
             className="form-item-m"
             options={clientes.sort((a, b) =>
@@ -234,6 +272,7 @@ const VendaForm = (props) => {
             renderInput={(inputProps) => (
               <TextField label="Selecione o Cliente" {...inputProps} />
             )}
+            noOptionsText={addClienteButton}
           />
         </Form.Division>
         <Form.Division>
@@ -247,6 +286,8 @@ const VendaForm = (props) => {
                 index={index}
                 itensVendidos={itensVendidos}
                 setItensVendidos={setItensVendidos}
+                setModalShow={setModalShow}
+                handleSelectProduto={handleSelectProduto}
               />
             ))}
           </Form.List>
@@ -321,7 +362,7 @@ const VendaForm = (props) => {
         {error && <Form.Error>{error}</Form.Error>}
         <Form.Actions>
           <StyledButton
-          title="Clique aqui para salvar"
+            title="Clique aqui para salvar"
             variant="contained"
             color="primary"
             type="submit"
@@ -331,9 +372,10 @@ const VendaForm = (props) => {
           </StyledButton>
           {props?.handleDelete && (
             <StyledButton.Secundary
-            title="Clique aqui para excluir"
+              title="Clique aqui para excluir"
               variant="contained"
               color="secondary"
+              type="button"
               startIcon={<Delete />}
               onClick={props.handleDelete}
             >

@@ -14,7 +14,7 @@ const Modal = styled.div`
 `;
 
 Modal.Content = styled.div`
-  align-items: center;
+  align-items: ${(props) => (props.alignment ? 'flex-start' : 'center')};
   background: white;
   border-radius: 8px;
   display: flex;

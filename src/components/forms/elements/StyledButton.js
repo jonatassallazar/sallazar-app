@@ -38,6 +38,19 @@ StyledButton.Outlined = styled(Button)`
 }
 `;
 
+StyledButton.Borderless = styled(Button)`
+&& {
+  background-color: ${({ theme }) => theme.colors.bgColor};
+  border: none;
+  margin: 0 ${({ theme }) => theme.spacing.medium};
+}
+
+&&:hover {
+  color: ${({ theme }) => theme.colors.primary};
+  background: none;
+}
+`;
+
 StyledButton.Icon = styled(StyledButton)`
   && {
   margin: 0;

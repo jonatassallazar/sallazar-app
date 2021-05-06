@@ -8,19 +8,30 @@ import { ArrowBackIos } from '@material-ui/icons';
 const AddProduto = (props) => {
   const dispatch = useDispatch();
 
+  const handleSubmit = (data) => {
+    if (props.handleSubmit) {
+      dispatch(startAddProduto(data)).then((res) => {
+        props.handleSubmit(res.produto);
+      });
+    } else {
+      dispatch(startAddProduto(data)).then(() => {
+        props.history.push('/produtos');
+      });
+    }
+  };
+
   return (
     <>
-      <StyledButton.Link to="/produtos">
-        <StyledButton.OnlyIcon>
-          <ArrowBackIos />
-        </StyledButton.OnlyIcon>
-      </StyledButton.Link>
+      {!props.showBackButton && (
+        <StyledButton.Link to="/produtos">
+          <StyledButton.OnlyIcon>
+            <ArrowBackIos />
+          </StyledButton.OnlyIcon>
+        </StyledButton.Link>
+      )}
       <h1>Adicionar Produto</h1>
       <ProdutoForm
-        onSubmit={(data) => {
-          dispatch(startAddProduto(data));
-          props.history.push('/produtos');
-        }}
+        onSubmit={handleSubmit}
       />
     </>
   );

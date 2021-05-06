@@ -3,28 +3,10 @@ import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import Form from '../forms/Form';
+import { StyledButton } from '../forms/elements';
 
 const VendaFormProdutos = (props) => {
-  const handleSelectProduto = (e, newValue) => {
-    const indexMaster = props.index;
 
-    const newArray = props.itensVendidos?.map((i, index) => {
-      if (index !== indexMaster) {
-        return { ...i };
-      }
-      return {
-        ...i,
-        id: newValue?.id || '',
-        nome: newValue?.nome || '',
-        unidade: newValue?.unidade || '',
-        quantidade: newValue ? 1 : '',
-        valorVenda: newValue?.valorVenda || '',
-        valorTotal: newValue?.valorVenda * 1 || '',
-      };
-    });
-
-    props.setItensVendidos(newArray);
-  };
 
   const handleQuantidade = (e) => {
     const indexMaster = props.index;
@@ -66,6 +48,23 @@ const VendaFormProdutos = (props) => {
     props.setItensVendidos(newArray);
   };
 
+  const handleNovoProduto = () => {
+    props.setModalShow('produto');
+  };
+
+  const addProdutoButton = (
+    <StyledButton.Borderless
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        handleNovoProduto();
+      }}
+      title="Clique aqui para criar um novo Produto"
+      type="button"
+    >
+      + adicionar novo produto
+    </StyledButton.Borderless>
+  );
+
   return (
     <Form.Item>
       <Autocomplete
@@ -75,10 +74,11 @@ const VendaFormProdutos = (props) => {
         )}
         getOptionLabel={(option) => option.nome}
         value={props.itensVendidos[props.index]}
-        onChange={handleSelectProduto}
+        onChange={(e, newValue) => props.handleSelectProduto(e, newValue, props.index)}
         renderInput={(inputProps) => (
           <TextField label="Selecione o Produto" {...inputProps} />
         )}
+        noOptionsText={addProdutoButton}
       />
       <TextField
         className="form-item-p"
