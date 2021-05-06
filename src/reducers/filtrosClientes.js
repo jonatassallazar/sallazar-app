@@ -4,7 +4,6 @@ const statePadraoFiltroClientes = {
   nome: '',
   email: '',
   telefone: '',
-  sortBy: 'nomeasc',
 };
 
 const filtrosClientesReducer = (state = statePadraoFiltroClientes, action) => {

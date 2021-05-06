@@ -39,7 +39,6 @@ const vendasSelector = (
           .includes(status.toLowerCase());
         statusMatchText = statusMatch;
       }
-      console.log(dataVendaMatch);
 
       return dataVendaMatch && clienteMatch && statusMatchText;
       // eslint-disable-next-line

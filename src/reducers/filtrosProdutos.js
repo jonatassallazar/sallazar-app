@@ -2,7 +2,6 @@ const statePadraoFiltroProdutos = {
   nome: '',
   fornecedor: '',
   status: 'todos',
-  sortBy: 'createdatasc',
 };
 
 const filtrosProdutosReducer = (state = statePadraoFiltroProdutos, action) => {

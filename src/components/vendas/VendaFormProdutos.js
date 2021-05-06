@@ -14,12 +14,12 @@ const VendaFormProdutos = (props) => {
       }
       return {
         ...i,
-        id: newValue.id,
-        nome: newValue.nome,
-        unidade: newValue.unidade,
-        quantidade: 1,
-        valorVenda: newValue.valorVenda,
-        valorTotal: newValue.valorVenda * 1,
+        id: newValue?.id || '',
+        nome: newValue?.nome || '',
+        unidade: newValue?.unidade || '',
+        quantidade: newValue ? 1 : '',
+        valorVenda: newValue?.valorVenda || '',
+        valorTotal: newValue?.valorVenda * 1 || '',
       };
     });
 
@@ -70,7 +70,9 @@ const VendaFormProdutos = (props) => {
     <Form.Item>
       <Autocomplete
         className="form-item-g"
-        options={props.produtos}
+        options={props.produtos.sort((a, b) =>
+          a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
+        )}
         getOptionLabel={(option) => option.nome}
         value={props.itensVendidos[props.index]}
         onChange={handleSelectProduto}

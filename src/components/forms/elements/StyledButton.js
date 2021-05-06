@@ -6,6 +6,7 @@ const StyledButton = styled(Button)`
   && {
     background-color: ${({ theme }) => theme.colors.primary};
     margin: 0 ${({ theme }) => theme.spacing.medium};
+    color: ${({ theme }) => theme.colors.pText};
   }
 
   &&:hover {
@@ -35,6 +36,20 @@ StyledButton.Outlined = styled(Button)`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.pText};
 }
+`;
+
+StyledButton.Icon = styled(StyledButton)`
+  && {
+  margin: 0;
+  min-width: 30px;
+  padding: ${({ theme }) => theme.spacing.medium};
+  line-height: 1;
+  }
+
+  &&:hover {
+
+  }
+  
 `;
 
 StyledButton.OnlyIcon = styled(Button)`

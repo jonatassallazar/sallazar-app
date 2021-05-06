@@ -5,7 +5,6 @@ const statePadraoFiltroVendas = {
   dataVendaInicial: moment().subtract(90, 'days').valueOf(),
   dataVendaFinal: moment().valueOf(),
   status: 'todos',
-  sortBy: 'numerodec',
 };
 
 const filtrosVendasReducer = (state = statePadraoFiltroVendas, action) => {

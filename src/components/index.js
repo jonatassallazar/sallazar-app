@@ -15,3 +15,4 @@ export { default as Ajuda } from './Ajuda';
 export { default as EditarProduto } from './produto/EditarProduto';
 export { default as ListaItens } from './listas/ListaItens';
 export { default as Listagem } from './listas/Listagem';
+export { default as Modal } from './Modal';

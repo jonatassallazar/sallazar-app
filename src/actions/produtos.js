@@ -30,11 +30,11 @@ export const startAddProduto = (produtoData = {}) => {
       fornecedor,
       foto,
     };
-    database
+    return database
       .ref(`users/${uid}/produtos`)
       .push(produtoData)
       .then((ref) => {
-        dispatch(
+        return dispatch(
           addProduto({
             id: ref.key,
             ...produto,

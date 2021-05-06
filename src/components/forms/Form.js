@@ -22,6 +22,7 @@ Form.Division = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
 
   > div {
     flex: 1;

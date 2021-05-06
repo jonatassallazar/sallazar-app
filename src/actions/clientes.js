@@ -38,11 +38,11 @@ export const startAddCliente = (clienteData = {}) => {
       selectedTags,
       enderecoCompleto,
     };
-    database
+    return database
       .ref(`users/${uid}/clientes`)
       .push(clienteData)
       .then((ref) => {
-        dispatch(
+        return dispatch(
           addCliente({
             id: ref.key,
             ...cliente,

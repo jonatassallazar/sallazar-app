@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { AddCliente, AddProduto, Modal } from '../../components';
 import Form from '../forms/Form';
 import { startSetClientes } from '../../actions/clientes';
 import { startSetProdutos } from '../../actions/produtos';
@@ -53,6 +54,7 @@ const VendaForm = (props) => {
   //States básicos
   const [createdAt] = useState(props.venda?.createdAt || new Date());
   const [error, setError] = useState('');
+  const [modalShow, setModalShow] = useState(undefined);
 
   useEffect(() => {
     if (!props.venda?.numero) {
@@ -85,12 +87,9 @@ const VendaForm = (props) => {
     setTotal(newValue);
   }, [subTotal, desconto, frete]);
 
-  const clientes = useSelector((state) => state.clientes).sort((a, b) =>
-    a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
-  );
-  const produtos = useSelector((state) => state.produtos).sort((a, b) =>
-    a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
-  );
+  const clientes = useSelector((state) => state.clientes);
+
+  const produtos = useSelector((state) => state.produtos);
 
   const handleFrete = (e, value) => {
     if (value < 0 || value === '') {
@@ -141,8 +140,36 @@ const VendaForm = (props) => {
     }
   };
 
+  const handleNovoCliente = () => {
+    setModalShow('cliente');
+  };
+
+  const handleClose = () => {
+    setModalShow(undefined);
+  };
+
+  const handleClienteSubmit = (data) => {
+    setModalShow(undefined);
+    setCliente({
+      id: data.id,
+      nome: data.nome,
+    });
+  };
+
   return (
     <>
+      {modalShow === 'cliente' ? (
+        <Modal width="80%" alignment="left" handleClose={handleClose}>
+          <AddCliente
+            handleSubmit={handleClienteSubmit}
+            showBackButton={true}
+          />
+        </Modal>
+      ) : modalShow === 'produto' ? (
+        <Modal>
+          <AddProduto />
+        </Modal>
+      ) : undefined}
       <Form onSubmit={onSubmit} className="general-form">
         <Form.Division>
           <TextField
@@ -185,15 +212,23 @@ const VendaForm = (props) => {
               shrink: true,
             }}
           />
+          <StyledButton.Icon
+            onClick={handleNovoCliente}
+            title="Clique aqui para criar um novo cliente"
+          >
+            +
+          </StyledButton.Icon>
           <Autocomplete
             className="form-item-m"
-            options={clientes}
+            options={clientes.sort((a, b) =>
+              a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
+            )}
             getOptionLabel={(option) => option.nome}
             value={cliente}
             onChange={(e, newValue) => {
               setCliente({
-                id: newValue.id,
-                nome: newValue.nome,
+                id: newValue?.id,
+                nome: newValue?.nome,
               });
             }}
             renderInput={(inputProps) => (
@@ -218,6 +253,7 @@ const VendaForm = (props) => {
         </Form.Division>
         <Form.Division>
           <StyledButton
+            title="Clique aqui para adicionar um item no carrinho"
             className="form-item-p"
             variant="contained"
             color="primary"
@@ -285,6 +321,7 @@ const VendaForm = (props) => {
         {error && <Form.Error>{error}</Form.Error>}
         <Form.Actions>
           <StyledButton
+          title="Clique aqui para salvar"
             variant="contained"
             color="primary"
             type="submit"
@@ -294,6 +331,7 @@ const VendaForm = (props) => {
           </StyledButton>
           {props?.handleDelete && (
             <StyledButton.Secundary
+            title="Clique aqui para excluir"
               variant="contained"
               color="secondary"
               startIcon={<Delete />}

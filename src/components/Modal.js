@@ -1,11 +1,16 @@
+import { Close } from '@material-ui/icons';
 import React from 'react';
 import styled from 'styled-components';
 import { StyledButton } from './forms/elements';
 
 const Modal = styled.div`
   background-color: #0000009e;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
 `;
 
 Modal.Content = styled.div`
@@ -19,9 +24,10 @@ Modal.Content = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  text-align: center;
+  text-align: ${(props) => (props.alignment ? props.alignment : 'center')};
   transform: translate(-50%, -50%);
-  width: auto;
+  width: ${(props) => (props.width ? props.width : 'auto')};
+  z-index: 6;
 `;
 
 Modal.Title = styled.h1`
@@ -35,16 +41,43 @@ Modal.Description = styled.p`
   word-wrap: normal;
 `;
 
+Modal.Close = styled.button`
+  background: none;
+  border: none;
+  position: absolute;
+  top: 3%;
+  right: 2%;
+  cursor: pointer;
+
+  svg {
+    width: 36px;
+    height: 36px;
+  }
+`;
+
 const ModalPage = ({
   title,
   description,
   btnPrimary,
   btnPrimaryFunction,
-  btnPrimaryIcon
+  btnPrimaryIcon,
+  children,
+  width,
+  alignment,
+  handleClose,
 }) => {
   return (
-    <Modal>
-      <Modal.Content>
+    <Modal onClick={handleClose}>
+      <Modal.Content
+        width={width}
+        alignment={alignment}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {handleClose && (
+          <Modal.Close onClick={handleClose}>
+            <Close />
+          </Modal.Close>
+        )}
         <Modal.Title>{title}</Modal.Title>
         <Modal.Description>{description}</Modal.Description>
         {btnPrimary && (
@@ -57,6 +90,7 @@ const ModalPage = ({
             {btnPrimary}
           </StyledButton>
         )}
+        {children}
       </Modal.Content>
     </Modal>
   );
