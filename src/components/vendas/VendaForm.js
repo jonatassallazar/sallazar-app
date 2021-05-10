@@ -17,6 +17,8 @@ import { Save, Add, Delete } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import { StyledButton } from '../forms/elements';
+import PagamentoForm from './PagamentoForm';
+import moment from 'moment';
 
 const baseItem = {
   id: '',
@@ -46,7 +48,15 @@ const VendaForm = (props) => {
   const [subTotal, setSubTotal] = useState(props.venda?.subTotal || '0');
   const [frete, setFrete] = useState(props.venda?.frete || '0');
   const [desconto, setDesconto] = useState(props.venda?.desconto || '0');
+  const [taxa, setTaxa] = useState(props.venda?.taxa || '0');
   const [total, setTotal] = useState(props.venda?.total || '');
+  const [formaPagamento, setFormaPagamento] = useState(
+    props.venda?.pagamento || ''
+  );
+  const [parcelas, setParcelas] = useState(props.vendas?.parcelas || 1);
+  const [pagamento, setPagamento] = useState(
+    props.venda?.pagamento || [{ numeroParcela: 1 }]
+  );
   const [observacoes, setObservacoes] = useState(
     props.venda?.observacoes || ''
   );
@@ -55,6 +65,35 @@ const VendaForm = (props) => {
   const [createdAt] = useState(props.venda?.createdAt || new Date());
   const [error, setError] = useState('');
   const [modalShow, setModalShow] = useState(undefined);
+
+  //Calculos referentes a geração das parcelas e forma de pagamento
+  const handleParcelas = (e, newTotal) => {
+    const newValue = e.target.value;
+    if (newValue > 0) {
+      setParcelas(newValue);
+
+      let arr = [];
+      for (let i = 0; i < newValue; i++) {
+        arr = arr.concat({
+          numeroParcela: i + 1,
+          valorParcela: newTotal || total / newValue,
+          dataParcela: moment().add(i, 'months'),
+        });
+      }
+
+      setPagamento(arr);
+    }
+  };
+
+  const handleFormaPagamento = (e) => {
+    setFormaPagamento(e.target.value);
+
+    if (!pagamento[0].valorParcela) {
+      handleParcelas({ target: { value: parcelas } });
+    }
+  };
+
+  /////////////////////////////////////////////////////////////
 
   useEffect(() => {
     if (!props.venda?.numero) {
@@ -82,10 +121,13 @@ const VendaForm = (props) => {
 
   //Calculate the total amount
   useEffect(() => {
-    const newValue = subTotal + (frete - desconto);
+    const newValue = subTotal + (frete - desconto) - taxa;
+
+    handleParcelas({ target: { value: parcelas } }, newValue);
 
     setTotal(newValue);
-  }, [subTotal, desconto, frete]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subTotal, desconto, frete, taxa]);
 
   const clientes = useSelector((state) => state.clientes);
 
@@ -103,6 +145,13 @@ const VendaForm = (props) => {
       return setDesconto(0);
     }
     setDesconto(value);
+  };
+
+  const handleTaxa = (e, value) => {
+    if (value < 0 || value === '') {
+      return setTaxa(0);
+    }
+    setTaxa(value);
   };
 
   const handleAddNewItem = () => {
@@ -133,6 +182,7 @@ const VendaForm = (props) => {
         observacoes,
         subTotal,
         total,
+        taxa,
         desconto,
         frete,
         createdAt: createdAt.valueOf(),
@@ -217,12 +267,12 @@ const VendaForm = (props) => {
           <TextField
             className="form-item-p"
             label="Número da Venda"
-            required={true}
+            required
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
             disabled={true}
           />
-          <FormControl>
+          <FormControl required>
             <InputLabel id="demo-simple-select-label">Status</InputLabel>
             <Select
               className="form-item-m"
@@ -306,6 +356,7 @@ const VendaForm = (props) => {
         </Form.Division>
         <Form.Division>
           <CurrencyTextField
+            required
             className="form-item-p"
             label="SubTotal"
             disabled={true}
@@ -340,6 +391,18 @@ const VendaForm = (props) => {
           />
           <CurrencyTextField
             className="form-item-p"
+            label="Taxa"
+            variant="standard"
+            currencySymbol="R$"
+            outputFormat="string"
+            decimalCharacter=","
+            digitGroupSeparator="."
+            value={taxa}
+            onChange={handleTaxa}
+          />
+          <CurrencyTextField
+            required
+            className="form-item-p"
             label="Total"
             disabled={true}
             variant="standard"
@@ -350,6 +413,48 @@ const VendaForm = (props) => {
             value={total}
           />
         </Form.Division>
+        <Form.Division>
+          <FormControl required>
+            <InputLabel id="demo-simple-select-label">
+              Forma de Pagamento
+            </InputLabel>
+            <Select
+              className="form-item-m"
+              value={formaPagamento}
+              onChange={handleFormaPagamento}
+            >
+              <MenuItem value="">Selecione...</MenuItem>
+              <MenuItem value="avista">À Vista</MenuItem>
+              <MenuItem value="aprazo">À Prazo</MenuItem>
+              <MenuItem value="boleto">Boleto</MenuItem>
+              <MenuItem value="credito">Cartão de Crédito</MenuItem>
+              <MenuItem value="debito">Cartão de Débito</MenuItem>
+              <MenuItem value="cheque">Cheque</MenuItem>
+              <MenuItem value="pix">Pix</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            required
+            className="form-item-p"
+            label="Parcelas"
+            variant="standard"
+            type="number"
+            InputLabelProps={{ shrink: true }}
+            value={parcelas}
+            onChange={handleParcelas}
+          />
+        </Form.Division>
+        {pagamento?.map((item, index) => (
+          <Form.Division>
+            <PagamentoForm
+              key={`KeyPacela_${index}`}
+              pagamento={pagamento}
+              setPagamento={setPagamento}
+              index={index}
+              total={total}
+            />
+          </Form.Division>
+        ))}
         <Form.Division>
           <TextField
             label="Observações"

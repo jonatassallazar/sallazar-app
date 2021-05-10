@@ -6,8 +6,6 @@ import Form from '../forms/Form';
 import { StyledButton } from '../forms/elements';
 
 const VendaFormProdutos = (props) => {
-
-
   const handleQuantidade = (e) => {
     const indexMaster = props.index;
     const newValue = e.target.value;
@@ -74,13 +72,16 @@ const VendaFormProdutos = (props) => {
         )}
         getOptionLabel={(option) => option.nome}
         value={props.itensVendidos[props.index]}
-        onChange={(e, newValue) => props.handleSelectProduto(e, newValue, props.index)}
+        onChange={(e, newValue) =>
+          props.handleSelectProduto(e, newValue, props.index)
+        }
         renderInput={(inputProps) => (
           <TextField label="Selecione o Produto" {...inputProps} />
         )}
         noOptionsText={addProdutoButton}
       />
       <TextField
+        required
         className="form-item-p"
         label="Unidade"
         value={props.itensVendidos[props.index].unidade}
@@ -88,6 +89,7 @@ const VendaFormProdutos = (props) => {
         InputLabelProps={{ shrink: true }}
       />
       <TextField
+        required
         className="form-item-p"
         label="Quantidade"
         variant="standard"
@@ -97,6 +99,7 @@ const VendaFormProdutos = (props) => {
         onChange={handleQuantidade}
       />
       <CurrencyTextField
+        required
         className="form-item-p"
         label="Valor Unitário"
         variant="standard"
@@ -108,6 +111,7 @@ const VendaFormProdutos = (props) => {
         onChange={handleValorVenda}
       />
       <CurrencyTextField
+        required
         className="form-item-p"
         label="Valor Total"
         disabled={true}
