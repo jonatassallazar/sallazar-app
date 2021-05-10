@@ -98,7 +98,7 @@ const VendaFormProdutos = (props) => {
       />
       <CurrencyTextField
         className="form-item-p"
-        label="Valor de Venda"
+        label="Valor Unitário"
         variant="standard"
         currencySymbol="R$"
         outputFormat="string"
