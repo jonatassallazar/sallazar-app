@@ -23,7 +23,7 @@ const theme = {
     small: '1rem',
     medium: '1.4rem',
     large: '1.8rem',
-    huge: '2.4rem',
+    huge: '3.2rem',
   },
   boxes: {
     borderRadius: '8px',
