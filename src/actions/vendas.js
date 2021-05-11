@@ -21,6 +21,9 @@ export const startAddVenda = (vendaData = {}) => {
       taxa = '',
       observacoes = '',
       status = '',
+      parcelas = 1,
+      pagamento = [],
+      formaPagamento = '',
       dataVenda = '',
     } = vendaData;
     const venda = {
@@ -34,6 +37,9 @@ export const startAddVenda = (vendaData = {}) => {
       taxa,
       observacoes,
       status,
+      pagamento,
+      parcelas,
+      formaPagamento,
       dataVenda,
     };
     database

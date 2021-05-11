@@ -16,12 +16,12 @@ const vendasSelector = (
       }
 
       const clienteMatch = venda.cliente.nome
-        .toLowerCase()
+        ?.toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .includes(
           cliente
-            .toLowerCase()
+            ?.toLowerCase()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
         );
@@ -30,13 +30,13 @@ const vendasSelector = (
 
       if (status === 'todos') {
         const statusMatch = !venda.status
-          .toLowerCase()
+          ?.toLowerCase()
           .includes('cancelada');
         statusMatchText = statusMatch;
       } else {
         const statusMatch = venda.status
-          .toLowerCase()
-          .includes(status.toLowerCase());
+          ?.toLowerCase()
+          .includes(status?.toLowerCase());
         statusMatchText = statusMatch;
       }
 

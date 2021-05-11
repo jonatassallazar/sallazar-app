@@ -185,6 +185,9 @@ const VendaForm = (props) => {
         taxa,
         desconto,
         frete,
+        parcelas,
+        pagamento,
+        formaPagamento,
         createdAt: createdAt.valueOf(),
       });
     }
