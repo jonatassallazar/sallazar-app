@@ -84,7 +84,7 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    const newValue = vendasMesAnterior.reduce((acc, cur) => acc + cur.total, 0);
+    const newValue = vendasMesAnterior.reduce((acc, cur) => acc + parseFloat(cur.total), 0);
 
     setFaturamentoMesAnterior(newValue);
   }, [vendasMesAnterior]);
@@ -99,7 +99,7 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    const newValue = vendasMesAtual.reduce((acc, cur) => acc + cur.total, 0);
+    const newValue = vendasMesAtual.reduce((acc, cur) => acc + parseFloat(cur.total), 0);
 
     setFaturamentoMesAtual(newValue);
   }, [vendasMesAtual]);
