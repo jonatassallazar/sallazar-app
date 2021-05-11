@@ -1,11 +1,11 @@
 const statusTags = {
-  Orçamento: 'tag tag-marrom',
-  'Em Andamento': 'tag tag-amarela',
-  'À Receber': 'tag tag-roxa',
-  Concluída: 'tag tag-verde',
-  Ativo: 'tag tag-verde',
-  Inativo: 'tag tag-preta',
-  Cancelada: 'tag tag-vermelha',
+  'orcamento': 'tag tag-marrom',
+  'em andamento': 'tag tag-amarela',
+  'a receber': 'tag tag-roxa',
+  'concluida': 'tag tag-verde',
+  'ativo': 'tag tag-verde',
+  'inativo': 'tag tag-preta',
+  'cancelada': 'tag tag-vermelha',
 };
 
 export default statusTags;
