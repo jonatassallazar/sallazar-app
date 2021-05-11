@@ -7,19 +7,19 @@ const Tipografia = styled.h1`
 Tipografia.H1 = styled(Tipografia)`
   font-size: ${({ theme }) => theme.font.huge};
   font-weight: 100;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.75) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.50) 0;
 `;
 
 Tipografia.H2 = styled(Tipografia)`
   font-size: calc(${({ theme }) => theme.font.huge} * 0.85);
   font-weight: 400;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.65) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.50) 0;
 `;
 
 Tipografia.H3 = styled(Tipografia)`
   font-size: calc(${({ theme }) => theme.font.huge} * 0.75);
   font-weight: 500;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.55) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.50) 0;
 `;
 
 Tipografia.H4 = styled(Tipografia)`
