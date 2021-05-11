@@ -4,10 +4,11 @@ import {
   setEmailFiltro,
   setNomeFiltro,
   setTelefoneFiltro,
+  limparFiltro,
 } from '../../actions/filtrosClientes';
 import Form from '../forms/Form';
 import { TextField } from '@material-ui/core';
-import { StyledTextField } from '../forms/elements';
+import { StyledButton, StyledTextField } from '../forms/elements';
 import InputMask from 'react-input-mask';
 
 const FiltroCliente = (props) => {
@@ -51,6 +52,9 @@ const FiltroCliente = (props) => {
               />
             )}
           </InputMask>
+          <StyledButton onClick={(e) => dispatch(limparFiltro())}>
+            Limpar
+          </StyledButton>
         </Form.Division>
       </Form.Filtro>
     </Form>

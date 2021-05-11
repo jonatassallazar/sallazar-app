@@ -11,35 +11,11 @@ const filtrosProdutosReducer = (state = statePadraoFiltroProdutos, action) => {
         ...state,
         nome: action.nome,
       };
-    case 'SORT_BY_NOME_ASC':
+    case 'CLEAN_FILTER':
       return {
-        ...state,
-        sortBy: 'nomeasc',
-      };
-    case 'SORT_BY_NOME_DEC':
-      return {
-        ...state,
-        sortBy: 'nomedec',
-      };
-    case 'SORT_BY_PRECO_ASC':
-      return {
-        ...state,
-        sortBy: 'precoasc',
-      };
-    case 'SORT_BY_PRECO_DEC':
-      return {
-        ...state,
-        sortBy: 'precodec',
-      };
-    case 'SORT_BY_CREATEDAT_ASC':
-      return {
-        ...state,
-        sortBy: 'createdatasc',
-      };
-    case 'SORT_BY_CREATEDAT_DEC':
-      return {
-        ...state,
-        sortBy: 'createdatdec',
+        nome: '',
+        status: 'todos',
+        fornecedor: '',
       };
     case 'SET_STATUS_FILTER':
       return {

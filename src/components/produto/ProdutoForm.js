@@ -10,7 +10,7 @@ const ProdutoForm = (props) => {
   const [unidade, setUnidade] = useState(props.produto?.unidade || '');
   const [peso, setPeso] = useState(props.produto?.peso || '');
   const [valorCusto, setValorCusto] = useState(props.produto?.valorCusto || '');
-  const [status, setStatus] = useState(props.produto?.status || ['Ativo']);
+  const [status, setStatus] = useState(props.produto?.status || 'ativo');
   const [valorVenda, setValorVenda] = useState(props.produto?.valorVenda || '');
   const [fornecedor, setFornecedor] = useState(props.produto?.fornecedor || '');
   const [createdAt] = useState(props.produto?.createdAt || new Date());
@@ -42,8 +42,8 @@ const ProdutoForm = (props) => {
     <Form onSubmit={onSubmit}>
       <Form.Division>
         <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <MenuItem value="Ativo">Ativo</MenuItem>
-          <MenuItem value="Inativo">Inativo</MenuItem>
+          <MenuItem value="ativo">Ativo</MenuItem>
+          <MenuItem value="inativo">Inativo</MenuItem>
         </Select>
         <TextField
           className="form-item-g"

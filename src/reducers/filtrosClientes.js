@@ -13,16 +13,6 @@ const filtrosClientesReducer = (state = statePadraoFiltroClientes, action) => {
         ...state,
         nome: action.nome,
       };
-    case 'SORT_BY_NOMEASC':
-      return {
-        ...state,
-        sortBy: 'nomeasc',
-      };
-    case 'SORT_BY_NOMEDEC':
-      return {
-        ...state,
-        sortBy: 'nomedec',
-      };
     case 'SET_EMAIL_FILTER':
       return {
         ...state,
@@ -32,6 +22,12 @@ const filtrosClientesReducer = (state = statePadraoFiltroClientes, action) => {
       return {
         ...state,
         telefone: action.telefone,
+      };
+    case 'CLEAN_FILTER':
+      return {
+        nome: '',
+        email: '',
+        telefone: '',
       };
     default:
       return state;

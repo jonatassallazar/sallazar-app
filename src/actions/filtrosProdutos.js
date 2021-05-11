@@ -13,26 +13,6 @@ export const setStatusFiltro = (status = '') => ({
   status,
 });
 
-export const sortByNomeAsc = () => ({
-  type: 'SORT_BY_NOME_ASC',
-});
-
-export const sortByNomeDec = () => ({
-  type: 'SORT_BY_NOME_DEC',
-});
-
-export const sortByPrecoAsc = () => ({
-  type: 'SORT_BY_PRECO_ASC',
-});
-
-export const sortByPrecoDec = () => ({
-  type: 'SORT_BY_PRECO_DEC',
-});
-
-export const sortByCreatedAtAsc = () => ({
-  type: 'SORT_BY_CREATEDAT_ASC',
-});
-
-export const sortByCreatedAtDec = () => ({
-  type: 'SORT_BY_CREATEDAT_DEC',
+export const limparFiltro = () => ({
+  type: 'CLEAN_FILTER',
 });

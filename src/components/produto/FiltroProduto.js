@@ -4,6 +4,7 @@ import {
   setFornecedorFiltro,
   setNomeFiltro,
   setStatusFiltro,
+  limparFiltro,
 } from '../../actions/filtrosProdutos';
 import Form from '../forms/Form';
 import {
@@ -13,6 +14,7 @@ import {
   FormControl,
   FormHelperText,
 } from '@material-ui/core';
+import { StyledButton } from '../forms/elements';
 
 const FiltroProduto = () => {
   const dispatch = useDispatch();
@@ -52,6 +54,9 @@ const FiltroProduto = () => {
               <MenuItem value="inativo">Inativo</MenuItem>
             </Select>
           </FormControl>
+          <StyledButton onClick={(e) => dispatch(limparFiltro())}>
+            Limpar
+          </StyledButton>
         </Form.Division>
       </Form.Filtro>
     </Form>

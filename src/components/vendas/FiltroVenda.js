@@ -5,6 +5,7 @@ import {
   setClienteFiltro,
   setDataVendaInicialFiltro,
   setDataVendaFinalFiltro,
+  limparFiltro,
 } from '../../actions/filtrosVendas';
 import Form from '../forms/Form';
 import {
@@ -15,16 +16,13 @@ import {
   FormControl,
 } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
+import { StyledButton } from '../forms/elements';
 
 const FiltroVenda = () => {
   const dispatch = useDispatch();
-  const {
-    status,
-    cliente,
-    dataVendaInicial,
-    dataVendaFinal,
-  } = useSelector((state) => state.filtrosVendas);
-
+  const { status, cliente, dataVendaInicial, dataVendaFinal } = useSelector(
+    (state) => state.filtrosVendas
+  );
 
   return (
     <Form>
@@ -77,7 +75,10 @@ const FiltroVenda = () => {
           />
           <FormControl>
             <FormHelperText>Status da Venda</FormHelperText>
-            <Select value={status} onChange={(e) => dispatch(setStatusFiltro(e.target.value))}>
+            <Select
+              value={status}
+              onChange={(e) => dispatch(setStatusFiltro(e.target.value))}
+            >
               <MenuItem value="todos">Todas</MenuItem>
               <MenuItem value="em andamento">Em Andamento</MenuItem>
               <MenuItem value="orçamento">Orçamento</MenuItem>
@@ -86,43 +87,9 @@ const FiltroVenda = () => {
               <MenuItem value="cancelada">Canceladas</MenuItem>
             </Select>
           </FormControl>
-          {/* <FormControl>
-            <FormHelperText>Ordenar</FormHelperText>
-            <Select
-              value={sortBy}
-              onChange={(e) => {
-                switch (e.target.value) {
-                  case 'numeroasc':
-                    return dispatch(sortByNumeroAsc());
-                  case 'numerodec':
-                    return dispatch(sortByNumeroDec());
-                  case 'datavendaasc':
-                    return dispatch(sortByDataVendaAsc());
-                  case 'datavendadec':
-                    return dispatch(sortByDataVendaDec());
-                  case 'totalasc':
-                    return dispatch(sortByValorTotalAsc());
-                  case 'totaldec':
-                    return dispatch(sortByValorTotalDec());
-                  case 'createdatasc':
-                    return dispatch(sortByCreatedAtAsc());
-                  case 'createdatdec':
-                    return dispatch(sortByCreatedAtDec());
-                  default:
-                    break;
-                }
-              }}
-            >
-              <MenuItem value="numeroasc">Número ↓</MenuItem>
-              <MenuItem value="numerodec">Número ↑</MenuItem>
-              <MenuItem value="datavendaasc">Data da Venda ↓</MenuItem>
-              <MenuItem value="datavendadec">Data da Venda ↑</MenuItem>
-              <MenuItem value="totalasc">Valor Total ↓</MenuItem>
-              <MenuItem value="totaldec">Valor Total ↑</MenuItem>
-              <MenuItem value="createdatasc">Criado ↓</MenuItem>
-              <MenuItem value="createdatdec">Criado ↑</MenuItem>
-            </Select>
-          </FormControl> */}
+          <StyledButton onClick={(e) => dispatch(limparFiltro())}>
+            Limpar
+          </StyledButton>
         </Form.Division>
       </Form.Filtro>
     </Form>

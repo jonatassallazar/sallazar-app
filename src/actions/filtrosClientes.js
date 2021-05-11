@@ -20,3 +20,7 @@ export const sortByNomeAsc = () => ({
 export const sortByNomeDec = () => ({
   type: 'SORT_BY_NOMEDEC',
 });
+
+export const limparFiltro = () => ({
+  type: 'CLEAN_FILTER',
+});

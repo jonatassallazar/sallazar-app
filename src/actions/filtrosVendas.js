@@ -18,34 +18,6 @@ export const setStatusFiltro = (status = '') => ({
   status,
 });
 
-export const sortByNumeroAsc = () => ({
-  type: 'SORT_BY_NUMERO_ASC',
-});
-
-export const sortByNumeroDec = () => ({
-  type: 'SORT_BY_NUMERO_DEC',
-});
-
-export const sortByDataVendaAsc = () => ({
-  type: 'SORT_BY_DATAVENDA_ASC',
-});
-
-export const sortByDataVendaDec = () => ({
-  type: 'SORT_BY_DATAVENDA_DEC',
-});
-
-export const sortByValorTotalAsc = () => ({
-  type: 'SORT_BY_VALORTOTAL_ASC',
-});
-
-export const sortByValorTotalDec = () => ({
-  type: 'SORT_BY_VALORTOTAL_DEC',
-});
-
-export const sortByCreatedAtAsc = () => ({
-  type: 'SORT_BY_CREATEDAT_ASC',
-});
-
-export const sortByCreatedAtDec = () => ({
-  type: 'SORT_BY_CREATEDAT_DEC',
+export const limparFiltro = () => ({
+  type: 'CLEAN_FILTER',
 });

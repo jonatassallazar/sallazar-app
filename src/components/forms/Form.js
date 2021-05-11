@@ -74,7 +74,7 @@ Form.Filtro = styled.div`
 `;
 
 Form.Filtro.Title = styled.p`
-  margin: 0 0 -28px 0;
+  margin: 0 0 -23px 0;
   position: relative;
   top: -13px;
   left: 50px;
