@@ -35,6 +35,7 @@ const AddVenda = (props) => {
         vendas={vendas}
         numero={numeroVenda}
         onSubmit={(data) => {
+          console.log(data);
           dispatch(startAddVenda(data));
           props.history.push('/vendas');
         }}

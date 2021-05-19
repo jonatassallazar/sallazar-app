@@ -45,6 +45,10 @@ Form.Division = styled.div`
   .form-item-gg {
     flex: 4;
   }
+
+  .textfield-align-right div>input{
+    text-align: right;
+  }
 `;
 
 Form.Item = styled(Form.Division)``;

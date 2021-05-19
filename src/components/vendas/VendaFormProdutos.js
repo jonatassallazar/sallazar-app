@@ -1,9 +1,10 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { InputAdornment, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import Form from '../forms/Form';
 import { StyledButton } from '../forms/elements';
+import { currencyFormatter } from '../forms/utils/currencyFormatter';
+import NumberFormat from 'react-number-format';
 
 const VendaFormProdutos = (props) => {
   const handleQuantidade = (e) => {
@@ -28,9 +29,9 @@ const VendaFormProdutos = (props) => {
     props.setItensVendidos(newArray);
   };
 
-  const handleValorVenda = (e, value) => {
+  const handleValorVenda = (values) => {
     const indexMaster = props.index;
-    const newValue = value;
+    const newValue = values.floatValue;
 
     const newArray = props.itensVendidos?.map((i, index) => {
       if (index !== indexMaster) {
@@ -98,29 +99,38 @@ const VendaFormProdutos = (props) => {
         value={props.itensVendidos[props.index].quantidade}
         onChange={handleQuantidade}
       />
-      <CurrencyTextField
+      <NumberFormat
         required
-        className="form-item-p"
+        className="textfield-align-right form-item-p"
         label="Valor Unitário"
-        variant="standard"
-        currencySymbol="R$"
-        outputFormat="string"
-        decimalCharacter=","
-        digitGroupSeparator="."
+        decimalScale={2}
+        decimalSeparator=","
+        fixedDecimalScale
+        placeholder="0,00"
+        thousandSeparator="."
+        customInput={TextField}
         value={props.itensVendidos[props.index].valorVenda}
-        onChange={handleValorVenda}
+        onValueChange={handleValorVenda}
+        format={currencyFormatter}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+        }}
       />
-      <CurrencyTextField
+      <NumberFormat
         required
-        className="form-item-p"
+        className="textfield-align-right form-item-p"
         label="Valor Total"
-        disabled={true}
-        variant="standard"
-        currencySymbol="R$"
-        outputFormat="string"
-        decimalCharacter=","
-        digitGroupSeparator="."
+        decimalScale={2}
+        decimalSeparator=","
+        fixedDecimalScale
+        placeholder="0,00"
+        thousandSeparator="."
+        customInput={TextField}
         value={props.itensVendidos[props.index].valorTotal}
+        format={currencyFormatter}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+        }}
       />
     </Form.Item>
   );

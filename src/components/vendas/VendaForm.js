@@ -11,14 +11,16 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  InputAdornment,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Save, Add, Delete } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import { StyledButton } from '../forms/elements';
 import PagamentoForm from './PagamentoForm';
 import moment from 'moment';
+import NumberFormat from 'react-number-format';
+import { currencyFormatter } from '../forms/utils/currencyFormatter';
 
 const baseItem = {
   id: '',
@@ -30,10 +32,11 @@ const baseItem = {
 
 const VendaForm = (props) => {
   const dispatch = useDispatch();
+  const inputRef = React.useRef(null);
 
   //Parte base da venda
   const [numero, setNumero] = useState(props.venda?.numero || props.numero);
-  const [status, setStatus] = useState(props.venda?.status || 'Em Andamento');
+  const [status, setStatus] = useState(props.venda?.status || 'em andamento');
   const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
   const [cliente, setCliente] = useState(
     props.venda?.cliente || { id: '', nome: '' }
@@ -45,13 +48,13 @@ const VendaForm = (props) => {
   );
 
   //Resumo da Venda
-  const [subTotal, setSubTotal] = useState(props.venda?.subTotal || '0');
-  const [frete, setFrete] = useState(props.venda?.frete || '0');
-  const [desconto, setDesconto] = useState(props.venda?.desconto || '0');
-  const [taxa, setTaxa] = useState(props.venda?.taxa || '0');
-  const [total, setTotal] = useState(props.venda?.total || '');
+  const [subTotal, setSubTotal] = useState(props.venda?.subTotal || 0);
+  const [frete, setFrete] = useState(props.venda?.frete || 0);
+  const [desconto, setDesconto] = useState(props.venda?.desconto || 0);
+  const [taxa, setTaxa] = useState(props.venda?.taxa || 0);
+  const [total, setTotal] = useState(props.venda?.total || 0);
   const [formaPagamento, setFormaPagamento] = useState(
-    props.venda?.pagamento || ''
+    props.venda?.formaPagamento || ''
   );
   const [parcelas, setParcelas] = useState(props.vendas?.parcelas || 1);
   const [pagamento, setPagamento] = useState(
@@ -77,8 +80,9 @@ const VendaForm = (props) => {
         arr = arr.concat({
           numeroParcela: i + 1,
           valorParcela: newTotal || total / newValue,
-          dataParcela: moment().add(i, 'months'),
+          dataParcela: moment().add(i, 'months').valueOf(),
         });
+        console.log(newTotal);
       }
 
       setPagamento(arr);
@@ -123,35 +127,25 @@ const VendaForm = (props) => {
   useEffect(() => {
     const newValue = subTotal + (frete - desconto) - taxa;
 
-    handleParcelas({ target: { value: parcelas } }, newValue);
-
+    handleParcelas({ target: { value: parcelas } }, newValue / parcelas);
     setTotal(newValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subTotal, desconto, frete, taxa]);
+  }, [subTotal, desconto, frete, taxa, parcelas]);
 
   const clientes = useSelector((state) => state.clientes);
 
   const produtos = useSelector((state) => state.produtos);
 
-  const handleFrete = (e, value) => {
-    if (value < 0 || value === '') {
-      return setFrete(0);
-    }
-    setFrete(value);
+  const handleFrete = (values) => {
+    setFrete(values.floatValue);
   };
 
-  const handleDesconto = (e, value) => {
-    if (value < 0 || value === '') {
-      return setDesconto(0);
-    }
-    setDesconto(value);
+  const handleDesconto = (values) => {
+    setDesconto(values.floatValue);
   };
 
-  const handleTaxa = (e, value) => {
-    if (value < 0 || value === '') {
-      return setTaxa(0);
-    }
-    setTaxa(value);
+  const handleTaxa = (values) => {
+    setTaxa(values.floatValue);
   };
 
   const handleAddNewItem = () => {
@@ -358,62 +352,98 @@ const VendaForm = (props) => {
           </StyledButton>
         </Form.Division>
         <Form.Division>
-          <CurrencyTextField
+          <NumberFormat
             required
-            className="form-item-p"
+            disabled
+            className="textfield-align-right"
             label="SubTotal"
-            disabled={true}
-            variant="standard"
-            currencySymbol="R$"
-            outputFormat="string"
-            decimalCharacter=","
-            digitGroupSeparator="."
+            decimalScale={2}
+            decimalSeparator=","
+            fixedDecimalScale
+            placeholder="0,00"
+            thousandSeparator="."
+            customInput={TextField}
             value={subTotal}
+            format={currencyFormatter}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">R$</InputAdornment>
+              ),
+            }}
           />
-          <CurrencyTextField
-            className="form-item-p"
+          <NumberFormat
+            className="textfield-align-right"
             label="Frete"
-            variant="standard"
-            currencySymbol="R$"
-            outputFormat="string"
-            decimalCharacter=","
-            digitGroupSeparator="."
+            decimalScale={2}
+            decimalSeparator=","
+            fixedDecimalScale
+            placeholder="0,00"
+            thousandSeparator="."
+            customInput={TextField}
             value={frete}
-            onChange={handleFrete}
+            onValueChange={handleFrete}
+            format={currencyFormatter}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">R$</InputAdornment>
+              ),
+            }}
           />
-          <CurrencyTextField
-            className="form-item-p"
+          <NumberFormat
+            className="textfield-align-right"
             label="Desconto"
-            variant="standard"
-            currencySymbol="R$"
-            outputFormat="string"
-            decimalCharacter=","
-            digitGroupSeparator="."
+            decimalScale={2}
+            decimalSeparator=","
+            fixedDecimalScale
+            placeholder="0,00"
+            thousandSeparator="."
+            customInput={TextField}
             value={desconto}
-            onChange={handleDesconto}
+            onValueChange={handleDesconto}
+            format={currencyFormatter}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">R$</InputAdornment>
+              ),
+            }}
           />
-          <CurrencyTextField
-            className="form-item-p"
+          <NumberFormat
+            className="textfield-align-right"
             label="Taxa"
-            variant="standard"
-            currencySymbol="R$"
-            outputFormat="string"
-            decimalCharacter=","
-            digitGroupSeparator="."
+            decimalScale={2}
+            decimalSeparator=","
+            fixedDecimalScale
+            placeholder="0,00"
+            thousandSeparator="."
+            customInput={TextField}
             value={taxa}
-            onChange={handleTaxa}
+            onValueChange={handleTaxa}
+            format={currencyFormatter}
+            getInputRef={inputRef}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">R$</InputAdornment>
+              ),
+            }}
           />
-          <CurrencyTextField
+          <NumberFormat
             required
-            className="form-item-p"
+            disabled
+            className="textfield-align-right"
             label="Total"
-            disabled={true}
-            variant="standard"
-            currencySymbol="R$"
-            outputFormat="string"
-            decimalCharacter=","
-            digitGroupSeparator="."
+            decimalScale={2}
+            decimalSeparator=","
+            fixedDecimalScale
+            placeholder="0,00"
+            thousandSeparator="."
+            customInput={TextField}
             value={total}
+            format={currencyFormatter}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">R$</InputAdornment>
+              ),
+            }}
           />
         </Form.Division>
         <Form.Division>

@@ -1,21 +1,22 @@
 import React from 'react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
-import { TextField } from '@material-ui/core';
+import { InputAdornment, TextField } from '@material-ui/core';
 import moment from 'moment';
+import {currencyFormatter} from '../forms/utils/currencyFormatter';
+import NumberFormat from 'react-number-format';
 
 const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
   const [update, setUpdate] = React.useState(false);
   const [error, setError] = React.useState(undefined);
 
-  const handleValorParcela = (e, value) => {
+  const handleValorParcela = (values) => {
     const newArray = pagamento?.map((i, indexA) => {
       if (indexA !== index) {
         return { ...i };
       }
       return {
         ...i,
-        valorParcela: value !== '' ? value : 0,
+        valorParcela: values.floatValue !== '' ? values.floatValue : 0,
         inseridoManualmente: true,
       };
     });
@@ -29,7 +30,7 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
     let sumValueAuto = 0;
     let sumQntdParcela = 0;
 
-    pagamento.reduce((acc, cur) => {
+    const valorTotalParcelas = pagamento.reduce((acc, cur) => {
       if (cur.inseridoManualmente) {
         sumValueManual =
           acc + parseFloat(cur.valorParcela !== '' ? cur.valorParcela : 0);
@@ -43,6 +44,12 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
 
     if (sumValueManual > total) {
       setError('O valor da parcela não pode exceder o total.');
+    } else {
+      setError(undefined);
+    }
+
+    if (valorTotalParcelas < total) {
+      setError('O valor da parcela é menor do que o valor total da compra');
     } else {
       setError(undefined);
     }
@@ -67,14 +74,6 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagamento]);
 
-  const handleBlur = (e, value) => {
-    if (!value) {
-      setError('O campo de parcela não pode estar vazio.');
-    } else {
-      setError(undefined);
-    }
-  };
-
   const handleDataParcela = (e) => {
     const newValue = e;
 
@@ -82,7 +81,7 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
       if (indexA !== 0 && index === 0) {
         return {
           ...i,
-          dataParcela: moment(e).add(indexA, 'months'),
+          dataParcela: moment(e).add(indexA, 'months').valueOf(),
         };
       } else if (index === 0) {
         return {
@@ -108,21 +107,24 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
         value={pagamento[index].numeroParcela}
         disabled={true}
       />
-      <CurrencyTextField
+      <NumberFormat
         required
-        className="form-item-p"
+        className="textfield-align-right"
         label="Valor da Parcela"
-        variant="standard"
-        currencySymbol="R$"
-        outputFormat="string"
-        decimalCharacter=","
-        digitGroupSeparator="."
+        decimalScale={2}
+        decimalSeparator=","
+        fixedDecimalScale
+        placeholder="0,00"
+        thousandSeparator="."
+        customInput={TextField}
         value={pagamento[index].valorParcela}
-        onChange={handleValorParcela}
-        minimumValue={0}
-        onBlur={handleBlur}
+        onValueChange={handleValorParcela}
+        format={currencyFormatter}
         error={!!error}
         helperText={error}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+        }}
       />
       <KeyboardDatePicker
         required
