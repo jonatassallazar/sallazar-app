@@ -3,7 +3,7 @@ import { InputAdornment, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Form from '../forms/Form';
 import { StyledButton } from '../forms/elements';
-import { currencyFormatter } from '../forms/utils/currencyFormatter';
+import { currencyFormatter } from '../forms/utils/numbersFormatters';
 import NumberFormat from 'react-number-format';
 
 const VendaFormProdutos = (props) => {

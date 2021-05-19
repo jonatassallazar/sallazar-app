@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Tipografia from './layout/Tipografia';
 import Calendar from 'react-calendar';
 import StyledCalendar from './layout/StyledCalendar';
-import { currencyFormatter } from './forms/utils/currencyFormatter';
+import { currencyFormatter } from './forms/utils/numbersFormatters';
 import moment from 'moment';
 
 const DashboardLayout = styled.div`
