@@ -20,7 +20,7 @@ import { StyledButton } from '../forms/elements';
 import PagamentoForm from './PagamentoForm';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
-import { currencyFormatter } from '../forms/utils/currencyFormatter';
+import { currencyFormatter } from '../forms/utils/numbersFormatters';
 
 const baseItem = {
   id: '',
@@ -36,7 +36,9 @@ const VendaForm = (props) => {
   //Parte base da venda
   const [numero, setNumero] = useState(props.venda?.numero || props.numero);
   const [status, setStatus] = useState(props.venda?.status || 'em andamento');
-  const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || new Date());
+  const [dataVenda, setDataVenda] = useState(
+    props.venda?.dataVenda || new Date()
+  );
   const [cliente, setCliente] = useState(
     props.venda?.cliente || { id: '', nome: '' }
   );
@@ -55,7 +57,7 @@ const VendaForm = (props) => {
   const [formaPagamento, setFormaPagamento] = useState(
     props.venda?.formaPagamento || ''
   );
-  const [parcelas, setParcelas] = useState(props.vendas?.parcelas || 1);
+  const [parcelas, setParcelas] = useState(props.venda?.parcelas || 1);
   const [pagamento, setPagamento] = useState(
     props.venda?.pagamento || [{ numeroParcela: 1 }]
   );
@@ -80,8 +82,8 @@ const VendaForm = (props) => {
           numeroParcela: i + 1,
           valorParcela: newTotal || total / newValue,
           dataParcela: moment().add(i, 'months').valueOf(),
+          inseridoManualmente: false,
         });
-        console.log(newTotal);
       }
 
       setPagamento(arr);
@@ -127,6 +129,7 @@ const VendaForm = (props) => {
     const newValue = subTotal + (frete - desconto) - taxa;
 
     handleParcelas({ target: { value: parcelas } }, newValue / parcelas);
+
     setTotal(newValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subTotal, desconto, frete, taxa, parcelas]);

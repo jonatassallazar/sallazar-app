@@ -2,22 +2,52 @@ import React from 'react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import { InputAdornment, TextField } from '@material-ui/core';
 import moment from 'moment';
-import {currencyFormatter} from '../forms/utils/currencyFormatter';
+import { currencyFormatter } from '../forms/utils/numbersFormatters';
 import NumberFormat from 'react-number-format';
+import { Clear } from '@material-ui/icons';
+import { StyledButton } from '../forms/elements';
 
 const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
   const [update, setUpdate] = React.useState(false);
   const [error, setError] = React.useState(undefined);
 
-  const handleValorParcela = (values) => {
+  const handleValorParcela = ({ floatValue }) => {
     const newArray = pagamento?.map((i, indexA) => {
       if (indexA !== index) {
         return { ...i };
       }
       return {
         ...i,
-        valorParcela: values.floatValue !== '' ? values.floatValue : 0,
+        valorParcela: floatValue,
+      };
+    });
+
+    setPagamento(newArray);
+    setUpdate(true);
+  };
+
+  const handleInseridoManualmente = () => {
+    const newArray = pagamento?.map((i, indexA) => {
+      if (indexA !== index) {
+        return { ...i };
+      }
+      return {
+        ...i,
         inseridoManualmente: true,
+      };
+    });
+
+    setPagamento(newArray);
+  };
+
+  const handleInseridoManualmenteFalse = () => {
+    const newArray = pagamento?.map((i, indexA) => {
+      if (indexA !== index) {
+        return { ...i };
+      }
+      return {
+        ...i,
+        inseridoManualmente: false,
       };
     });
 
@@ -32,12 +62,10 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
 
     const valorTotalParcelas = pagamento.reduce((acc, cur) => {
       if (cur.inseridoManualmente) {
-        sumValueManual =
-          acc + parseFloat(cur.valorParcela !== '' ? cur.valorParcela : 0);
+        sumValueManual = acc + cur.valorParcela || 0;
       } else {
         sumQntdParcela = sumQntdParcela + 1;
-        sumValueAuto =
-          acc + parseFloat(cur.valorParcela !== '' ? cur.valorParcela : 0);
+        sumValueAuto = acc + cur.valorParcela || 0;
       }
       return sumValueManual + sumValueAuto;
     }, 0);
@@ -49,15 +77,22 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
     }
 
     if (valorTotalParcelas < total) {
+      console.log(valorTotalParcelas, total);
       setError('O valor da parcela é menor do que o valor total da compra');
     } else {
       setError(undefined);
     }
 
-    const valorDividido = (total - sumValueManual) / sumQntdParcela;
+    const valorDividido = Math.round((total - sumValueManual) / sumQntdParcela);
+    const valorRestante = (total - sumValueManual) % sumQntdParcela;
 
-    const newArray = pagamento?.map((i) => {
-      if (!i.inseridoManualmente) {
+    const newArray = pagamento?.map((i, index, arr) => {
+      if (!i.inseridoManualmente && index === arr.length - 1) {
+        return {
+          ...i,
+          valorParcela: valorDividido < 0 ? 0 : valorDividido + valorRestante,
+        };
+      } else if (!i.inseridoManualmente && index !== pagamento.lenght - 1) {
         return { ...i, valorParcela: valorDividido < 0 ? 0 : valorDividido };
       } else {
         return { ...i };
@@ -118,12 +153,18 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
         thousandSeparator="."
         customInput={TextField}
         value={pagamento[index].valorParcela}
+        onFocus={handleInseridoManualmente}
         onValueChange={handleValorParcela}
         format={currencyFormatter}
         error={!!error}
         helperText={error}
         InputProps={{
           startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+          endAdornment: (
+            <StyledButton.OnlyIcon title="Clique aqui para calcular automaticamente o valor">
+              <Clear onClick={handleInseridoManualmenteFalse} />
+            </StyledButton.OnlyIcon>
+          ),
         }}
       />
       <KeyboardDatePicker
