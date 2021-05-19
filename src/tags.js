@@ -12,7 +12,7 @@ export const displayTags = {
   'orcamento': 'Orçamento',
   'em andamento': 'Em Andamento',
   'a receber': 'À Receber',
-  'concluida': 'Conclúida',
+  'concluida': 'Concluída',
   'ativo': 'Ativo',
   'inativo': 'Inativo',
   'cancelada': 'Cancelada',

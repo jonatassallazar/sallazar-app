@@ -38,8 +38,7 @@ DashboardLayout.Faturamento = styled.div`
     font-weight: bold;
     line-height: 2;
     border-radius: 30px;
-    padding: ${({ theme }) => theme.spacing.small}
-      ${({ theme }) => theme.spacing.large};
+    padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.large};
   }
 
   .tag-verde {
