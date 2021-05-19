@@ -81,7 +81,7 @@ const VendaForm = (props) => {
         arr = arr.concat({
           numeroParcela: i + 1,
           valorParcela: newTotal || total / newValue,
-          dataParcela: moment().add(i, 'months').valueOf(),
+          dataParcela: props.venda?.pagamento[i].dataParcela || moment().add(i, 'months').valueOf(),
           inseridoManualmente: false,
         });
       }
@@ -138,16 +138,25 @@ const VendaForm = (props) => {
 
   const produtos = useSelector((state) => state.produtos);
 
-  const handleFrete = (values) => {
-    setFrete(values.floatValue);
+  const handleFrete = ({ floatValue }) => {
+    if (!floatValue) {
+      return setFrete(0);
+    }
+    setFrete(floatValue);
   };
 
-  const handleDesconto = (values) => {
-    setDesconto(values.floatValue);
+  const handleDesconto = ({ floatValue }) => {
+    if (!floatValue) {
+      return setDesconto(0);
+    }
+    setDesconto(floatValue);
   };
 
-  const handleTaxa = (values) => {
-    setTaxa(values.floatValue);
+  const handleTaxa = ({ floatValue }) => {
+    if (!floatValue) {
+      return setTaxa(0);
+    }
+    setTaxa(floatValue);
   };
 
   const handleAddNewItem = () => {
