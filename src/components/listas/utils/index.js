@@ -1,5 +1,5 @@
 import moment from 'moment';
-import statusTags from '../../../tags';
+import statusTags, { displayTags } from '../../../tags';
 
 export function useGetCliente({ value }) {
   return value.nome;
@@ -10,12 +10,16 @@ export function useGetData({ value }) {
 }
 
 export function useGetValorEmReal({ value }) {
-  const newValue = parseFloat(value);
+  const newValue = parseFloat(value / 100);
   return `R$ ${newValue.toFixed(2).replace('.', ',')}`;
 }
 
 export function useGetStatus({ value }) {
-  return <em className={statusTags[value]}>{value}</em>;
+  const newValue = value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  return <em className={statusTags[newValue]}>{displayTags[newValue]}</em>;
 }
 
 export function useGetEndereco({ value }) {

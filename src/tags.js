@@ -8,4 +8,14 @@ const statusTags = {
   'cancelada': 'tag tag-vermelha',
 };
 
+export const displayTags = {
+  'orcamento': 'Orçamento',
+  'em andamento': 'Em Andamento',
+  'a receber': 'À Receber',
+  'concluida': 'Conclúida',
+  'ativo': 'Ativo',
+  'inativo': 'Inativo',
+  'cancelada': 'Cancelada',
+};
+
 export default statusTags;
