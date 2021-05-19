@@ -68,11 +68,13 @@ const VendaFormProdutos = (props) => {
     <Form.Item>
       <Autocomplete
         className="form-item-g"
-        options={props.produtos.sort((a, b) =>
+        loading={props.produtos?.length === 0}
+        options={props.produtos?.sort((a, b) =>
           a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
         )}
-        getOptionLabel={(option) => option.nome}
+        getOptionLabel={(option) => option.nome || ''}
         value={props.itensVendidos[props.index]}
+        getOptionSelected={(option, value) => option.value === value.value}
         onChange={(e, newValue) =>
           props.handleSelectProduto(e, newValue, props.index)
         }

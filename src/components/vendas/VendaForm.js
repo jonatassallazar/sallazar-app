@@ -23,7 +23,7 @@ import NumberFormat from 'react-number-format';
 import { currencyFormatter } from '../forms/utils/numbersFormatters';
 
 const baseItem = {
-  id: '',
+  id: '123',
   unidade: '',
   quantidade: '',
   valorVenda: 0,
@@ -247,14 +247,24 @@ const VendaForm = (props) => {
   return (
     <>
       {modalShow === 'cliente' ? (
-        <Modal width="80%" alignment="left" handleClose={handleClose}>
+        <Modal
+          key="modal_add_cliente"
+          width="80%"
+          alignment="left"
+          handleClose={handleClose}
+        >
           <AddCliente
             handleSubmit={handleClienteSubmit}
             showBackButton={true}
           />
         </Modal>
       ) : modalShow === 'produto' ? (
-        <Modal width="80%" alignment="left" handleClose={props.handleClose}>
+        <Modal
+          key="modal_add_produto"
+          width="80%"
+          alignment="left"
+          handleClose={props.handleClose}
+        >
           <AddProduto
             handleSubmit={handleProdutoSubmit}
             showBackButton={true}
@@ -310,7 +320,8 @@ const VendaForm = (props) => {
             options={clientes.sort((a, b) =>
               a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
             )}
-            getOptionLabel={(option) => option.nome}
+            getOptionLabel={(option) => option.nome || ''}
+            getOptionSelected={(option, value) => option.value === value.value}
             value={cliente}
             onChange={(e, newValue) => {
               setCliente({
@@ -478,10 +489,9 @@ const VendaForm = (props) => {
             onChange={handleParcelas}
           />
         </Form.Division>
-        {pagamento?.map((item, index) => (
-          <Form.Division>
+        {pagamento?.map((i, index) => (
+          <Form.Division key={`KeyPacela_${i.numeroParcela}`}>
             <PagamentoForm
-              key={`KeyPacela_${index}`}
               pagamento={pagamento}
               setPagamento={setPagamento}
               index={index}
