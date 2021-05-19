@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import Form from '../forms/Form';
 import { TextField, Select, MenuItem, InputAdornment } from '@material-ui/core';
 import { Save, Delete } from '@material-ui/icons';
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import { StyledButton } from '../forms/elements';
 import NumberFormat from 'react-number-format';
-import { currencyFormatter } from '../forms/utils/currencyFormatter';
+import { currencyFormatter } from '../forms/utils/numbersFormatters';
 
 const ProdutoForm = (props) => {
   const [nome, setNome] = useState(props.produto?.nome || '');
@@ -62,52 +61,63 @@ const ProdutoForm = (props) => {
         />
       </Form.Division>
       <Form.Division>
-        <CurrencyTextField
+        <NumberFormat
+          className="textfield-align-right form-item-m"
           variant="standard"
-          currencySymbol="g"
           outputFormat="string"
-          decimalCharacter=","
-          digitGroupSeparator="."
-          decimalPlaces="0"
-          className="form-item-m"
+          placeholder="0.000"
+          decimalScale={0}
+          decimalSeparator=","
+          fixedDecimalScale
+          thousandSeparator="."
           label="Peso em gramas"
+          customInput={TextField}
           value={peso}
-          onChange={(e, value) => setPeso(value)}
+          onValueChange={(values) => setPeso(values.floatValue)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">g</InputAdornment>
+            ),
+          }}
         />
         <NumberFormat
-        required
-        className="textfield-align-right form-item-m"
-        label="Preço de Custo"
-        decimalScale={2}
-        decimalSeparator=","
-        fixedDecimalScale
-        placeholder="0,00"
-        thousandSeparator="."
-        customInput={TextField}
-        value={valorCusto}
-        onValueChange={(values) => setValorCusto(values.floatValue)}
-        format={currencyFormatter}
-        InputProps={{
-          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
-        }}
-      />
-      <NumberFormat
-        required
-        className="textfield-align-right form-item-m"
-        label="Valor de Venda"
-        decimalScale={2}
-        decimalSeparator=","
-        fixedDecimalScale
-        placeholder="0,00"
-        thousandSeparator="."
-        customInput={TextField}
-        value={valorVenda}
-        onValueChange={(values) => setValorVenda(values.floatValue)}
-        format={currencyFormatter}
-        InputProps={{
-          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
-        }}
-      />
+          required
+          className="textfield-align-right form-item-m"
+          label="Preço de Custo"
+          decimalScale={2}
+          decimalSeparator=","
+          fixedDecimalScale
+          thousandSeparator="."
+          placeholder="0,00"
+          customInput={TextField}
+          value={valorCusto}
+          onValueChange={(values) => setValorCusto(values.floatValue)}
+          format={currencyFormatter}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">R$</InputAdornment>
+            ),
+          }}
+        />
+        <NumberFormat
+          required
+          className="textfield-align-right form-item-m"
+          label="Valor de Venda"
+          decimalScale={2}
+          decimalSeparator=","
+          fixedDecimalScale
+          placeholder="0,00"
+          thousandSeparator="."
+          customInput={TextField}
+          value={valorVenda}
+          onValueChange={(values) => setValorVenda(values.floatValue)}
+          format={currencyFormatter}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">R$</InputAdornment>
+            ),
+          }}
+        />
         <TextField
           className="form-item-g"
           label="Fornecedor"
