@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Tipografia from './layout/Tipografia';
 import Calendar from 'react-calendar';
 import StyledCalendar from './layout/StyledCalendar';
+import { currencyFormatter } from './forms/utils/currencyFormatter';
 import moment from 'moment';
 
 const DashboardLayout = styled.div`
@@ -37,7 +38,8 @@ DashboardLayout.Faturamento = styled.div`
     font-weight: bold;
     line-height: 2;
     border-radius: 30px;
-    padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.large};
+    padding: ${({ theme }) => theme.spacing.small}
+      ${({ theme }) => theme.spacing.large};
   }
 
   .tag-verde {
@@ -84,7 +86,10 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    const newValue = vendasMesAnterior.reduce((acc, cur) => acc + parseFloat(cur.total), 0);
+    const newValue = vendasMesAnterior.reduce(
+      (acc, cur) => acc + parseFloat(cur.total),
+      0
+    );
 
     setFaturamentoMesAnterior(newValue);
   }, [vendasMesAnterior]);
@@ -99,7 +104,10 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    const newValue = vendasMesAtual.reduce((acc, cur) => acc + parseFloat(cur.total), 0);
+    const newValue = vendasMesAtual.reduce(
+      (acc, cur) => acc + parseFloat(cur.total),
+      0
+    );
 
     setFaturamentoMesAtual(newValue);
   }, [vendasMesAtual]);
@@ -121,11 +129,21 @@ const Dashboard = () => {
           <DashboardLayout.Faturamento>
             <div>
               <Tipografia.P as="p">Mês Anterior</Tipografia.P>
-              <span className="tag-preta">R$ {faturamentoMesAnterior}</span>
+              <span className="tag-preta">
+                R$ {currencyFormatter(faturamentoMesAnterior)}
+              </span>
             </div>
             <div>
               <Tipografia.P as="p">Mês Atual</Tipografia.P>
-              <span className={`${faturamentoMesAtual > faturamentoMesAnterior ? 'tag-verde' : 'tag-vermelha'}`}>R$ {faturamentoMesAtual}</span>
+              <span
+                className={`${
+                  faturamentoMesAtual > faturamentoMesAnterior
+                    ? 'tag-verde'
+                    : 'tag-vermelha'
+                }`}
+              >
+                R$ {currencyFormatter(faturamentoMesAtual)}
+              </span>
             </div>
           </DashboardLayout.Faturamento>
         </DashboardLayout.Sub>
