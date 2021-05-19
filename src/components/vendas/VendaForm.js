@@ -32,12 +32,11 @@ const baseItem = {
 
 const VendaForm = (props) => {
   const dispatch = useDispatch();
-  const inputRef = React.useRef(null);
 
   //Parte base da venda
   const [numero, setNumero] = useState(props.venda?.numero || props.numero);
   const [status, setStatus] = useState(props.venda?.status || 'em andamento');
-  const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || null);
+  const [dataVenda, setDataVenda] = useState(props.venda?.dataVenda || new Date());
   const [cliente, setCliente] = useState(
     props.venda?.cliente || { id: '', nome: '' }
   );
@@ -419,7 +418,6 @@ const VendaForm = (props) => {
             value={taxa}
             onValueChange={handleTaxa}
             format={currencyFormatter}
-            getInputRef={inputRef}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">R$</InputAdornment>
