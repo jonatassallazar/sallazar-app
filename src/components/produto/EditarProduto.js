@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   startEditProduto,
@@ -23,6 +23,14 @@ const EditarProduto = (props) => {
     );
   });
 
+  // Will render component only with props
+  const [haveProps, setHaveProps] = useState(false);
+  useEffect(() => {
+    if (produto) {
+      setHaveProps(true);
+    }
+  }, [produto]);
+
   const onSubmit = (data) => {
     dispatch(startEditProduto(produto.id, data)).then(() =>
       props.history.push(`/produtos`)
@@ -43,11 +51,13 @@ const EditarProduto = (props) => {
         </StyledButton.OnlyIcon>
       </StyledButton.Link>
       <h1>Editar Produto</h1>
-      <ProdutoForm
-        produto={produto}
-        onSubmit={onSubmit}
-        handleDelete={handleDelete}
-      />
+      {haveProps && (
+        <ProdutoForm
+          produto={produto}
+          onSubmit={onSubmit}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };

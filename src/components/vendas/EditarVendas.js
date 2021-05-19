@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   startEditVenda,
@@ -11,17 +11,22 @@ import { ArrowBackIos } from '@material-ui/icons';
 
 const EditarVenda = (props) => {
   const dispatch = useDispatch();
+  const venda = useSelector((state) => {
+    return state.vendas.find((venda) => venda.id === props.match.params.id);
+  });
+
+  // Will render component only with props
+  const [haveProps, setHaveProps] = useState(false);
+  useEffect(() => {
+    if (venda) {
+      setHaveProps(true);
+    }
+  }, [venda]);
 
   useEffect(() => {
     dispatch(startSetVendas());
     // eslint-disable-next-line
   }, []);
-
-  const venda = useSelector((state) => {
-    return state.vendas.find((venda) => venda.id === props.match.params.id);
-  });
-
-  console.log(venda);
 
   const onSubmit = (data) => {
     dispatch(startEditVenda(venda.id, data)).then(() =>
@@ -33,7 +38,7 @@ const EditarVenda = (props) => {
     dispatch(startRemoveVenda({ id: venda.id })).then(() => {
       props.history.push('/vendas');
     });
-  }
+  };
 
   return (
     <div>
@@ -43,7 +48,13 @@ const EditarVenda = (props) => {
         </StyledButton.OnlyIcon>
       </StyledButton.Link>
       <h1>Editar Venda</h1>
-      <VendaForm venda={venda} onSubmit={onSubmit} handleDelete={handleDelete}/>
+      {haveProps && (
+        <VendaForm
+          venda={venda}
+          onSubmit={onSubmit}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };

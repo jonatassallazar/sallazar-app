@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startEditCliente, startRemoveCliente, startSetClientes } from '../../actions/clientes';
+import {
+  startEditCliente,
+  startRemoveCliente,
+  startSetClientes,
+} from '../../actions/clientes';
 import ClienteForm from './ClienteForm';
 import { StyledButton } from '../forms/elements';
 import { ArrowBackIos } from '@material-ui/icons';
@@ -19,10 +23,18 @@ const EditarCliente = (props) => {
     );
   });
 
+  // Will render component only with props
+  const [haveProps, setHaveProps] = useState(false);
+  useEffect(() => {
+    if (cliente) {
+      setHaveProps(true);
+    }
+  }, [cliente]);
+
   const onSubmit = (data) => {
-    dispatch(startEditCliente(cliente.id, data)).then(() =>
-      props.history.push(`/clientes`)
-    ).catch((err) => console.log(err))
+    dispatch(startEditCliente(cliente.id, data))
+      .then(() => props.history.push(`/clientes`))
+      .catch((err) => console.log(err));
   };
 
   const handleDelete = () => {
@@ -39,7 +51,13 @@ const EditarCliente = (props) => {
         </StyledButton.OnlyIcon>
       </StyledButton.Link>
       <h1>Editar Cliente</h1>
-      <ClienteForm cliente={cliente} onSubmit={onSubmit} handleDelete={handleDelete}/>
+      {haveProps && (
+        <ClienteForm
+          cliente={cliente}
+          onSubmit={onSubmit}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };
