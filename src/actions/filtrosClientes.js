@@ -13,14 +13,6 @@ export const setTelefoneFiltro = (telefone = '') => ({
   telefone,
 });
 
-export const sortByNomeAsc = () => ({
-  type: 'SORT_BY_NOMEASC',
-});
-
-export const sortByNomeDec = () => ({
-  type: 'SORT_BY_NOMEDEC',
-});
-
 export const limparFiltro = () => ({
   type: 'CLEAN_FILTER',
 });

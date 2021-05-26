@@ -7,9 +7,9 @@ export const addProduto = (produto) => ({
   produto,
 });
 
-export const startAddProduto = (produtoData = {}) => {
+export const startAddProduto = (produtoData = {}, userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     const {
       nome = '',
       unidade = '',
@@ -18,7 +18,6 @@ export const startAddProduto = (produtoData = {}) => {
       valorVenda = '',
       fornecedor = '',
       status = '',
-      foto = '',
     } = produtoData;
     const produto = {
       nome,
@@ -28,7 +27,6 @@ export const startAddProduto = (produtoData = {}) => {
       status,
       valorVenda,
       fornecedor,
-      foto,
     };
     return database
       .ref(`users/${uid}/produtos`)
@@ -53,14 +51,14 @@ export const removeProduto = (id) => ({
   },
 });
 
-export const startRemoveProduto = ({ id } = {}) => {
+export const startRemoveProduto = ({ id, userID } = {}) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     return database
       .ref(`users/${uid}/produtos/${id}`)
       .remove()
       .then(() => {
-        dispatch(removeProduto(id));
+        return dispatch(removeProduto(id));
       });
   };
 };
@@ -73,14 +71,14 @@ export const editProduto = (id, updates) => ({
   updates,
 });
 
-export const startEditProduto = (id, updates) => {
+export const startEditProduto = (id, updates, userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     return database
       .ref(`users/${uid}/produtos/${id}`)
       .update(updates)
       .then(() => {
-        dispatch(editProduto(id, updates));
+        return dispatch(editProduto(id, updates));
       });
   };
 };
@@ -91,23 +89,22 @@ export const setProdutos = (produtos) => ({
   produtos,
 });
 
-export const startSetProdutos = () => {
+export const startSetProdutos = (userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
 
     return database
       .ref(`users/${uid}/produtos`)
       .once('value')
       .then((snapshot) => {
         const produtos = [];
-
         snapshot.forEach((childSnapshot) => {
           produtos.push({
             id: childSnapshot.key,
             ...childSnapshot.val(),
           });
         });
-        dispatch(setProdutos(produtos));
+        return dispatch(setProdutos(produtos));
       });
   };
 };

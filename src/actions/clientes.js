@@ -7,13 +7,13 @@ export const addCliente = (cliente) => ({
   cliente,
 });
 
-export const startAddCliente = (clienteData = {}) => {
+export const startAddCliente = (clienteData = {}, userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     const {
       nome = '',
       telefone = '',
-      email = 0,
+      email = '',
       dataDeNascimento = 0,
       status = 'ativo',
       genero = '',
@@ -61,14 +61,14 @@ export const removeCliente = (id) => ({
   },
 });
 
-export const startRemoveCliente = ({ id } = {}) => {
+export const startRemoveCliente = ({ id, userID } = {}) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     return database
       .ref(`users/${uid}/clientes/${id}`)
       .remove()
       .then(() => {
-        dispatch(removeCliente(id));
+        return dispatch(removeCliente(id));
       });
   };
 };
@@ -81,14 +81,14 @@ export const editCliente = (id, updates) => ({
   updates,
 });
 
-export const startEditCliente = (id, updates) => {
+export const startEditCliente = (id, updates, userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     return database
       .ref(`users/${uid}/clientes/${id}`)
       .update(updates)
       .then(() => {
-        dispatch(editCliente(id, updates));
+        return dispatch(editCliente(id, updates));
       });
   };
 };
@@ -99,9 +99,9 @@ export const setClientes = (clientes) => ({
   clientes,
 });
 
-export const startSetClientes = () => {
+export const startSetClientes = (userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
 
     return database
       .ref(`users/${uid}/clientes`)
@@ -115,7 +115,7 @@ export const startSetClientes = () => {
             ...childSnapshot.val(),
           });
         });
-        dispatch(setClientes(clientes));
+        return dispatch(setClientes(clientes));
       });
   };
 };

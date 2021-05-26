@@ -7,9 +7,9 @@ export const addVenda = (venda) => ({
   venda,
 });
 
-export const startAddVenda = (vendaData = {}) => {
+export const startAddVenda = (vendaData = {}, userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     const {
       numero = '',
       cliente = {},
@@ -42,11 +42,11 @@ export const startAddVenda = (vendaData = {}) => {
       formaPagamento,
       dataVenda,
     };
-    database
+    return database
       .ref(`users/${uid}/vendas`)
       .push(vendaData)
       .then((ref) => {
-        dispatch(
+        return dispatch(
           addVenda({
             id: ref.key,
             ...venda,
@@ -65,14 +65,14 @@ export const removeVenda = (id) => ({
   },
 });
 
-export const startRemoveVenda = ({ id } = {}) => {
+export const startRemoveVenda = ({ id, userID } = {}) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     return database
       .ref(`users/${uid}/vendas/${id}`)
       .remove()
       .then(() => {
-        dispatch(removeVenda(id));
+        return dispatch(removeVenda(id));
       });
   };
 };
@@ -85,14 +85,14 @@ export const editVenda = (id, updates) => ({
   updates,
 });
 
-export const startEditVenda = (id, updates) => {
+export const startEditVenda = (id, updates, userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
     return database
       .ref(`users/${uid}/vendas/${id}`)
       .update(updates)
       .then(() => {
-        dispatch(editVenda(id, updates));
+        return dispatch(editVenda(id, updates));
       });
   };
 };
@@ -103,9 +103,9 @@ export const setVendas = (vendas) => ({
   vendas,
 });
 
-export const startSetVendas = () => {
+export const startSetVendas = (userID) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = userID || getState().auth.uid;
 
     return database
       .ref(`users/${uid}/vendas`)
@@ -119,7 +119,7 @@ export const startSetVendas = () => {
             ...childSnapshot.val(),
           });
         });
-        dispatch(setVendas(vendas));
+        return dispatch(setVendas(vendas));
       });
   };
 };
