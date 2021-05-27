@@ -1,0 +1,58 @@
+import clientes from './clientes';
+import produtos from './produtos';
+
+const vendas = [
+  {
+    id: '123abc',
+    numero: '0000',
+    cliente: [{ id: clientes[0].id, nome: clientes[0].nome }],
+    itensVendidos: [produtos[0]],
+    subTotal: 1200,
+    total: 1500,
+    frete: 300,
+    desconto: 0,
+    taxa: 0,
+    observacoes: 'nothing',
+    status: 'em andamento',
+    pagamento: [{ valorParcela: 1500, dataParcela: 1231214513 }],
+    parcelas: 1,
+    formaPagamento: 'avista',
+    dataVenda: 1232345324,
+  },
+  {
+    id: '456def',
+    numero: '0001',
+    cliente: [{ id: clientes[1].id, nome: clientes[1].nome }],
+    itensVendidos: [produtos[1]],
+    subTotal: 1200,
+    total: 1500,
+    frete: 300,
+    desconto: 0,
+    taxa: 0,
+    observacoes: 'nothing',
+    status: 'em andamento',
+    pagamento: [{ valorParcela: 1500, dataParcela: 1231214513 }],
+    parcelas: 1,
+    formaPagamento: 'avista',
+    dataVenda: 1232345324,
+  },
+  {
+    id: '789ghi',
+    numero: '0002',
+    cliente: [{ id: clientes[2].id, nome: clientes[2].nome }],
+    itensVendidos: [produtos[2]],
+    subTotal: 1200,
+    total: 1500,
+    frete: 300,
+    desconto: 0,
+    taxa: 0,
+    observacoes: 'nothing',
+    status: 'em andamento',
+    pagamento: [{ valorParcela: 1500, dataParcela: 1231214513 }],
+    parcelas: 1,
+    formaPagamento: 'avista',
+    dataVenda: 1232345324,
+  },
+];
+
+export default vendas;
