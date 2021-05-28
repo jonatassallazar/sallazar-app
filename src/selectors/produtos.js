@@ -1,9 +1,16 @@
-const produtosSelector = (
-  produtos,
-  { nome, fornecedor, status, valorVenda, createdAt }
-) => {
+const produtosSelector = (produtos, { nome, fornecedor, status }) => {
   return produtos.filter((produto) => {
-    const nomeMatch = produto.nome.toLowerCase().includes(nome.toLowerCase());
+    const nomeMatch = produto.nome
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .includes(
+        nome
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+      );
+
     const fornecedorMatch = produto.fornecedor
       .toLowerCase()
       .normalize('NFD')
