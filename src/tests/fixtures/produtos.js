@@ -25,9 +25,9 @@ const produtos = [
     unidade: 'Un',
     peso: 500,
     valorCusto: 25000,
-    status: 'ativo',
+    status: 'inativo',
     valorVenda: 50000,
-    fornecedor: 'Jorgeclayvson',
+    fornecedor: 'Nora',
   },
 ];
 
