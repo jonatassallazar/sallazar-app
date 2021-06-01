@@ -67,14 +67,15 @@ const ModalPage = ({
   handleClose,
 }) => {
   return (
-    <Modal onClick={handleClose}>
+    <Modal onClick={handleClose} role="background">
       <Modal.Content
+        role="modalContent"
         width={width}
         alignment={alignment}
         onClick={(e) => e.stopPropagation()}
       >
         {handleClose && (
-          <Modal.Close onClick={handleClose}>
+          <Modal.Close onClick={handleClose} role="closeButton">
             <Close />
           </Modal.Close>
         )}
