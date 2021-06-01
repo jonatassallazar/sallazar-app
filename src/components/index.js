@@ -16,3 +16,6 @@ export { default as EditarProduto } from './produto/EditarProduto';
 export { default as ListaItens } from './listas/ListaItens';
 export { default as Listagem } from './listas/Listagem';
 export { default as Modal } from './Modal';
+export { default as Header } from './Header';
+export { default as Menu } from './Menu';
+export { default as LoadingPage } from './LoadingPage';

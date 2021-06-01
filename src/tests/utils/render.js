@@ -1,5 +1,6 @@
 // test-utils.js
 import React from 'react';
+import { createBrowserHistory } from 'history';
 import { render as rtlRender } from '@testing-library/react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -10,6 +11,9 @@ import GlobalStyle from '../../GlobalStyle';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 // pick a date util library
 import MomentUtils from '@date-io/moment';
+import { Router, Switch } from 'react-router';
+
+export const history = createBrowserHistory();
 
 const render = (
   ui,
@@ -20,12 +24,16 @@ const render = (
   } = {}
 ) => {
   const Wrapper = ({ children }) => (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <Provider store={store}>{children}</Provider>
-      </MuiPickersUtilsProvider>
-    </ThemeProvider>
+    <Router history={history}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <Switch>
+            <Provider store={store}>{children}</Provider>
+          </Switch>
+        </MuiPickersUtilsProvider>
+      </ThemeProvider>
+    </Router>
   );
 
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });

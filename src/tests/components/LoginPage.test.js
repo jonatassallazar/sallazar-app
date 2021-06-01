@@ -3,12 +3,12 @@ import { LoginPage } from '../../components';
 import * as redux from 'react-redux';
 
 it('should have a title', () => {
-  render(<LoginPage />, { initialState: {} });
+  render(<LoginPage />);
   expect(screen.getByRole('heading')).toHaveTextContent('Faça seu Login');
 });
 
 it('should have a description with welcome text', () => {
-  render(<LoginPage />, { initialState: {} });
+  render(<LoginPage />);
   expect(screen.getByText(/Seja bem-vindo/)).toBeTruthy();
 });
 
