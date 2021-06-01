@@ -9,7 +9,7 @@ import {
 import Form from '../forms/Form';
 import { TextField } from '@material-ui/core';
 import { StyledButton, StyledTextField } from '../forms/elements';
-import InputMask from 'react-input-mask';
+import NumberFormat from 'react-number-format';
 
 const FiltroCliente = (props) => {
   const dispatch = useDispatch();
@@ -38,20 +38,15 @@ const FiltroCliente = (props) => {
               dispatch(setEmailFiltro(e.target.value));
             }}
           />
-          <InputMask
+          <NumberFormat
+            type="tel"
+            label="Telefone"
             value={telefone}
-            onChange={(e) => dispatch(setTelefoneFiltro(e.target.value))}
-            mask="(99)99999-9999"
-          >
-            {(inputProps) => (
-              <TextField
-                id="standard-basic"
-                type="tel"
-                label="Telefone"
-                {...inputProps}
-              />
-            )}
-          </InputMask>
+            onValueChange={(values) =>
+              dispatch(setTelefoneFiltro(values.value))
+            }
+            format="(99)99999-9999"
+          />
           <StyledButton onClick={(e) => dispatch(limparFiltro())}>
             Limpar
           </StyledButton>

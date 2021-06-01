@@ -14,7 +14,7 @@ import {
 import { StyledButton } from '../forms/elements';
 import { DatePicker } from '@material-ui/pickers';
 import { Save, Delete } from '@material-ui/icons';
-import InputMask from 'react-input-mask';
+import NumberFormat from 'react-number-format';
 
 const ClienteForm = (props) => {
   const [nome, setNome] = useState(props.cliente?.nome || '');
@@ -101,7 +101,6 @@ const ClienteForm = (props) => {
       <Form onSubmit={onSubmit}>
         <Form.Division>
           <Select
-            id="status"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
@@ -109,29 +108,20 @@ const ClienteForm = (props) => {
             <MenuItem value="Inativo">Inativo</MenuItem>
           </Select>
           <TextField
-            id="standard-basic nome"
             label="Nome Completo"
             required={true}
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          <InputMask
+          <NumberFormat
+            label="Telefone"
+            type="tel"
             value={telefone}
-            onChange={(e) => setTelefone(getRawValue(e.target.value))}
-            mask="(99)99999-9999"
-            maskChar=""
-          >
-            {(inputProps) => (
-              <TextField
-                id="standard-basic"
-                label="Telefone"
-                type="tel"
-                {...inputProps}
-              />
-            )}
-          </InputMask>
+            onValueChange={(values) => setTelefone(getRawValue(values.value))}
+            customInput={TextField}
+            format="(99)99999-9999"
+          />
           <TextField
-            id="standard-basic email"
             label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -139,7 +129,7 @@ const ClienteForm = (props) => {
         </Form.Division>
         <Form.Division>
           <FormControl>
-            <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+            <InputLabel >Sexo</InputLabel>
             <Select
               autoWidth
               value={genero}
@@ -161,7 +151,7 @@ const ClienteForm = (props) => {
             onChange={(e) => setDataDeNascimento(e._d)}
           />
           <FormControl>
-            <InputLabel id="demo-simple-select-label">Tags</InputLabel>
+            <InputLabel>Tags</InputLabel>
             <Select
               multiple
               value={selectedTags}
