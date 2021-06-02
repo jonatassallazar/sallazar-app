@@ -26,13 +26,7 @@ describe('test button', () => {
   it('should fire mocked buttton', () => {
     render(<Modal btnPrimary="Click Me" btnPrimaryFunction={mockBtn} />);
 
-    fireEvent(
-      screen.getByRole('button', { name: 'Click Me' }),
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-      })
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Click Me' }));
 
     expect(mockBtn).toHaveBeenCalled();
   });
@@ -43,13 +37,7 @@ it('should close modal with click on background', () => {
 
   render(<Modal handleClose={mockClose} />);
 
-  fireEvent(
-    screen.getByRole('background'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByRole('background'));
 
   expect(mockClose).toHaveBeenCalled();
 });
@@ -59,13 +47,7 @@ it('should NOT close modal with click on content', () => {
 
   render(<Modal handleClose={mockClose} />);
 
-  fireEvent(
-    screen.getByRole('modalContent'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByRole('modalContent'));
 
   expect(mockClose).toHaveBeenCalledTimes(0);
 });
@@ -75,14 +57,7 @@ it('should close modal with click on close button icon', () => {
 
   render(<Modal handleClose={mockClose} />);
 
-  fireEvent(
-    screen.getByRole('closeButton'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
-
+  fireEvent.click(screen.getByRole('closeButton'));
   expect(mockClose).toHaveBeenCalled();
 });
 

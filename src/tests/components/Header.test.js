@@ -28,13 +28,7 @@ it('should dispatch logout on click', () => {
   useDispatchSpy.mockReturnValue(mockDispatchFn);
 
   render(<Header />);
-  fireEvent(
-    screen.getByText('Sair'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Sair'));
 
   expect(mockDispatchFn).toHaveBeenCalled();
 

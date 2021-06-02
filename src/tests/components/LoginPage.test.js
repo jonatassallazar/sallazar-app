@@ -18,13 +18,7 @@ it('should dispatch function to login with Google', () => {
   useDispatchSpy.mockReturnValue(mockDispatchFn);
 
   render(<LoginPage />);
-  fireEvent(
-    screen.getByText('Login com Google'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Login com Google'));
 
   expect(mockDispatchFn).toHaveBeenCalled();
 

@@ -8,13 +8,7 @@ it('should have a menu item Dashboard', () => {
 
 it('should go to Dashboard page on click', () => {
   render(<Menu />);
-  fireEvent(
-    screen.getByText('Dashboard'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Dashboard'));
   expect(history.location).toHaveProperty('pathname', '/dashboard');
 });
 
@@ -25,13 +19,7 @@ it('should have a menu item Clientes', () => {
 
 it('should go to Clientes page on click', () => {
   render(<Menu />);
-  fireEvent(
-    screen.getByText('Clientes'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Clientes'));
   expect(history.location).toHaveProperty('pathname', '/clientes');
 });
 
@@ -42,13 +30,7 @@ it('should have a menu item Produtos', () => {
 
 it('should go to Produtos page on click', () => {
   render(<Menu />);
-  fireEvent(
-    screen.getByText('Produtos'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Produtos'));
   expect(history.location).toHaveProperty('pathname', '/produtos');
 });
 
@@ -59,13 +41,7 @@ it('should have a menu item Vendas', () => {
 
 it('should go to Vendas page on click', () => {
   render(<Menu />);
-  fireEvent(
-    screen.getByText('Vendas'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Vendas'));
   expect(history.location).toHaveProperty('pathname', '/vendas');
 });
 
@@ -76,13 +52,7 @@ it('should have a menu item Relatórios', () => {
 
 it('should go to Relatórios page on click', () => {
   render(<Menu />);
-  fireEvent(
-    screen.getByText('Relatórios'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Relatórios'));
   expect(history.location).toHaveProperty('pathname', '/relatorios');
 });
 
@@ -93,12 +63,6 @@ it('should have a menu item Ajuda', () => {
 
 it('should go to Ajuda page on click', () => {
   render(<Menu />);
-  fireEvent(
-    screen.getByText('Ajuda'),
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
+  fireEvent.click(screen.getByText('Ajuda'));
   expect(history.location).toHaveProperty('pathname', '/ajuda');
 });
