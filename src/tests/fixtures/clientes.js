@@ -5,8 +5,8 @@ const clientes = [
     telefone: '1998277720',
     email: 'test@gmail.com',
     dataDeNascimento: 15151515178,
-    status: 'ativo',
-    genero: 'Male',
+    status: 'Ativo',
+    genero: 'Masculino',
     selectedTags: ['Devedor'],
     enderecoCompleto: {
       CEP: '13255-555',
@@ -24,8 +24,8 @@ const clientes = [
     telefone: '119825454456',
     email: 'delta@gmail.com',
     dataDeNascimento: 110511451,
-    status: 'inativo',
-    genero: 'Male',
+    status: 'Inativo',
+    genero: 'Feminino',
     selectedTags: ['picareta'],
     enderecoCompleto: {
       CEP: '10250-253',
@@ -43,8 +43,8 @@ const clientes = [
     telefone: '012535',
     email: 'enel@gods.com',
     dataDeNascimento: 335125125251,
-    status: 'ativo',
-    genero: 'Male',
+    status: 'Ativo',
+    genero: 'Masculino',
     selectedTags: ['god', 'shocking'],
     enderecoCompleto: {
       CEP: '11111-555',
