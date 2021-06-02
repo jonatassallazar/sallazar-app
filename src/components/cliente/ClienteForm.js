@@ -68,7 +68,6 @@ const ClienteForm = (props) => {
 
     if (!nome) {
       setError('Digite um nome para o cliente');
-      // Set error state equal to 'Please provide description and amount.'
     } else {
       setError('');
       // Clear the error
@@ -100,14 +99,12 @@ const ClienteForm = (props) => {
     <>
       <Form onSubmit={onSubmit}>
         <Form.Division>
-          <Select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
+          <Select value={status} onChange={(e) => setStatus(e.target.value)}>
             <MenuItem value="Ativo">Ativo</MenuItem>
             <MenuItem value="Inativo">Inativo</MenuItem>
           </Select>
           <TextField
+            data-testid="nome-completo"
             label="Nome Completo"
             required={true}
             value={nome}
@@ -129,7 +126,7 @@ const ClienteForm = (props) => {
         </Form.Division>
         <Form.Division>
           <FormControl>
-            <InputLabel >Sexo</InputLabel>
+            <InputLabel>Sexo</InputLabel>
             <Select
               autoWidth
               value={genero}
