@@ -8,6 +8,18 @@ import {
 import { AddCliente } from '../../../components';
 import * as redux from 'react-redux';
 
+const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+let mockDispatchFn = jest.fn(() => Promise.resolve());
+
+beforeEach(() => {
+  mockDispatchFn = jest.fn(() => Promise.resolve());
+  useDispatchSpy.mockReturnValue(mockDispatchFn);
+});
+
+afterEach(() => {
+  useDispatchSpy.mockClear();
+});
+
 it('should have heading', () => {
   render(<AddCliente />);
 
@@ -39,13 +51,13 @@ describe('should handle all submit actions', () => {
         },
       }
     );
+
+    expect(
+      screen.getByTestId('nome-completo').childNodes[1].childNodes[0]
+    ).toHaveValue('Delta Major');
   });
 
   it('should send data to onSubmit on props', () => {
-    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-    const mockDispatchFn = jest.fn(() => Promise.resolve());
-    useDispatchSpy.mockReturnValue(mockDispatchFn);
-
     render(<AddCliente history={history} />);
 
     fireEvent.change(
@@ -65,10 +77,6 @@ describe('should handle all submit actions', () => {
   });
 
   it('should navigate back to clientes path', async () => {
-    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-    const mockDispatchFn = jest.fn(() => Promise.resolve());
-    useDispatchSpy.mockReturnValue(mockDispatchFn);
-
     render(<AddCliente history={history} />);
 
     fireEvent.change(
@@ -87,7 +95,5 @@ describe('should handle all submit actions', () => {
     await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(1));
 
     expect(history.location.pathname).toBe('/clientes');
-
-    useDispatchSpy.mockClear();
   });
 });
