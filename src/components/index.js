@@ -2,6 +2,7 @@ export { default as LoginPage } from './LoginPage';
 export { default as Dashboard } from './Dashboard';
 export { default as AddCliente } from './cliente/AddCliente';
 export { default as Clientes } from './cliente/Clientes';
+export { default as ClienteForm } from './cliente/ClienteForm';
 export { default as ClienteItem } from './cliente/ClienteItem';
 export { default as FiltroCliente } from './cliente/FiltroCliente';
 export { default as EditarCliente } from './cliente/EditarCliente';

@@ -6,8 +6,8 @@ import { FiltroCliente } from '../../components';
 import { StyledButton } from '../forms/elements';
 import { Listagem, Tabela } from '../listas';
 import { startRemoveCliente, startSetClientes } from '../../actions/clientes';
-import { useGetStatus, useGetEndereco } from '../listas/utils';
-import { Delete, Edit, Add } from '@material-ui/icons';
+import { useGetStatus, useGetEndereco, getAcoes } from '../listas/utils';
+import { Add } from '@material-ui/icons';
 
 const Clientes = (props) => {
   const clientes = useSelector((state) =>
@@ -29,29 +29,6 @@ const Clientes = (props) => {
     [dispatch, props.history]
   );
 
-  const getAcoes = useMemo(
-    (props) => ({ row }) => {
-      const id = row.original.id;
-
-      return (
-        <>
-          <StyledButton.Link to={`/clientes/editar/${id}`}>
-            <StyledButton.OnlyIcon className="primary">
-              <Edit />
-            </StyledButton.OnlyIcon>
-          </StyledButton.Link>
-          <StyledButton.OnlyIcon
-            className="secondary"
-            onClick={() => handleDelete(id)}
-          >
-            <Delete />
-          </StyledButton.OnlyIcon>
-        </>
-      );
-    },
-    [handleDelete]
-  );
-
   const header = [
     { accessor: 'status', Header: 'Status', Cell: useGetStatus },
     {
@@ -64,7 +41,12 @@ const Clientes = (props) => {
     },
     { accessor: 'email', Header: 'Email' },
     { accessor: 'enderecoCompleto', Header: 'Endereço', Cell: useGetEndereco },
-    { accessor: 'acoes', Header: 'Ações', Cell: getAcoes, disableSortBy: true },
+    {
+      accessor: 'acoes',
+      Header: 'Ações',
+      Cell: (props) => getAcoes(props, handleDelete, 'clientes'),
+      disableSortBy: true,
+    },
   ];
 
   return (

@@ -7,11 +7,10 @@ import {
   limparFiltro,
 } from '../../actions/filtrosClientes';
 import Form from '../forms/Form';
-import { TextField } from '@material-ui/core';
 import { StyledButton, StyledTextField } from '../forms/elements';
 import NumberFormat from 'react-number-format';
 
-const FiltroCliente = (props) => {
+const FiltroCliente = () => {
   const dispatch = useDispatch();
   const { nome, email, telefone } = useSelector(
     (state) => state.filtrosClientes
@@ -23,6 +22,7 @@ const FiltroCliente = (props) => {
         <Form.Filtro.Title>Filtrar</Form.Filtro.Title>
         <Form.Division>
           <StyledTextField
+            data-testid="filtro-nome"
             type="text"
             value={nome}
             label="Nome"
@@ -31,6 +31,7 @@ const FiltroCliente = (props) => {
             }}
           />
           <StyledTextField
+            data-testid="filtro-email"
             type="text"
             value={email}
             label="Email"
@@ -39,13 +40,15 @@ const FiltroCliente = (props) => {
             }}
           />
           <NumberFormat
+            data-testid="filtro-tel"
             type="tel"
             label="Telefone"
+            customInput={StyledTextField}
             value={telefone}
             onValueChange={(values) =>
               dispatch(setTelefoneFiltro(values.value))
             }
-            format="(99)99999-9999"
+            format="(##)#####-####"
           />
           <StyledButton onClick={(e) => dispatch(limparFiltro())}>
             Limpar

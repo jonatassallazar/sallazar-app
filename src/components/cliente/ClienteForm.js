@@ -12,7 +12,7 @@ import {
   InputLabel,
 } from '@material-ui/core';
 import { StyledButton } from '../forms/elements';
-import { DatePicker } from '@material-ui/pickers';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import { Save, Delete } from '@material-ui/icons';
 import NumberFormat from 'react-number-format';
 
@@ -85,21 +85,15 @@ const ClienteForm = (props) => {
     }
   };
 
-  const replacer = (match, p1, p2, p3) => {
-    return [p1, p2, p3].join('');
-  };
-
-  const getRawValue = (value) => {
-    const newValue = value.replace(/\((\d*)\)(\d*)-(\d*)/, replacer);
-    console.log(newValue);
-    return newValue;
-  };
-
   return (
     <>
       <Form onSubmit={onSubmit}>
         <Form.Division>
-          <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+          <Select
+            data-testid="status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
             <MenuItem value="Ativo">Ativo</MenuItem>
             <MenuItem value="Inativo">Inativo</MenuItem>
           </Select>
@@ -111,14 +105,16 @@ const ClienteForm = (props) => {
             onChange={(e) => setNome(e.target.value)}
           />
           <NumberFormat
+            data-testid="telefone"
             label="Telefone"
             type="tel"
             value={telefone}
-            onValueChange={(values) => setTelefone(getRawValue(values.value))}
+            onValueChange={(values) => setTelefone(values.value)}
             customInput={TextField}
-            format="(99)99999-9999"
+            format="(##)#####-####"
           />
           <TextField
+            data-testid="email"
             label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -128,6 +124,7 @@ const ClienteForm = (props) => {
           <FormControl>
             <InputLabel>Sexo</InputLabel>
             <Select
+              data-testid="sexo"
               autoWidth
               value={genero}
               onChange={(e) => setGenero(e.target.value)}
@@ -139,17 +136,19 @@ const ClienteForm = (props) => {
               <MenuItem value="Feminino">Feminino</MenuItem>
             </Select>
           </FormControl>
-          <DatePicker
+          <KeyboardDatePicker
+            data-testid="data-nascimento"
             autoOk={true}
             id="date"
             label="Data de Nascimento"
             format="DD/MM/YYYY"
             value={dataDeNascimento}
-            onChange={(e) => setDataDeNascimento(e._d)}
+            onChange={(e) => setDataDeNascimento(e)}
           />
           <FormControl>
             <InputLabel>Tags</InputLabel>
             <Select
+              data-testid="tags"
               multiple
               value={selectedTags}
               onChange={(e) => setSelectedTags(e.target.value)}
@@ -198,7 +197,7 @@ const ClienteForm = (props) => {
               startIcon={<Delete />}
               onClick={props?.handleDelete}
             >
-              Remove
+              Remover
             </StyledButton.Secundary>
           )}
         </Form.Actions>
