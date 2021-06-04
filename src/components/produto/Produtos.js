@@ -7,8 +7,7 @@ import Add from '@material-ui/icons/Add';
 import { startRemoveProduto, startSetProdutos } from '../../actions/produtos';
 import { StyledButton } from '../forms/elements';
 import { Tabela, Listagem } from '../listas';
-import { Delete, Edit } from '@material-ui/icons';
-import { useGetData, useGetStatus, useGetValorEmReal } from '../listas/utils';
+import { getAcoes, useGetData, useGetStatus, useGetValorEmReal } from '../listas/utils';
 
 const Produto = (props) => {
   const produtos = useSelector((state) =>
@@ -30,29 +29,6 @@ const Produto = (props) => {
     [dispatch, props.history]
   );
 
-  const getAcoes = useMemo(
-    (props) => ({ row }) => {
-      const id = row.original.id;
-
-      return (
-        <>
-          <StyledButton.Link to={`/produtos/editar/${id}`}>
-            <StyledButton.OnlyIcon className="primary">
-              <Edit />
-            </StyledButton.OnlyIcon>
-          </StyledButton.Link>
-          <StyledButton.OnlyIcon
-            className="secondary"
-            onClick={() => handleDelete(id)}
-          >
-            <Delete />
-          </StyledButton.OnlyIcon>
-        </>
-      );
-    },
-    [handleDelete]
-  );
-
   const header = [
     { accessor: 'status', Header: 'Status', Cell: useGetStatus },
     {
@@ -69,7 +45,12 @@ const Produto = (props) => {
       Header: 'Valor de Venda',
       Cell: useGetValorEmReal,
     },
-    { accessor: 'acoes', Header: 'Ações', Cell: getAcoes, disableSortBy: true },
+    {
+      accessor: 'acoes',
+      Header: 'Ações',
+      Cell: (props) => getAcoes(props, handleDelete, 'produtos'),
+      disableSortBy: true,
+    },
   ];
 
   return (

@@ -5,8 +5,9 @@ import FiltroVenda from './FiltroVenda';
 import { startEditVenda, startSetVendas } from '../../actions/vendas';
 import selectVendas from '../../selectors/vendas';
 import { StyledButton } from '../forms/elements';
-import { Add, Delete, Edit } from '@material-ui/icons';
+import { Add } from '@material-ui/icons';
 import {
+  getAcoes,
   useGetCliente,
   useGetData,
   useGetStatus,
@@ -27,34 +28,11 @@ const Vendas = (props) => {
 
   const handleDelete = useMemo(
     (id) => (id) => {
-      dispatch(startEditVenda(id, {status: 'Cancelada'})).then(() =>
-      props.history.push(`/vendas`)
-    );
-    },
-    [dispatch, props.history]
-  );
-
-  const getAcoes = useMemo(
-    (props) => ({ row }) => {
-      const id = row.original.id;
-
-      return (
-        <>
-          <StyledButton.Link to={`/vendas/editar/${id}`}>
-            <StyledButton.OnlyIcon className="primary">
-              <Edit />
-            </StyledButton.OnlyIcon>
-          </StyledButton.Link>
-          <StyledButton.OnlyIcon
-            className="secondary"
-            onClick={() => handleDelete(id)}
-          >
-            <Delete />
-          </StyledButton.OnlyIcon>
-        </>
+      dispatch(startEditVenda(id, { status: 'Cancelada' })).then(() =>
+        props.history.push(`/vendas`)
       );
     },
-    [handleDelete]
+    [dispatch, props.history]
   );
 
   const header = [
@@ -70,7 +48,12 @@ const Vendas = (props) => {
       Cell: useGetData,
     },
     { accessor: 'total', Header: 'Total', Cell: useGetValorEmReal },
-    { accessor: 'acoes', Header: 'Ações', Cell: getAcoes, disableSortBy: true },
+    {
+      accessor: 'acoes',
+      Header: 'Ações',
+      Cell: (props) => getAcoes(props, handleDelete, 'vendas'),
+      disableSortBy: true,
+    },
   ];
 
   return (

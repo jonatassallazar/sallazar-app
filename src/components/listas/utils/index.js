@@ -1,5 +1,7 @@
 import moment from 'moment';
 import statusTags, { displayTags } from '../../../tags';
+import { StyledButton } from '../../forms/elements';
+import { Delete, Edit } from '@material-ui/icons';
 
 export function useGetCliente({ value }) {
   return value.nome;
@@ -25,3 +27,27 @@ export function useGetStatus({ value }) {
 export function useGetEndereco({ value }) {
   return `${value.endereco}${value.numero && `, ${value.numero}`}`;
 }
+
+export const getAcoes = ({ row }, handleDelete, refDatabase) => {
+  const id = row.original.id;
+
+  return (
+    <>
+      <StyledButton.Link
+        to={`/${refDatabase}/editar/${id}`}
+        data-testid={`edit-button${row.index}`}
+      >
+        <StyledButton.OnlyIcon className="primary">
+          <Edit />
+        </StyledButton.OnlyIcon>
+      </StyledButton.Link>
+      <StyledButton.OnlyIcon
+        data-testid={`delete-button${row.index}`}
+        className="secondary"
+        onClick={() => handleDelete(id)}
+      >
+        <Delete />
+      </StyledButton.OnlyIcon>
+    </>
+  );
+};
