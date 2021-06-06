@@ -4,8 +4,6 @@ import cep from 'cep-promise';
 import Form from './Form';
 import NumberFormat from 'react-number-format';
 
-//let CEPerror = false;
-
 const FormEndereco = ({
   CEP,
   setCEP,
@@ -22,16 +20,14 @@ const FormEndereco = ({
   estado,
   setEstado,
 }) => {
-  //const [CEPErrorText, setCEPErrorText] = useState(undefined);
-
-  const gerarEndereco = (event) => {
-    if (event.length === 8) {
-      cep(event)
-        .then((valor) => {
-          setEndereco(valor.street);
-          setBairro(valor.neighborhood);
-          setCidade(valor.city);
-          setEstado(valor.state);
+  const gerarEndereco = (value) => {
+    if (value.length === 8) {
+      cep(value)
+        .then((enderecoGerado) => {
+          setEndereco(enderecoGerado.street);
+          setBairro(enderecoGerado.neighborhood);
+          setCidade(enderecoGerado.city);
+          setEstado(enderecoGerado.state);
         })
         .catch((e) => {});
     }
@@ -39,26 +35,26 @@ const FormEndereco = ({
 
   const handleCEP = (values) => {
     const newValue = values.value;
-    const rawValue = newValue.replace(/(-)/, '');
 
-    setCEP(rawValue);
-    gerarEndereco(rawValue);
+    setCEP(newValue);
+    gerarEndereco(newValue);
   };
 
   return (
     <>
       <Form.Division>
         <NumberFormat
+          data-testid="cep-field"
           className="form-item-p"
           label="CEP"
           value={CEP}
           onValueChange={handleCEP}
-          format="99999-999"
+          format="#####-###"
           customInput={TextField}
         />
         <TextField
+          data-testid="endereco"
           className="form-item-g"
-          id="standard-basic endereco"
           label="Endereço"
           value={endereco}
           onChange={(e) => {
@@ -67,8 +63,8 @@ const FormEndereco = ({
           InputLabelProps={{ shrink: true }}
         />
         <TextField
+          data-testid="numero"
           className="form-item-p"
-          id="standard-basic numero"
           label="Número"
           value={numero}
           onChange={(e) => {
@@ -76,8 +72,8 @@ const FormEndereco = ({
           }}
         />
         <TextField
+          data-testid="complemento"
           className="form-item-m"
-          id="standard-basic complemento"
           label="Complemento"
           value={complemento}
           onChange={(e) => {
@@ -87,8 +83,8 @@ const FormEndereco = ({
       </Form.Division>
       <Form.Division>
         <TextField
+          data-testid="bairro"
           className="form-item-g"
-          id="standard-basic bairro"
           label="Bairro"
           value={bairro}
           onChange={(e) => {
@@ -97,8 +93,8 @@ const FormEndereco = ({
           InputLabelProps={{ shrink: true }}
         />
         <TextField
+          data-testid="cidade"
           className="form-item-g"
-          id="standard-basic cidade"
           label="Cidade"
           value={cidade}
           onChange={(e) => {
@@ -107,8 +103,8 @@ const FormEndereco = ({
           InputLabelProps={{ shrink: true }}
         />
         <TextField
+          data-testid="estado"
           className="form-item-p"
-          id="standard-basic estado"
           label="Estado"
           value={estado}
           inputProps={{ maxLength: 2 }}

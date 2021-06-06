@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from '../../utils/render';
+import { render, fireEvent, screen, act } from '../../utils/render';
 import userEvent from '@testing-library/user-event';
 import { ClienteForm } from '../../../components';
 import moment from 'moment';
@@ -95,10 +95,25 @@ it('should call onSubmit when saving with a name', () => {
   expect(onSubmit).toHaveBeenCalled();
 });
 
-it('should call onSubmit with full data object', () => {
+it('should call onSubmit with full data object', async () => {
   const onSubmit = jest.fn();
 
-  render(<ClienteForm onSubmit={onSubmit} />);
+  const { rerender } = render(<ClienteForm onSubmit={onSubmit} />);
+
+  act(() => {
+    fireEvent.change(
+      screen.getByTestId('cep-field').childNodes[1].childNodes[0],
+      { target: { value: '12345678' } }
+    );
+  });
+
+  rerender(<ClienteForm onSubmit={onSubmit} />);
+
+  fireEvent.change(screen.getByTestId('status').childNodes[1], {
+    target: {
+      value: 'Inativo',
+    },
+  });
 
   fireEvent.change(
     screen.getByTestId('nome-completo').childNodes[1].childNodes[0],
@@ -122,7 +137,8 @@ it('should call onSubmit with full data object', () => {
   });
 
   userEvent.type(
-    screen.getByTestId('data-nascimento').childNodes[1].childNodes[0], '01121995'
+    screen.getByTestId('data-nascimento').childNodes[1].childNodes[0],
+    '01121995'
   );
 
   fireEvent.change(screen.getByTestId('sexo').childNodes[1], {
@@ -131,6 +147,16 @@ it('should call onSubmit with full data object', () => {
     },
   });
 
+  userEvent.type(
+    screen.getByTestId('numero').childNodes[1].childNodes[0],
+    '12'
+  );
+
+  userEvent.type(
+    screen.getByTestId('complemento').childNodes[1].childNodes[0],
+    'none'
+  );
+
   fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
 
   expect(screen.queryByText('Digite um nome para o cliente')).not.toBeTruthy();
@@ -138,19 +164,50 @@ it('should call onSubmit with full data object', () => {
     nome: 'Charlie',
     email: 'charlie@test',
     telefone: '1982154',
-    dataDeNascimento: moment("1995-12-01").valueOf(),
+    dataDeNascimento: moment('1995-12-01').valueOf(),
+    status: 'Inativo',
+    genero: 'Masculino',
+    selectedTags: [],
+    createdAt: 0,
+    enderecoCompleto: {
+      CEP: '12345678',
+      endereco: 'street ok',
+      numero: '12',
+      complemento: 'none',
+      bairro: 'neighbour',
+      cidade: 'Atlanta',
+      estado: 'Nevada',
+    },
+  });
+});
+
+it('should populate all fields with props', () => {
+  const onSubmit = jest.fn();
+
+  const clientObject = {
+    nome: 'Charlie',
+    email: 'charlie@test',
+    telefone: '1982154',
+    dataDeNascimento: moment('1995-12-01').valueOf(),
     status: 'Ativo',
     genero: 'Masculino',
     selectedTags: [],
     createdAt: 0,
     enderecoCompleto: {
-      CEP: '',
-      endereco: '',
-      numero: '',
-      complemento: '',
-      bairro: '',
-      cidade: '',
-      estado: '',
+      CEP: '12345678',
+      endereco: 'street ok',
+      numero: '12',
+      complemento: 'none',
+      bairro: 'neighbour',
+      cidade: 'Atlanta',
+      estado: 'Nevada',
     },
-  });
+  };
+
+  render(<ClienteForm onSubmit={onSubmit} cliente={clientObject} />);
+
+  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+
+  expect(screen.queryByText('Digite um nome para o cliente')).not.toBeTruthy();
+  expect(onSubmit).toHaveBeenCalledWith(clientObject);
 });
