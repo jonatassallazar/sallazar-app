@@ -1,14 +1,15 @@
-import { render, fireEvent, screen, act } from '../../utils/render';
+import { render, fireEvent, screen, waitFor } from '../../utils/render';
 import userEvent from '@testing-library/user-event';
 import { ClienteForm } from '../../../components';
 import moment from 'moment';
 
-beforeAll(() => {
+beforeEach(() => {
   jest.useFakeTimers('modern');
   jest.setSystemTime(new Date(0));
 });
 
 afterAll(() => {
+  jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
 
@@ -59,7 +60,7 @@ it('should have a delete button only with props', () => {
 
   expect(screen.queryByRole('button', { name: 'Remover' })).not.toBeTruthy();
 
-  render(<ClienteForm handleDelete={true} />);
+  render(<ClienteForm handleDelete={jest.fn()} />);
 
   expect(screen.queryByRole('button', { name: 'Remover' })).toBeTruthy();
 });
@@ -98,16 +99,18 @@ it('should call onSubmit when saving with a name', () => {
 it('should call onSubmit with full data object', async () => {
   const onSubmit = jest.fn();
 
-  const { rerender } = render(<ClienteForm onSubmit={onSubmit} />);
+  render(<ClienteForm onSubmit={onSubmit} />);
 
-  act(() => {
-    fireEvent.change(
-      screen.getByTestId('cep-field').childNodes[1].childNodes[0],
-      { target: { value: '12345678' } }
-    );
+  fireEvent.change(
+    screen.getByTestId('cep-field').childNodes[1].childNodes[0],
+    { target: { value: '12345678' } }
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.getByTestId('endereco').childNodes[1].childNodes[0]
+    ).toHaveValue('street ok');
   });
-
-  rerender(<ClienteForm onSubmit={onSubmit} />);
 
   fireEvent.change(screen.getByTestId('status').childNodes[1], {
     target: {
@@ -210,4 +213,22 @@ it('should populate all fields with props', () => {
 
   expect(screen.queryByText('Digite um nome para o cliente')).not.toBeTruthy();
   expect(onSubmit).toHaveBeenCalledWith(clientObject);
+});
+
+it('should dispatch delete function on click', () => {
+  const handleDelete = jest.fn();
+
+  render(<ClienteForm handleDelete={handleDelete} />);
+
+  fireEvent.click(screen.getByRole('button', { name: 'Remover' }));
+
+  expect(handleDelete).toHaveBeenCalled();
+});
+
+it('should NOT have a delete button without handleDelete prop', () => {
+  render(<ClienteForm />);
+
+  expect(
+    screen.queryByRole('button', { name: 'Remover' })
+  ).not.toBeInTheDocument();
 });
