@@ -66,7 +66,7 @@ describe('testing base functions', () => {
       initialState: { clientes: clientes },
     });
 
-    expect(screen.getByTestId('nome-completo')).toBeTruthy();
+    expect(screen.getByTestId('nome-completo')).toBeInTheDocument();
   });
 });
 

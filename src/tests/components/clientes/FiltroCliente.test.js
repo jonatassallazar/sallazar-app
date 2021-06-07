@@ -25,7 +25,7 @@ afterEach(() => {
 it('should have block title', () => {
   render(<FiltroCliente />, { initialState });
 
-  expect(screen.getByText('Filtrar')).toBeTruthy();
+  expect(screen.getByText('Filtrar')).toBeInTheDocument();
 });
 
 it('should dispatch change for field name', () => {

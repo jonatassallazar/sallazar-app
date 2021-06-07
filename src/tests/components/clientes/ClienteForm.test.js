@@ -16,53 +16,53 @@ afterAll(() => {
 it('should have a status select field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('status')).toBeTruthy();
+  expect(screen.getByTestId('status')).toBeInTheDocument();
 });
 
 it('should have a name field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('nome-completo')).toBeTruthy();
+  expect(screen.getByTestId('nome-completo')).toBeInTheDocument();
 });
 
 it('should have a telefone field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('telefone')).toBeTruthy();
+  expect(screen.getByTestId('telefone')).toBeInTheDocument();
 });
 
 it('should have an email field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('email')).toBeTruthy();
+  expect(screen.getByTestId('email')).toBeInTheDocument();
 });
 
 it('should have a sexo field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('sexo')).toBeTruthy();
+  expect(screen.getByTestId('sexo')).toBeInTheDocument();
 });
 
 it('should have a tags selector field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('tags')).toBeTruthy();
+  expect(screen.getByTestId('tags')).toBeInTheDocument();
 });
 
 it('should have a save button', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByRole('button', { name: 'Salvar' })).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Salvar' })).toBeInTheDocument();
 });
 
 it('should have a delete button only with props', () => {
   render(<ClienteForm />);
 
-  expect(screen.queryByRole('button', { name: 'Remover' })).not.toBeTruthy();
+  expect(screen.queryByRole('button', { name: 'Remover' })).not.toBeInTheDocument();
 
   render(<ClienteForm handleDelete={jest.fn()} />);
 
-  expect(screen.queryByRole('button', { name: 'Remover' })).toBeTruthy();
+  expect(screen.queryByRole('button', { name: 'Remover' })).toBeInTheDocument();
 });
 
 it('should show an error on saving without a name', () => {
@@ -72,7 +72,7 @@ it('should show an error on saving without a name', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
 
-  expect(screen.getByText('Digite um nome para o cliente')).toBeTruthy();
+  expect(screen.getByText('Digite um nome para o cliente')).toBeInTheDocument();
   expect(onSubmit).not.toHaveBeenCalled();
 });
 
@@ -92,7 +92,7 @@ it('should call onSubmit when saving with a name', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
 
-  expect(screen.queryByText('Digite um nome para o cliente')).not.toBeTruthy();
+  expect(screen.queryByText('Digite um nome para o cliente')).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalled();
 });
 
@@ -162,7 +162,7 @@ it('should call onSubmit with full data object', async () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
 
-  expect(screen.queryByText('Digite um nome para o cliente')).not.toBeTruthy();
+  expect(screen.queryByText('Digite um nome para o cliente')).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalledWith({
     nome: 'Charlie',
     email: 'charlie@test',
@@ -211,7 +211,7 @@ it('should populate all fields with props', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
 
-  expect(screen.queryByText('Digite um nome para o cliente')).not.toBeTruthy();
+  expect(screen.queryByText('Digite um nome para o cliente')).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalledWith(clientObject);
 });
 

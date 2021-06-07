@@ -28,19 +28,19 @@ it('should have a list title', () => {
 it('should have a button to add a new client', () => {
   render(<Clientes />, { initialState });
 
-  expect(screen.getByRole('button', { name: 'Novo Cliente' })).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Novo Cliente' })).toBeInTheDocument();
 });
 
 it('should have a table', () => {
   render(<Clientes />, { initialState });
 
-  expect(screen.getByRole('table')).toBeTruthy();
+  expect(screen.getByRole('table')).toBeInTheDocument();
 });
 
 it('should have a edit button', () => {
   render(<Clientes />, { initialState });
 
-  expect(screen.getByTestId('edit-button0')).toBeTruthy();
+  expect(screen.getByTestId('edit-button0')).toBeInTheDocument();
 });
 
 it('should redirect to edit page', () => {
@@ -56,7 +56,7 @@ it('should redirect to edit page', () => {
 it('should have a delete button', () => {
   render(<Clientes />, { initialState });
 
-  expect(screen.getByTestId('delete-button0')).toBeTruthy();
+  expect(screen.getByTestId('delete-button0')).toBeInTheDocument();
 });
 
 it('should dispatch function to delete row', () => {
