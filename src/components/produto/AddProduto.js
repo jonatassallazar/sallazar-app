@@ -29,7 +29,7 @@ const AddProduto = (props) => {
           </StyledButton.OnlyIcon>
         </StyledButton.Link>
       )}
-      <h1>Adicionar Produto</h1>
+      <h1>Novo Produto</h1>
       <ProdutoForm
         onSubmit={handleSubmit}
       />

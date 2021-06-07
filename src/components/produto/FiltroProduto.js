@@ -28,6 +28,7 @@ const FiltroProduto = () => {
         <Form.Filtro.Title>Filtrar</Form.Filtro.Title>
         <Form.Division>
           <TextField
+            data-testid="filtro-nome"
             type="text"
             value={nome}
             label="Nome"
@@ -36,6 +37,7 @@ const FiltroProduto = () => {
             }}
           />
           <TextField
+            data-testid="filtro-fornecedor"
             type="text"
             value={fornecedor}
             label="Fornecedor"
@@ -46,6 +48,7 @@ const FiltroProduto = () => {
           <FormControl>
             <FormHelperText>Status do Produto</FormHelperText>
             <Select
+              data-testid="filtro-status"
               value={status}
               onChange={(e) => dispatch(setStatusFiltro(e.target.value))}
             >

@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import cep from 'cep-promise';
 import Form from './Form';
 import NumberFormat from 'react-number-format';
+import { StyledTextField } from './elements';
 
 const FormEndereco = ({
   CEP,
@@ -50,7 +51,7 @@ const FormEndereco = ({
           value={CEP}
           onValueChange={handleCEP}
           format="#####-###"
-          customInput={TextField}
+          customInput={StyledTextField}
         />
         <TextField
           data-testid="endereco"

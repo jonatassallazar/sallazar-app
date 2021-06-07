@@ -40,13 +40,13 @@ it('should have an email field', () => {
 it('should have a sexo field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('email')).toBeTruthy();
+  expect(screen.getByTestId('sexo')).toBeTruthy();
 });
 
 it('should have a tags selector field', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByTestId('email')).toBeTruthy();
+  expect(screen.getByTestId('tags')).toBeTruthy();
 });
 
 it('should have a save button', () => {
