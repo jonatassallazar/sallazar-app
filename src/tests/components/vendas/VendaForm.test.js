@@ -3,8 +3,6 @@ import {
   fireEvent,
   screen,
   waitForElementToBeRemoved,
-  prettyDOM,
-  waitFor,
 } from '../../utils/render';
 import userEvent from '@testing-library/user-event';
 import * as redux from 'react-redux';
