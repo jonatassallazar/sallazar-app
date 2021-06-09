@@ -17,7 +17,7 @@ const AddVenda = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    const numero = '00000' + vendas.length;
+    const numero = '00000' + vendas?.length || [];
     const numeroVenda = numero.substr(numero.length - 5);
     setNumeroVenda(numeroVenda);
     // eslint-disable-next-line

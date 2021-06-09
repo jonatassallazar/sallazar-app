@@ -12,7 +12,7 @@ const AddProduto = (props) => {
     if (props.handleSubmit) {
       dispatch(startAddProduto(data)).then((res) => {
         props.handleSubmit(res.produto);
-      });
+      }).catch((err) => console.log(err))
     } else {
       dispatch(startAddProduto(data)).then(() => {
         props.history.push('/produtos');
@@ -22,7 +22,7 @@ const AddProduto = (props) => {
 
   return (
     <>
-      {!props.showBackButton && (
+      {!props.hideBackButton && (
         <StyledButton.Link to="/produtos">
           <StyledButton.OnlyIcon>
             <ArrowBackIos />

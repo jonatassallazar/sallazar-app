@@ -9,6 +9,8 @@ import { EditarProduto } from '../../../components';
 import * as redux from 'react-redux';
 import produtos from '../../fixtures/produtos';
 
+const initialState = { produtos };
+
 const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
 let mockDispatchFn = jest.fn(() => Promise.resolve());
 
@@ -38,6 +40,24 @@ it('should navigate back to produtos', () => {
   expect(history.location).toHaveProperty('pathname', '/produtos');
 });
 
+it('should delete and navigate back to vendas', async () => {
+  //Confirming the change on pathname below
+  history.push('/produtos/editar');
+
+  render(
+    <EditarProduto match={{ params: { id: '123abc' } }} history={history} />,
+    { initialState }
+  );
+
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Clique aqui para excluir' })
+  );
+
+  await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(2));
+
+  expect(history.location).toHaveProperty('pathname', '/produtos');
+});
+
 describe('testing base functions', () => {
   it('should dispatch startSetProdutos on load', () => {
     render(<EditarProduto />);
@@ -47,7 +67,7 @@ describe('testing base functions', () => {
 
   it('should find product by id', () => {
     render(<EditarProduto match={{ params: { id: '123abc' } }} />, {
-      initialState: { produtos: produtos },
+      initialState,
     });
 
     expect(
@@ -63,7 +83,7 @@ describe('testing base functions', () => {
 
   it('should load form when has props', () => {
     render(<EditarProduto match={{ params: { id: '123abc' } }} />, {
-      initialState: { produtos: produtos },
+      initialState,
     });
 
     expect(screen.getByTestId('nome-produto')).toBeInTheDocument();
@@ -73,45 +93,15 @@ describe('testing base functions', () => {
 describe('should handle all submit actions', () => {
   history.push('/produtos/add');
 
-  it('should set name on input', () => {
-    render(<EditarProduto match={{ params: { id: '123abc' } }} />, {
-      initialState: { produtos: produtos },
-    });
-
-    fireEvent.change(
-      screen.getByTestId('nome-produto').childNodes[1].childNodes[0],
-      {
-        target: {
-          value: 'bag',
-        },
-      }
-    );
-
-    expect(
-      screen.getByTestId('nome-produto').childNodes[1].childNodes[0]
-    ).toHaveValue('bag');
-  });
-
   it('should send data to onSubmit on props', () => {
     render(
       <EditarProduto history={history} match={{ params: { id: '123abc' } }} />,
-      {
-        initialState: { produtos: produtos },
-      }
+      { initialState }
     );
 
-    fireEvent.change(
-      screen.getByTestId('nome-produto').childNodes[1].childNodes[0],
-      {
-        target: {
-          value: 'bag',
-        },
-      }
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Clique aqui para salvar' })
     );
-
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
 
     expect(mockDispatchFn).toHaveBeenCalled();
   });
@@ -119,23 +109,12 @@ describe('should handle all submit actions', () => {
   it('should navigate back to produtos path', async () => {
     render(
       <EditarProduto match={{ params: { id: '123abc' } }} history={history} />,
-      {
-        initialState: { produtos: produtos },
-      }
+      { initialState }
     );
 
-    fireEvent.change(
-      screen.getByTestId('nome-produto').childNodes[1].childNodes[0],
-      {
-        target: {
-          value: 'bag',
-        },
-      }
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Clique aqui para salvar' })
     );
-
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
 
     await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(2));
 

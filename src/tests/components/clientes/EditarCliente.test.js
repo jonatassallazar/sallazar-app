@@ -9,6 +9,8 @@ import { EditarCliente } from '../../../components';
 import * as redux from 'react-redux';
 import clientes from '../../fixtures/clientes';
 
+const initialState = { clientes };
+
 const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
 let mockDispatchFn = jest.fn(() => Promise.resolve());
 
@@ -34,6 +36,24 @@ it('should navigate back to clientes', () => {
   render(<EditarCliente history={history} />);
 
   fireEvent.click(screen.getByRole('link'));
+
+  expect(history.location).toHaveProperty('pathname', '/clientes');
+});
+
+it('should delete and navigate back to vendas', async () => {
+  //Confirming the change on pathname below
+  history.push('/clientes/editar');
+
+  render(
+    <EditarCliente match={{ params: { id: '123abc' } }} history={history} />,
+    { initialState }
+  );
+
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Clique aqui para excluir' })
+  );
+
+  await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(2));
 
   expect(history.location).toHaveProperty('pathname', '/clientes');
 });
@@ -73,42 +93,11 @@ describe('testing base functions', () => {
 describe('should handle all submit actions', () => {
   history.push('/clientes/add');
 
-  it('should set name on input', () => {
-    render(<EditarCliente match={{ params: { id: '123abc' } }} />, {
-      initialState: { clientes: clientes },
-    });
-
-    fireEvent.change(
-      screen.getByTestId('nome-completo').childNodes[1].childNodes[0],
-      {
-        target: {
-          value: 'Delta Major',
-        },
-      }
-    );
-
-    expect(
-      screen.getByTestId('nome-completo').childNodes[1].childNodes[0]
-    ).toHaveValue('Delta Major');
-  });
-
   it('should send data to onSubmit on props', () => {
-    render(<EditarCliente history={history} match={{ params: { id: '123abc' } }} />, {
-      initialState: { clientes: clientes },
-    });
-
-    fireEvent.change(
-      screen.getByTestId('nome-completo').childNodes[1].childNodes[0],
-      {
-        target: {
-          value: 'Delta Major',
-        },
-      }
+    render(
+      <EditarCliente history={history} match={{ params: { id: '123abc' } }} />,
+      { initialState }
     );
-
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
 
     expect(mockDispatchFn).toHaveBeenCalled();
   });
@@ -116,23 +105,12 @@ describe('should handle all submit actions', () => {
   it('should navigate back to clientes path', async () => {
     render(
       <EditarCliente match={{ params: { id: '123abc' } }} history={history} />,
-      {
-        initialState: { clientes: clientes },
-      }
+      { initialState }
     );
 
-    fireEvent.change(
-      screen.getByTestId('nome-completo').childNodes[1].childNodes[0],
-      {
-        target: {
-          value: 'Delta Major',
-        },
-      }
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Clique aqui para salvar' })
     );
-
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
 
     await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(2));
 

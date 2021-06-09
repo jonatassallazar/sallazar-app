@@ -3,10 +3,14 @@ export const setClienteFiltro = (cliente = '') => ({
   cliente,
 });
 
-export const setDataVendaInicialFiltro = (dataVendaInicial = '') => ({
-  type: 'SET_DATAVENDA_INICIAL_FILTER',
-  dataVendaInicial,
-});
+export const setDataVendaInicialFiltro = (dataVendaInicial = '') => {
+  const newValue = dataVendaInicial?.valueOf() || '';
+
+  return {
+    type: 'SET_DATAVENDA_INICIAL_FILTER',
+    dataVendaInicial: newValue,
+  };
+};
 
 export const setDataVendaFinalFiltro = (dataVendaFinal = '') => ({
   type: 'SET_DATAVENDA_FINAL_FILTER',

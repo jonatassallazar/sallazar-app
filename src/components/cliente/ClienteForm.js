@@ -183,6 +183,8 @@ const ClienteForm = (props) => {
         {error && <p>{error}</p>}
         <Form.Actions>
           <StyledButton
+            data-testid="save-button-cliente"
+            title="Clique aqui para salvar"
             variant="contained"
             color="primary"
             type="submit"
@@ -192,6 +194,8 @@ const ClienteForm = (props) => {
           </StyledButton>
           {props?.handleDelete && (
             <StyledButton.Secundary
+              data-testid="delete-button-cliente"
+              title="Clique aqui para excluir"
               variant="contained"
               color="secondary"
               startIcon={<Delete />}

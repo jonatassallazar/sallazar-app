@@ -1,7 +1,5 @@
 import { render, fireEvent, screen, waitFor } from '../../utils/render';
-import userEvent from '@testing-library/user-event';
 import { ProdutoForm } from '../../../components';
-import moment from 'moment';
 
 beforeEach(() => {
   jest.useFakeTimers('modern');
@@ -58,19 +56,19 @@ it('should have an fornecedor field', () => {
 it('should have a save button', () => {
   render(<ProdutoForm />);
 
-  expect(screen.getByRole('button', { name: 'Salvar' })).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: 'Clique aqui para salvar' })
+  ).toBeInTheDocument();
 });
 
 it('should have a delete button only with props', () => {
   render(<ProdutoForm />);
 
-  expect(
-    screen.queryByRole('button', { name: 'Remover' })
-  ).not.toBeInTheDocument();
+  expect(screen.queryByTestId('delete-button-produto')).not.toBeInTheDocument();
 
   render(<ProdutoForm handleDelete={jest.fn()} />);
 
-  expect(screen.queryByRole('button', { name: 'Remover' })).toBeInTheDocument();
+  expect(screen.getByTestId('delete-button-produto')).toBeInTheDocument();
 });
 
 it('should show an error on saving without a name', () => {
@@ -78,13 +76,15 @@ it('should show an error on saving without a name', () => {
 
   render(<ProdutoForm onSubmit={onSubmit} />);
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.click(screen.getByTestId('save-button-produto'));
 
-  expect(screen.getByText('Digite um nome para o Produto')).toBeInTheDocument();
+  expect(
+    screen.getByText('Preencha todas as informações obrigatórias')
+  ).toBeInTheDocument();
   expect(onSubmit).not.toHaveBeenCalled();
 });
 
-it('should call onSubmit when saving with a name', () => {
+it('should call onSubmit when saving with name, cost value and final value', () => {
   const onSubmit = jest.fn();
 
   render(<ProdutoForm onSubmit={onSubmit} />);
@@ -98,10 +98,28 @@ it('should call onSubmit when saving with a name', () => {
     }
   );
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.change(
+    screen.getByTestId('preco-custo').childNodes[1].childNodes[1],
+    {
+      target: {
+        value: 1000,
+      },
+    }
+  );
+
+  fireEvent.change(
+    screen.getByTestId('valor-venda').childNodes[1].childNodes[1],
+    {
+      target: {
+        value: 2500,
+      },
+    }
+  );
+
+  fireEvent.click(screen.getByTestId('save-button-produto'));
 
   expect(
-    screen.queryByText('Digite um nome para o Produto')
+    screen.queryByText('Preencha todas as informações obrigatórias')
   ).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalled();
 });
@@ -165,10 +183,10 @@ it('should call onSubmit with full data object', async () => {
     }
   );
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.click(screen.getByTestId('save-button-produto'));
 
   expect(
-    screen.queryByText('Digite um nome para o Produto')
+    screen.queryByText('Preencha todas as informações obrigatórias')
   ).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalledWith({
     nome: 'bag',
@@ -198,10 +216,10 @@ it('should populate all fields with props', () => {
 
   render(<ProdutoForm onSubmit={onSubmit} produto={productObject} />);
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.click(screen.getByTestId('save-button-produto'));
 
   expect(
-    screen.queryByText('Digite um nome para o Produto')
+    screen.queryByText('Preencha todas as informações obrigatórias')
   ).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalledWith(productObject);
 });
@@ -211,7 +229,7 @@ it('should dispatch delete function on click', () => {
 
   render(<ProdutoForm handleDelete={handleDelete} />);
 
-  fireEvent.click(screen.getByRole('button', { name: 'Remover' }));
+  fireEvent.click(screen.getByTestId('delete-button-produto'));
 
   expect(handleDelete).toHaveBeenCalled();
 });
@@ -219,7 +237,5 @@ it('should dispatch delete function on click', () => {
 it('should NOT have a delete button without handleDelete prop', () => {
   render(<ProdutoForm />);
 
-  expect(
-    screen.queryByRole('button', { name: 'Remover' })
-  ).not.toBeInTheDocument();
+  expect(screen.queryByTestId('delete-button-produto')).not.toBeInTheDocument();
 });

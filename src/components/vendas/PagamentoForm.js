@@ -110,6 +110,10 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
   }, [pagamento]);
 
   const handleDataParcela = (e) => {
+    if (!e?.valueOf()) {
+      return;
+    }
+
     const newValue = e;
 
     const newArray = pagamento?.map((i, indexA) => {
@@ -136,6 +140,7 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
   return (
     <>
       <TextField
+        data-testid="numero-parcela"
         className="form-item-p"
         label="Nº da Parcela"
         required={true}
@@ -143,6 +148,7 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
         disabled={true}
       />
       <NumberFormat
+        data-testid="valor-parcela"
         required
         className="textfield-align-right"
         label="Valor da Parcela"
@@ -169,22 +175,13 @@ const PagamentoForm = ({ index, pagamento, setPagamento, total }) => {
       />
       <KeyboardDatePicker
         required
+        data-testid="data-parcela"
         autoOk={true}
         className="form-item-p"
-        disableToolbar
-        variant="inline"
         format="DD/MM/yyyy"
-        margin="normal"
-        id="date-picker-inline"
         label="Data do Pagamento"
         value={pagamento[index].dataParcela}
         onChange={handleDataParcela}
-        KeyboardButtonProps={{
-          'aria-label': 'change date',
-        }}
-        InputLabelProps={{
-          shrink: true,
-        }}
       />
     </>
   );

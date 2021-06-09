@@ -9,14 +9,13 @@ import {
 } from '../../actions/filtrosVendas';
 import Form from '../forms/Form';
 import {
-  Input,
   Select,
   MenuItem,
   FormHelperText,
   FormControl,
 } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import { StyledButton } from '../forms/elements';
+import { StyledButton, StyledTextField } from '../forms/elements';
 
 const FiltroVenda = () => {
   const dispatch = useDispatch();
@@ -24,58 +23,46 @@ const FiltroVenda = () => {
     (state) => state.filtrosVendas
   );
 
+  const handleDispatchData = (value, action) => {
+    if (!value?.valueOf()) {
+      return;
+    }
+
+    dispatch(action(value.valueOf()));
+  };
+
   return (
     <Form>
       <Form.Filtro>
         <Form.Filtro.Title>Filtrar</Form.Filtro.Title>
         <Form.Division>
-          <Input
+          <StyledTextField
+            data-testid="filtro-cliente"
             type="text"
             value={cliente}
-            placeholder="Cliente"
+            label="Cliente"
             onChange={(e) => dispatch(setClienteFiltro(e.target.value))}
           />
           <KeyboardDatePicker
-            disableToolbar
+            data-testid="filtro-data-inicial"
             autoOk={true}
-            variant="inline"
             format="DD/MM/yyyy"
-            margin="normal"
-            id="date-picker-inline"
             label="De"
             value={dataVendaInicial}
-            onChange={(e) => {
-              dispatch(setDataVendaInicialFiltro(e.valueOf()));
-            }}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            onChange={(e) => handleDispatchData(e, setDataVendaInicialFiltro)}
           />
           <KeyboardDatePicker
-            disableToolbar
+            data-testid="filtro-data-final"
             autoOk={true}
-            variant="inline"
             format="DD/MM/yyyy"
-            margin="normal"
-            id="date-picker-inline"
             label="Até"
             value={dataVendaFinal}
-            onChange={(e) => {
-              dispatch(setDataVendaFinalFiltro(e.valueOf()));
-            }}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            onChange={(e) => handleDispatchData(e, setDataVendaFinalFiltro)}
           />
           <FormControl>
             <FormHelperText>Status da Venda</FormHelperText>
             <Select
+              data-testid="filtro-status"
               value={status}
               onChange={(e) => dispatch(setStatusFiltro(e.target.value))}
             >

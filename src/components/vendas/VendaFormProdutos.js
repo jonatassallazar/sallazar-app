@@ -53,6 +53,7 @@ const VendaFormProdutos = (props) => {
 
   const addProdutoButton = (
     <StyledButton.Borderless
+      data-testid="add-novo-produto"
       onMouseDown={(e) => {
         e.stopPropagation();
         handleNovoProduto();
@@ -67,6 +68,8 @@ const VendaFormProdutos = (props) => {
   return (
     <Form.Item>
       <Autocomplete
+        autoComplete={true}
+        data-testid="produto"
         className="form-item-g"
         loading={props.produtos?.length === 0}
         options={props.produtos?.sort((a, b) =>
@@ -84,6 +87,7 @@ const VendaFormProdutos = (props) => {
         noOptionsText={addProdutoButton}
       />
       <TextField
+        data-testid="unidade"
         required
         className="form-item-p"
         label="Unidade"
@@ -92,6 +96,7 @@ const VendaFormProdutos = (props) => {
         InputLabelProps={{ shrink: true }}
       />
       <TextField
+        data-testid="quantidade"
         required
         className="form-item-p"
         label="Quantidade"
@@ -102,6 +107,7 @@ const VendaFormProdutos = (props) => {
         onChange={handleQuantidade}
       />
       <NumberFormat
+        data-testid="valor-unitario"
         required
         className="textfield-align-right form-item-p"
         label="Valor Unitário"
@@ -119,6 +125,7 @@ const VendaFormProdutos = (props) => {
         }}
       />
       <NumberFormat
+        data-testid="valor-total"
         required
         className="textfield-align-right form-item-p"
         label="Valor Total"

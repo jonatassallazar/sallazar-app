@@ -6,7 +6,6 @@ import { startSetClientes } from '../../actions/clientes';
 import { startSetProdutos } from '../../actions/produtos';
 import VendaFormProdutos from './VendaFormProdutos';
 import {
-  TextField,
   Select,
   MenuItem,
   FormControl,
@@ -16,14 +15,14 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Save, Add, Delete } from '@material-ui/icons';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import { StyledButton } from '../forms/elements';
+import { StyledButton, StyledTextField } from '../forms/elements';
 import PagamentoForm from './PagamentoForm';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { currencyFormatter } from '../forms/utils/numbersFormatters';
 
 const baseItem = {
-  id: '123',
+  id: '',
   unidade: '',
   quantidade: '',
   valorVenda: 0,
@@ -70,9 +69,11 @@ const VendaForm = (props) => {
   const [error, setError] = useState('');
   const [modalShow, setModalShow] = useState(undefined);
 
-  //Calculos referentes a geração das parcelas e forma de pagamento
+  //Calculos referentes a geração das parcelas e forma de pagamento ------
   const handleParcelas = (e, newTotal) => {
     const newValue = e.target.value;
+    const valorParcela = newTotal || total / newValue;
+
     if (newValue > 0) {
       setParcelas(newValue);
 
@@ -80,8 +81,10 @@ const VendaForm = (props) => {
       for (let i = 0; i < newValue; i++) {
         arr = arr.concat({
           numeroParcela: i + 1,
-          valorParcela: newTotal || total / newValue,
-          dataParcela: props.venda?.pagamento[i].dataParcela || moment().add(i, 'months').valueOf(),
+          valorParcela,
+          dataParcela:
+            props.venda?.pagamento[i].dataParcela ||
+            moment().add(i, 'months').valueOf(),
           inseridoManualmente: false,
         });
       }
@@ -98,7 +101,7 @@ const VendaForm = (props) => {
     }
   };
 
-  /////////////////////////////////////////////////////////////
+  //---------------------------------------------------------------
 
   useEffect(() => {
     if (!props.venda?.numero) {
@@ -128,36 +131,16 @@ const VendaForm = (props) => {
   useEffect(() => {
     const newValue = subTotal + (frete - desconto) - taxa;
 
-    handleParcelas({ target: { value: parcelas } }, newValue / parcelas);
-
     setTotal(newValue);
+
+    handleParcelas({ target: { value: parcelas } }, newValue / parcelas || 0);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subTotal, desconto, frete, taxa, parcelas]);
 
   const clientes = useSelector((state) => state.clientes);
 
   const produtos = useSelector((state) => state.produtos);
-
-  const handleFrete = ({ floatValue }) => {
-    if (!floatValue) {
-      return setFrete(0);
-    }
-    setFrete(floatValue);
-  };
-
-  const handleDesconto = ({ floatValue }) => {
-    if (!floatValue) {
-      return setDesconto(0);
-    }
-    setDesconto(floatValue);
-  };
-
-  const handleTaxa = ({ floatValue }) => {
-    if (!floatValue) {
-      return setTaxa(0);
-    }
-    setTaxa(floatValue);
-  };
 
   const handleAddNewItem = () => {
     if (itensVendidos[itensVendidos.length - 1].id === '') {
@@ -172,7 +155,7 @@ const VendaForm = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (itensVendidos[0]?.id === '' || !dataVenda || !cliente) {
+    if (itensVendidos[0]?.id === '' || !dataVenda || cliente?.id === '') {
       setError('Preencha todas as informações obrigatórias');
       // Set error state equal to 'Please provide description and amount.'
     } else {
@@ -216,6 +199,7 @@ const VendaForm = (props) => {
 
   const addClienteButton = (
     <StyledButton.Borderless
+      data-testid="add-novo-cliente"
       onMouseDown={(e) => {
         e.stopPropagation();
         handleNovoCliente();
@@ -264,7 +248,7 @@ const VendaForm = (props) => {
         >
           <AddCliente
             handleSubmit={handleClienteSubmit}
-            showBackButton={true}
+            hideBackButton={true}
           />
         </Modal>
       ) : modalShow === 'produto' ? (
@@ -272,17 +256,18 @@ const VendaForm = (props) => {
           key="modal_add_produto"
           width="80%"
           alignment="left"
-          handleClose={props.handleClose}
+          handleClose={handleClose}
         >
           <AddProduto
             handleSubmit={handleProdutoSubmit}
-            showBackButton={true}
+            hideBackButton={true}
           />
         </Modal>
       ) : undefined}
       <Form onSubmit={onSubmit} className="general-form">
         <Form.Division>
-          <TextField
+          <StyledTextField
+            data-testid="numero-venda"
             className="form-item-p"
             label="Número da Venda"
             required
@@ -293,6 +278,7 @@ const VendaForm = (props) => {
           <FormControl required>
             <InputLabel id="demo-simple-select-label">Status</InputLabel>
             <Select
+              data-testid="status"
               className="form-item-m"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
@@ -305,26 +291,19 @@ const VendaForm = (props) => {
             </Select>
           </FormControl>
           <KeyboardDatePicker
+            data-testid="data-venda"
             autoOk={true}
             className="form-item-p"
-            disableToolbar
-            variant="inline"
             format="DD/MM/yyyy"
-            margin="normal"
-            id="date-picker-inline"
             label="Data da Venda"
             value={dataVenda}
             onChange={(e) => setDataVenda(e)}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
             required
           />
 
           <Autocomplete
+            autoComplete={true}
+            data-testid="cliente"
             className="form-item-m"
             options={clientes.sort((a, b) =>
               a.nome.toLowerCase() > b.nome.toLowerCase() ? 1 : -1
@@ -339,7 +318,7 @@ const VendaForm = (props) => {
               });
             }}
             renderInput={(inputProps) => (
-              <TextField label="Selecione o Cliente" {...inputProps} />
+              <StyledTextField label="Selecione o Cliente" {...inputProps} />
             )}
             noOptionsText={addClienteButton}
           />
@@ -363,6 +342,7 @@ const VendaForm = (props) => {
         </Form.Division>
         <Form.Division>
           <StyledButton
+            data-testid="add-new-item"
             title="Clique aqui para adicionar um item no carrinho"
             className="form-item-p"
             variant="contained"
@@ -375,6 +355,7 @@ const VendaForm = (props) => {
         </Form.Division>
         <Form.Division>
           <NumberFormat
+            data-testid="subtotal"
             required
             disabled
             className="textfield-align-right"
@@ -384,7 +365,7 @@ const VendaForm = (props) => {
             fixedDecimalScale
             placeholder="0,00"
             thousandSeparator="."
-            customInput={TextField}
+            customInput={StyledTextField}
             value={subTotal}
             format={currencyFormatter}
             InputProps={{
@@ -394,6 +375,7 @@ const VendaForm = (props) => {
             }}
           />
           <NumberFormat
+            data-testid="frete"
             className="textfield-align-right"
             label="Frete"
             decimalScale={2}
@@ -401,9 +383,11 @@ const VendaForm = (props) => {
             fixedDecimalScale
             placeholder="0,00"
             thousandSeparator="."
-            customInput={TextField}
+            customInput={StyledTextField}
             value={frete}
-            onValueChange={handleFrete}
+            onValueChange={({ floatValue }) =>
+              floatValue ? setFrete(floatValue) : setFrete(0)
+            }
             format={currencyFormatter}
             InputProps={{
               startAdornment: (
@@ -412,6 +396,7 @@ const VendaForm = (props) => {
             }}
           />
           <NumberFormat
+            data-testid="desconto"
             className="textfield-align-right"
             label="Desconto"
             decimalScale={2}
@@ -419,9 +404,11 @@ const VendaForm = (props) => {
             fixedDecimalScale
             placeholder="0,00"
             thousandSeparator="."
-            customInput={TextField}
+            customInput={StyledTextField}
             value={desconto}
-            onValueChange={handleDesconto}
+            onValueChange={({ floatValue }) =>
+              floatValue ? setDesconto(floatValue) : setDesconto(0)
+            }
             format={currencyFormatter}
             InputProps={{
               startAdornment: (
@@ -430,16 +417,19 @@ const VendaForm = (props) => {
             }}
           />
           <NumberFormat
+            data-testid="taxa"
             className="textfield-align-right"
-            label="Taxa"
+            label="Taxas"
             decimalScale={2}
             decimalSeparator=","
             fixedDecimalScale
             placeholder="0,00"
             thousandSeparator="."
-            customInput={TextField}
+            customInput={StyledTextField}
             value={taxa}
-            onValueChange={handleTaxa}
+            onValueChange={({ floatValue }) =>
+              floatValue ? setTaxa(floatValue) : setTaxa(0)
+            }
             format={currencyFormatter}
             InputProps={{
               startAdornment: (
@@ -448,6 +438,7 @@ const VendaForm = (props) => {
             }}
           />
           <NumberFormat
+            data-testid="total"
             required
             disabled
             className="textfield-align-right"
@@ -457,7 +448,7 @@ const VendaForm = (props) => {
             fixedDecimalScale
             placeholder="0,00"
             thousandSeparator="."
-            customInput={TextField}
+            customInput={StyledTextField}
             value={total}
             format={currencyFormatter}
             InputProps={{
@@ -473,6 +464,7 @@ const VendaForm = (props) => {
               Forma de Pagamento
             </InputLabel>
             <Select
+              data-testid="forma-pagamento"
               className="form-item-m"
               value={formaPagamento}
               onChange={handleFormaPagamento}
@@ -487,7 +479,8 @@ const VendaForm = (props) => {
               <MenuItem value="pix">Pix</MenuItem>
             </Select>
           </FormControl>
-          <TextField
+          <StyledTextField
+            data-testid="parcelas"
             required
             className="form-item-p"
             label="Parcelas"
@@ -509,7 +502,8 @@ const VendaForm = (props) => {
           </Form.Division>
         ))}
         <Form.Division>
-          <TextField
+          <StyledTextField
+            data-testid="observacoes"
             label="Observações"
             multiline
             rows={4}
@@ -520,6 +514,7 @@ const VendaForm = (props) => {
         {error && <Form.Error>{error}</Form.Error>}
         <Form.Actions>
           <StyledButton
+            data-testid="save-button-venda"
             title="Clique aqui para salvar"
             variant="contained"
             color="primary"
@@ -530,6 +525,7 @@ const VendaForm = (props) => {
           </StyledButton>
           {props?.handleDelete && (
             <StyledButton.Secundary
+              data-testid="delete-button-venda"
               title="Clique aqui para excluir"
               variant="contained"
               color="secondary"

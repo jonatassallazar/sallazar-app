@@ -20,8 +20,8 @@ const ProdutoForm = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!nome) {
-      setError('Digite um nome para o Produto');
+    if (!nome || !valorCusto || !valorVenda) {
+      setError('Preencha todas as informações obrigatórias');
       // Set error state equal to 'Please provide description and amount.'
     } else {
       setError('');
@@ -134,6 +134,8 @@ const ProdutoForm = (props) => {
       {error && <p>{error}</p>}
       <Form.Actions>
         <StyledButton
+          data-testid="save-button-produto"
+          title="Clique aqui para salvar"
           variant="contained"
           color="primary"
           type="submit"
@@ -143,6 +145,8 @@ const ProdutoForm = (props) => {
         </StyledButton>
         {props.handleDelete && (
           <StyledButton.Secundary
+            data-testid="delete-button-produto"
+            title="Clique aqui para excluir"
             variant="contained"
             color="secondary"
             startIcon={<Delete />}

@@ -69,9 +69,7 @@ describe('should handle all submit actions', () => {
       }
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
+    fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
     expect(mockDispatchFn).toHaveBeenCalled();
   });
@@ -88,9 +86,7 @@ describe('should handle all submit actions', () => {
       }
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
+    fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
     await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(1));
 

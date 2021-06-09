@@ -12,7 +12,7 @@ const AddCliente = (props) => {
     if (props.handleSubmit) {
       dispatch(startAddCliente(data)).then((res) => {
         props.handleSubmit(res.cliente);
-      });
+      }).catch((err) => console.log(err))
     } else {
       dispatch(startAddCliente(data)).then(() => {
         props.history.push('/clientes');
@@ -22,7 +22,7 @@ const AddCliente = (props) => {
 
   return (
     <div>
-      {!props.showBackButton && (
+      {!props.hideBackButton && (
         <StyledButton.Link to="/clientes">
           <StyledButton.OnlyIcon>
             <ArrowBackIos />

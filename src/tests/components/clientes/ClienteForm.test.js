@@ -52,17 +52,17 @@ it('should have a tags selector field', () => {
 it('should have a save button', () => {
   render(<ClienteForm />);
 
-  expect(screen.getByRole('button', { name: 'Salvar' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Clique aqui para salvar' })).toBeInTheDocument();
 });
 
 it('should have a delete button only with props', () => {
   render(<ClienteForm />);
 
-  expect(screen.queryByRole('button', { name: 'Remover' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Clique aqui para excluir' })).not.toBeInTheDocument();
 
   render(<ClienteForm handleDelete={jest.fn()} />);
 
-  expect(screen.queryByRole('button', { name: 'Remover' })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Clique aqui para excluir' })).toBeInTheDocument();
 });
 
 it('should show an error on saving without a name', () => {
@@ -70,7 +70,7 @@ it('should show an error on saving without a name', () => {
 
   render(<ClienteForm onSubmit={onSubmit} />);
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
   expect(screen.getByText('Digite um nome para o cliente')).toBeInTheDocument();
   expect(onSubmit).not.toHaveBeenCalled();
@@ -90,7 +90,7 @@ it('should call onSubmit when saving with a name', () => {
     }
   );
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
   expect(screen.queryByText('Digite um nome para o cliente')).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalled();
@@ -160,7 +160,7 @@ it('should call onSubmit with full data object', async () => {
     'none'
   );
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
   expect(screen.queryByText('Digite um nome para o cliente')).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalledWith({
@@ -209,7 +209,7 @@ it('should populate all fields with props', () => {
 
   render(<ClienteForm onSubmit={onSubmit} cliente={clientObject} />);
 
-  fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
   expect(screen.queryByText('Digite um nome para o cliente')).not.toBeInTheDocument();
   expect(onSubmit).toHaveBeenCalledWith(clientObject);
@@ -220,7 +220,7 @@ it('should dispatch delete function on click', () => {
 
   render(<ClienteForm handleDelete={handleDelete} />);
 
-  fireEvent.click(screen.getByRole('button', { name: 'Remover' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para excluir' }));
 
   expect(handleDelete).toHaveBeenCalled();
 });
@@ -229,6 +229,6 @@ it('should NOT have a delete button without handleDelete prop', () => {
   render(<ClienteForm />);
 
   expect(
-    screen.queryByRole('button', { name: 'Remover' })
+    screen.queryByRole('button', { name: 'Clique aqui para excluir' })
   ).not.toBeInTheDocument();
 });

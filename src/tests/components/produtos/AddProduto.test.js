@@ -69,9 +69,25 @@ describe('should handle all submit actions', () => {
       }
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
+    fireEvent.change(
+      screen.getByTestId('preco-custo').childNodes[1].childNodes[1],
+      {
+        target: {
+          value: 1000,
+        },
+      }
+    );
+
+    fireEvent.change(
+      screen.getByTestId('valor-venda').childNodes[1].childNodes[1],
+      {
+        target: {
+          value: 2500,
+        },
+      }
+    );
+
+    fireEvent.click(screen.getByTestId('save-button-produto'));
 
     expect(mockDispatchFn).toHaveBeenCalled();
   });
@@ -88,9 +104,25 @@ describe('should handle all submit actions', () => {
       }
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }), {
-      target: {},
-    });
+    fireEvent.change(
+      screen.getByTestId('preco-custo').childNodes[1].childNodes[1],
+      {
+        target: {
+          value: 1000,
+        },
+      }
+    );
+
+    fireEvent.change(
+      screen.getByTestId('valor-venda').childNodes[1].childNodes[1],
+      {
+        target: {
+          value: 2500,
+        },
+      }
+    );
+
+    fireEvent.click(screen.getByTestId('save-button-produto'));
 
     await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(1));
 

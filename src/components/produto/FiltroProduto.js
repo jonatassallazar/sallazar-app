@@ -8,13 +8,12 @@ import {
 } from '../../actions/filtrosProdutos';
 import Form from '../forms/Form';
 import {
-  TextField,
   Select,
   MenuItem,
   FormControl,
   FormHelperText,
 } from '@material-ui/core';
-import { StyledButton } from '../forms/elements';
+import { StyledButton, StyledTextField } from '../forms/elements';
 
 const FiltroProduto = () => {
   const dispatch = useDispatch();
@@ -27,7 +26,7 @@ const FiltroProduto = () => {
       <Form.Filtro>
         <Form.Filtro.Title>Filtrar</Form.Filtro.Title>
         <Form.Division>
-          <TextField
+          <StyledTextField
             data-testid="filtro-nome"
             type="text"
             value={nome}
@@ -36,7 +35,7 @@ const FiltroProduto = () => {
               dispatch(setNomeFiltro(e.target.value));
             }}
           />
-          <TextField
+          <StyledTextField
             data-testid="filtro-fornecedor"
             type="text"
             value={fornecedor}
