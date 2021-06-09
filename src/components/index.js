@@ -24,3 +24,5 @@ export { default as Relatorios } from './Relatorios';
 export { default as Ajuda } from './Ajuda';
 export { default as ListaItens } from './listas/ListaItens';
 export { default as Listagem } from './listas/Listagem';
+export { default as ErrorBoundary } from './errorHandlers/ErrorBoundary';
+export { default as ErrorPage } from './errorHandlers/ErrorPage';

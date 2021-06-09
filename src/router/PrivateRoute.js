@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import Header from '../components/Header';
-import Menu from '../components/Menu';
+import { Header, Menu, ErrorBoundary } from '../components';
 import styled from 'styled-components';
 
 const Conteudo = styled.div`
@@ -36,7 +35,9 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
             <Conteudo>
               <Menu />
               <Conteudo.Selecionado>
-                <Component {...props} />
+                <ErrorBoundary>
+                  <Component {...props} />
+                </ErrorBoundary>
               </Conteudo.Selecionado>
             </Conteudo>
           </>
