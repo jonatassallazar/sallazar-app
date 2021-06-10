@@ -128,8 +128,8 @@ const Dashboard = () => {
           <DashboardLayout.Faturamento>
             <div>
               <Tipografia.P as="p">Mês Anterior</Tipografia.P>
-              <span className="tag-preta">
-                R$ {currencyFormatter(faturamentoMesAnterior)}
+              <span className="tag-preta" data-testid="last-month-sales-value">
+                R$ {currencyFormatter(faturamentoMesAnterior) || '0,00'}
               </span>
             </div>
             <div>
@@ -140,8 +140,9 @@ const Dashboard = () => {
                     ? 'tag-verde'
                     : 'tag-vermelha'
                 }`}
+                data-testid="this-month-sales-value"
               >
-                R$ {currencyFormatter(faturamentoMesAtual)}
+                R$ {currencyFormatter(faturamentoMesAtual) || '0,00'}
               </span>
             </div>
           </DashboardLayout.Faturamento>

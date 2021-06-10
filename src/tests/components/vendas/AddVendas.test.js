@@ -128,9 +128,12 @@ describe('should handle all submit actions', () => {
 it('should generate a valid number for the sale with previous sales', () => {
   render(<AddVendas history={history} />, { initialState });
 
+  const numero = '00000' + vendas?.length;
+  const numeroVenda = numero.substr(numero.length - 5);
+
   expect(
     screen.getByTestId('numero-venda').childNodes[1].childNodes[0]
-  ).toHaveValue('00003');
+  ).toHaveValue(numeroVenda);
 });
 
 it('should generate a valid number for the sale without previous sales', () => {

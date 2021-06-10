@@ -32,6 +32,10 @@ it('should edit venda and return new array', () => {
     vendas[0],
     { ...vendas[1], cliente: { nome: 'Omega Prime' } },
     vendas[2],
+    vendas[3],
+    vendas[4],
+    vendas[5],
+    vendas[6],
   ]);
 });
 
@@ -53,7 +57,14 @@ it('should remove venda and return new array', () => {
     venda: { id: '456def' },
   });
 
-  expect(result).toEqual([vendas[0], vendas[2]]);
+  expect(result).toEqual([
+    vendas[0],
+    vendas[2],
+    vendas[3],
+    vendas[4],
+    vendas[5],
+    vendas[6],
+  ]);
 });
 
 it('should not remove venda and return state unchanged', () => {
