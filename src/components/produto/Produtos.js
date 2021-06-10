@@ -41,6 +41,11 @@ const Produto = (props) => {
       Cell: useGetData,
     },
     {
+      accessor: 'valorCusto',
+      Header: 'Valor de Custo',
+      Cell: useGetValorEmReal,
+    },
+    {
       accessor: 'valorVenda',
       Header: 'Valor de Venda',
       Cell: useGetValorEmReal,
