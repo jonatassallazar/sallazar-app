@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { startSetVendas } from '../actions/vendas';
-import selectVendas from '../selectors/vendas';
+import { startSetVendas } from '../../actions/vendas';
+import selectVendas from '../../selectors/vendas';
 import styled from 'styled-components';
-import Tipografia from './layout/Tipografia';
+import Tipografia from '../layout/Tipografia';
 import Calendar from 'react-calendar';
-import StyledCalendar from './layout/StyledCalendar';
-import { currencyFormatter } from './forms/utils/numbersFormatters';
+import StyledCalendar from '../layout/StyledCalendar';
+import { currencyFormatter } from '../forms/utils/numbersFormatters';
 import moment from 'moment';
+import Chart from './Chart';
 
 const DashboardLayout = styled.div`
   display: grid;
@@ -38,7 +39,8 @@ DashboardLayout.Faturamento = styled.div`
     font-weight: bold;
     line-height: 2;
     border-radius: 30px;
-    padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.large};
+    padding: ${({ theme }) => theme.spacing.small}
+      ${({ theme }) => theme.spacing.large};
   }
 
   .tag-verde {
@@ -69,11 +71,24 @@ const Dashboard = () => {
   const [calendario, setCalendario] = useState(new Date());
   const [faturamentoMesAnterior, setFaturamentoMesAnterior] = useState(0);
   const [faturamentoMesAtual, setFaturamentoMesAtual] = useState(0);
-  // const [mesAtual, setMesAtual] = useState('tag-preta');
+  const [chartDataInicial, setChartDataInicial] = useState(0);
+  const [chartDataFinal, setChartDataFinal] =
+    useState(19819651651684165161616516461651);
 
-  // useEffect(() => {
-  //   setMesAtual()
-  // }, [])
+  const vendasFiltradasGrafico = useSelector((state) => {
+    const selected = selectVendas(state.vendas, {
+      cliente: '',
+      status: 'todos',
+      dataVendaInicial: chartDataInicial,
+      dataVendaFinal: chartDataFinal,
+    });
+    console.log(selected);
+    const filteredSelected = selected.map((i) => {
+      return [[i.dataVenda, i.total]];
+    });
+
+    return [['Data da Venda', 'Total da Venda'], filteredSelected];
+  });
 
   const vendasMesAnterior = useSelector((state) =>
     selectVendas(state.vendas, {
@@ -123,6 +138,7 @@ const Dashboard = () => {
       </Tipografia.SPAN>
       <Tipografia.H1 as="h1">Dashboard</Tipografia.H1>
       <DashboardLayout>
+        <Chart vendas={vendasFiltradasGrafico} />
         <DashboardLayout.Sub>
           <Tipografia.H6 as="h6">Faturamento Mensal</Tipografia.H6>
           <DashboardLayout.Faturamento>
