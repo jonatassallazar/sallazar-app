@@ -7,8 +7,11 @@ import Tipografia from '../layout/Tipografia';
 import Calendar from 'react-calendar';
 import StyledCalendar from '../layout/StyledCalendar';
 import { currencyFormatter } from '../forms/utils/numbersFormatters';
-import moment from 'moment';
 import Chart from './Chart';
+
+import moment from 'moment';
+import 'moment/locale/pt-br'
+moment.locale('pt-br')
 
 const DashboardLayout = styled.div`
   display: grid;
@@ -39,8 +42,7 @@ DashboardLayout.Faturamento = styled.div`
     font-weight: bold;
     line-height: 2;
     border-radius: 30px;
-    padding: ${({ theme }) => theme.spacing.small}
-      ${({ theme }) => theme.spacing.large};
+    padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.large};
   }
 
   .tag-verde {
@@ -63,6 +65,16 @@ DashboardLayout.Divisor = styled.div`
   width: 1px;
 `;
 
+const createTooltipHtml = (data, total) => {
+  return `<div class="tooltip-style">
+  <h6>${data.format('ll')}</h6>
+  <div class="each-info-value">
+    <div class="color-column"></div>
+    <p><b>Total do Dia:</b> R$ ${total / 100}</p>
+  </div>
+  </div>`;
+};
+
 const Dashboard = () => {
   const dispatch = useDispatch();
 
@@ -71,9 +83,12 @@ const Dashboard = () => {
   const [calendario, setCalendario] = useState(new Date());
   const [faturamentoMesAnterior, setFaturamentoMesAnterior] = useState(0);
   const [faturamentoMesAtual, setFaturamentoMesAtual] = useState(0);
-  const [chartDataInicial, setChartDataInicial] = useState(0);
-  const [chartDataFinal, setChartDataFinal] =
-    useState(19819651651684165161616516461651);
+  const [chartDataInicial, setChartDataInicial] = useState(
+    moment().subtract(3, 'months').valueOf()
+  );
+  const [chartDataFinal, setChartDataFinal] = useState(moment().valueOf());
+
+  console.log(chartDataFinal.valueOf());
 
   const vendasFiltradasGrafico = useSelector((state) => {
     const selected = selectVendas(state.vendas, {
@@ -82,12 +97,38 @@ const Dashboard = () => {
       dataVendaInicial: chartDataInicial,
       dataVendaFinal: chartDataFinal,
     });
-    console.log(selected);
-    const filteredSelected = selected.map((i) => {
-      return [[i.dataVenda, i.total]];
-    });
 
-    return [['Data da Venda', 'Total da Venda'], filteredSelected];
+    const rows = [];
+    const dataInicial = moment(chartDataInicial);
+    const dataFinal = moment(chartDataFinal);
+
+    while (dataFinal.diff(dataInicial) >= 0) {
+      const sameDay = selected.filter((i) =>
+        moment(i.dataVenda).isSame(dataInicial, 'day')
+      );
+      const totalVendasDia =
+        sameDay?.reduce((acc, cur) => acc + cur.total, 0) || 0;
+
+      rows.push({
+        c: [
+          { v: Date(dataInicial.format('yyyy,m,d')) },
+          { v: totalVendasDia / 100 },
+          { v: createTooltipHtml(dataInicial, totalVendasDia) },
+        ],
+      });
+
+      dataInicial.add(1, 'days');
+    }
+
+    const columns = [
+      { type: 'string', label: 'Data da Venda' },
+      { type: 'number', label: 'Total da Venda' },
+      { type: 'string', role: 'tooltip', p: { html: true } },
+    ];
+
+    const data = { cols: columns, rows: rows, p: null };
+
+    return JSON.stringify(data);
   });
 
   const vendasMesAnterior = useSelector((state) =>
@@ -138,7 +179,10 @@ const Dashboard = () => {
       </Tipografia.SPAN>
       <Tipografia.H1 as="h1">Dashboard</Tipografia.H1>
       <DashboardLayout>
-        <Chart vendas={vendasFiltradasGrafico} />
+        <Chart
+          vendas={vendasFiltradasGrafico}
+          DashboardLayout={DashboardLayout}
+        />
         <DashboardLayout.Sub>
           <Tipografia.H6 as="h6">Faturamento Mensal</Tipografia.H6>
           <DashboardLayout.Faturamento>

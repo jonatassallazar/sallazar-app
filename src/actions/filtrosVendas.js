@@ -12,10 +12,14 @@ export const setDataVendaInicialFiltro = (dataVendaInicial = '') => {
   };
 };
 
-export const setDataVendaFinalFiltro = (dataVendaFinal = '') => ({
-  type: 'SET_DATAVENDA_FINAL_FILTER',
-  dataVendaFinal,
-});
+export const setDataVendaFinalFiltro = (dataVendaFinal = '') => {
+  const newValue = dataVendaFinal?.valueOf() || '';
+
+  return {
+    type: 'SET_DATAVENDA_FINAL_FILTER',
+    dataVendaFinal: newValue,
+  };
+};
 
 export const setStatusFiltro = (status = '') => ({
   type: 'SET_STATUS_FILTER',
