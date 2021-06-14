@@ -14,7 +14,7 @@ import moment from 'moment';
 import 'moment/locale/pt-br';
 moment.locale('pt-br');
 
-const DashboardLayout = styled.div`
+export const DashboardLayout = styled.div`
   display: grid;
   grid-template-columns: 48% 4% 48%;
   width: 100%;
@@ -72,11 +72,10 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { displayName } = useSelector((state) => state.auth);
-
   const [calendario, setCalendario] = useState(new Date());
   const [faturamentoMesAnterior, setFaturamentoMesAnterior] = useState(0);
   const [faturamentoMesAtual, setFaturamentoMesAtual] = useState(0);
-
+  const [vendasFiltradasGrafico, setVendasFiltradasGrafico] = useState([]);
   const [chartDate, setChartDate] = useState([
     {
       startDate: subDays(new Date(), 30),
@@ -86,16 +85,22 @@ const Dashboard = () => {
     },
   ]);
 
-  const vendasFiltradasGrafico = useSelector((state) => {
-    const selected = selectVendas(state.vendas, {
+  const vendasChart = useSelector((state) =>
+    selectVendas(state.vendas, {
       cliente: '',
       status: 'todos',
       dataVendaInicial: moment(chartDate[0].startDate).valueOf(),
       dataVendaFinal: moment(chartDate[0].endDate).valueOf(),
-    });
+    })
+  );
 
-    return createArrayChart(selected, chartDate);
-  });
+  useEffect(() => {
+    createArrayChart(vendasChart, chartDate)
+      .then((result) => {
+        setVendasFiltradasGrafico(result);
+      })
+      .catch((err) => console.log(err));
+  }, [vendasChart, chartDate]);
 
   const vendasMesAnterior = useSelector((state) =>
     selectVendas(state.vendas, {

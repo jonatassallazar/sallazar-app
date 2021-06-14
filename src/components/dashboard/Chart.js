@@ -33,7 +33,7 @@ ChartSection.Modal = styled.div`
   position: absolute;
   z-index: 5;
   top: -60px;
-  right: 150px;
+  right: 210px;
   box-shadow: ${({ theme }) => theme.boxes.boxShadow};
 `;
 
@@ -114,7 +114,6 @@ const Chart = ({ vendas, DashboardLayout, chartDate, setChartDate }) => {
             data-testid="data-range-button-display"
             title="Clique aqui para escolher o período desejado"
             onClick={() => setModalData(!modalData)}
-            onBlur={() => setModalData(false)}
           >
             Período ({moment(chartDate[0].startDate).format('DD/MM')} -{' '}
             {moment(chartDate[0].endDate).format('DD/MM')})
