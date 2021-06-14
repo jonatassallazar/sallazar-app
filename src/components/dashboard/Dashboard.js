@@ -8,10 +8,10 @@ import Calendar from 'react-calendar';
 import StyledCalendar from '../layout/StyledCalendar';
 import { currencyFormatter } from '../forms/utils/numbersFormatters';
 import Chart from './Chart';
-
+import { subDays } from 'date-fns';
 import moment from 'moment';
-import 'moment/locale/pt-br'
-moment.locale('pt-br')
+import 'moment/locale/pt-br';
+moment.locale('pt-br');
 
 const DashboardLayout = styled.div`
   display: grid;
@@ -65,12 +65,20 @@ DashboardLayout.Divisor = styled.div`
   width: 1px;
 `;
 
-const createTooltipHtml = (data, total) => {
+const createTooltipHtml = (data, total, vendasDia) => {
   return `<div class="tooltip-style">
   <h6>${data.format('ll')}</h6>
   <div class="each-info-value">
     <div class="color-column"></div>
     <p><b>Total do Dia:</b> R$ ${total / 100}</p>
+  </div>
+  <div class="each-info-value">
+    <div class="color-column"></div>
+    <p><b>Vendas no dia:</b> ${vendasDia}</p>
+  </div>
+  <div class="each-info-value">
+    <div class="color-column"></div>
+    <p><b>Ticket Médio:</b> R$ ${parseFloat(total / vendasDia / 100) || 0}</p>
   </div>
   </div>`;
 };
@@ -83,37 +91,40 @@ const Dashboard = () => {
   const [calendario, setCalendario] = useState(new Date());
   const [faturamentoMesAnterior, setFaturamentoMesAnterior] = useState(0);
   const [faturamentoMesAtual, setFaturamentoMesAtual] = useState(0);
-  const [chartDataInicial, setChartDataInicial] = useState(
-    moment().subtract(3, 'months').valueOf()
-  );
-  const [chartDataFinal, setChartDataFinal] = useState(moment().valueOf());
 
-  console.log(chartDataFinal.valueOf());
+  const [chartDate, setChartDate] = useState([
+    {
+      startDate: subDays(new Date(), 30),
+      endDate: new Date(),
+      key: 'selection',
+    },
+  ]);
 
   const vendasFiltradasGrafico = useSelector((state) => {
     const selected = selectVendas(state.vendas, {
       cliente: '',
       status: 'todos',
-      dataVendaInicial: chartDataInicial,
-      dataVendaFinal: chartDataFinal,
+      dataVendaInicial: moment(chartDate[0].startDate).valueOf(),
+      dataVendaFinal: moment(chartDate[0].endDate).valueOf(),
     });
 
     const rows = [];
-    const dataInicial = moment(chartDataInicial);
-    const dataFinal = moment(chartDataFinal);
+    const dataInicial = moment(chartDate[0].startDate);
+    const dataFinal = moment(chartDate[0].endDate);
 
     while (dataFinal.diff(dataInicial) >= 0) {
       const sameDay = selected.filter((i) =>
         moment(i.dataVenda).isSame(dataInicial, 'day')
       );
-      const totalVendasDia =
-        sameDay?.reduce((acc, cur) => acc + cur.total, 0) || 0;
+
+      const vendasDia = sameDay.length;
+      const totalVendasDia = sameDay?.reduce((acc, cur) => acc + cur.total, 0) || 0;
 
       rows.push({
         c: [
-          { v: Date(dataInicial.format('yyyy,m,d')) },
+          { v: dataInicial.format('D/M') },
           { v: totalVendasDia / 100 },
-          { v: createTooltipHtml(dataInicial, totalVendasDia) },
+          { v: createTooltipHtml(dataInicial, totalVendasDia, vendasDia) },
         ],
       });
 
@@ -121,7 +132,7 @@ const Dashboard = () => {
     }
 
     const columns = [
-      { type: 'string', label: 'Data da Venda' },
+      { type: 'string', label: 'Data da Venda', role: 'domain' },
       { type: 'number', label: 'Total da Venda' },
       { type: 'string', role: 'tooltip', p: { html: true } },
     ];
@@ -159,10 +170,7 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    const newValue = vendasMesAtual.reduce(
-      (acc, cur) => acc + parseFloat(cur.total),
-      0
-    );
+    const newValue = vendasMesAtual.reduce((acc, cur) => acc + parseFloat(cur.total), 0);
 
     setFaturamentoMesAtual(newValue);
   }, [vendasMesAtual]);
@@ -174,14 +182,14 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Tipografia.SPAN as="span">
-        Seja Bem Vindo, {displayName}.
-      </Tipografia.SPAN>
+      <Tipografia.SPAN as="span">Seja Bem Vindo, {displayName}.</Tipografia.SPAN>
       <Tipografia.H1 as="h1">Dashboard</Tipografia.H1>
       <DashboardLayout>
         <Chart
           vendas={vendasFiltradasGrafico}
           DashboardLayout={DashboardLayout}
+          chartDate={chartDate}
+          setChartDate={setChartDate}
         />
         <DashboardLayout.Sub>
           <Tipografia.H6 as="h6">Faturamento Mensal</Tipografia.H6>
@@ -211,10 +219,7 @@ const Dashboard = () => {
         <DashboardLayout.Sub>
           <Tipografia.H6 as="h6">Calendário</Tipografia.H6>
           <StyledCalendar width="90%">
-            <Calendar
-              value={calendario}
-              onChange={(value, e) => setCalendario(value)}
-            />
+            <Calendar value={calendario} onChange={(value, e) => setCalendario(value)} />
           </StyledCalendar>
         </DashboardLayout.Sub>
       </DashboardLayout>
