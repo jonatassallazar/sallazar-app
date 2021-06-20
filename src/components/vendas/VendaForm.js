@@ -524,7 +524,7 @@ const VendaForm = (props) => {
             Salvar
           </StyledButton>
           {props?.handleDelete && (
-            <StyledButton.Secundary
+            <StyledButton.Secondary
               data-testid="delete-button-venda"
               title="Clique aqui para excluir"
               variant="contained"
@@ -534,7 +534,7 @@ const VendaForm = (props) => {
               onClick={props.handleDelete}
             >
               Remover
-            </StyledButton.Secundary>
+            </StyledButton.Secondary>
           )}
         </Form.Actions>
       </Form>

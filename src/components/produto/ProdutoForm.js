@@ -144,7 +144,7 @@ const ProdutoForm = (props) => {
           Salvar
         </StyledButton>
         {props.handleDelete && (
-          <StyledButton.Secundary
+          <StyledButton.Secondary
             data-testid="delete-button-produto"
             title="Clique aqui para excluir"
             variant="contained"
@@ -153,7 +153,7 @@ const ProdutoForm = (props) => {
             onClick={props.handleDelete}
           >
             Remover
-          </StyledButton.Secundary>
+          </StyledButton.Secondary>
         )}
       </Form.Actions>
     </Form>

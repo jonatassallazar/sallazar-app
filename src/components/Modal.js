@@ -2,12 +2,13 @@ import { Close } from '@material-ui/icons';
 import React from 'react';
 import styled from 'styled-components';
 import { StyledButton } from './forms/elements';
+import Tipografia from './layout/Tipografia';
 
 const Modal = styled.div`
   background-color: #0000009e;
   height: 100vh;
   width: 100vw;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 5;
@@ -21,7 +22,7 @@ Modal.Content = styled.div`
   flex-direction: column;
   height: fit-content;
   padding: 1.8rem;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   text-align: ${(props) => (props.alignment ? props.alignment : 'center')};
@@ -30,15 +31,11 @@ Modal.Content = styled.div`
   z-index: 6;
 `;
 
-Modal.Title = styled.h1`
-  font-size: 2.4rem;
-  margin: 0 0 0.5rem;
-`;
-
-Modal.Description = styled.p`
-  font-size: 1.6rem;
-  margin: 0.5rem 0 1.8rem;
-  word-wrap: normal;
+Modal.Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: ${({ theme }) => theme.spacing.large} 0;
 `;
 
 Modal.Close = styled.button`
@@ -61,6 +58,12 @@ const ModalPage = ({
   btnPrimary,
   btnPrimaryFunction,
   btnPrimaryIcon,
+  btnOutlined,
+  btnOutlinedFunction,
+  btnOutlinedIcon,
+  btnSecondary,
+  btnSecondaryFunction,
+  btnSecondaryIcon,
   children,
   width,
   alignment,
@@ -79,18 +82,40 @@ const ModalPage = ({
             <Close />
           </Modal.Close>
         )}
-        <Modal.Title>{title}</Modal.Title>
-        <Modal.Description>{description}</Modal.Description>
-        {btnPrimary && (
-          <StyledButton
-            startIcon={btnPrimaryIcon || undefined}
-            variant="contained"
-            color="primary"
-            onClick={btnPrimaryFunction}
-          >
-            {btnPrimary}
-          </StyledButton>
-        )}
+        <Tipografia.H3>{title}</Tipografia.H3>
+        <Tipografia.P>{description}</Tipografia.P>
+        <Modal.Buttons>
+          {btnPrimary && (
+            <StyledButton
+              data-testid="btn-primary-modal"
+              startIcon={btnPrimaryIcon || undefined}
+              variant="contained"
+              onClick={btnPrimaryFunction}
+            >
+              {btnPrimary}
+            </StyledButton>
+          )}
+          {btnOutlined && (
+            <StyledButton.Outlined
+              data-testid="btn-outlined-modal"
+              startIcon={btnOutlinedIcon || undefined}
+              variant="contained"
+              onClick={btnOutlinedFunction}
+            >
+              {btnOutlined}
+            </StyledButton.Outlined>
+          )}
+          {btnSecondary && (
+            <StyledButton.Secondary
+              data-testid="btn-secondary-modal"
+              startIcon={btnSecondaryIcon || undefined}
+              variant="contained"
+              onClick={btnSecondaryFunction}
+            >
+              {btnSecondary}
+            </StyledButton.Secondary>
+          )}
+        </Modal.Buttons>
         {children}
       </Modal.Content>
     </Modal>

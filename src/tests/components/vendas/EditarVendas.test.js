@@ -1,10 +1,4 @@
-import {
-  render,
-  fireEvent,
-  screen,
-  history,
-  waitFor,
-} from '../../utils/render';
+import { render, fireEvent, screen, history, waitFor } from '../../utils/render';
 import { EditarVendas } from '../../../components';
 import * as redux from 'react-redux';
 import clientes from '../../fixtures/clientes';
@@ -50,12 +44,12 @@ it('should delete and navigate back to vendas', async () => {
   //Confirming the change on pathname below
   history.push('/vendas/editar');
 
-  render(
-    <EditarVendas match={{ params: { id: '123abc' } }} history={history} />,
-    { initialState }
-  );
+  render(<EditarVendas match={{ params: { id: '123abc' } }} history={history} />, {
+    initialState,
+  });
 
-  fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para excluir' }));
+  fireEvent.click(screen.getByTestId('delete-button-venda'));
+  fireEvent.click(screen.getByTestId('btn-secondary-modal'));
 
   await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(4));
 
@@ -74,9 +68,7 @@ describe('testing base functions', () => {
       initialState,
     });
 
-    expect(screen.getByTestId('frete').childNodes[1].childNodes[1]).toHaveValue(
-      '3,00'
-    );
+    expect(screen.getByTestId('frete').childNodes[1].childNodes[1]).toHaveValue('3,00');
   });
 
   it('should NOT load form when has NO props', () => {
@@ -98,31 +90,21 @@ describe('should handle all submit actions', () => {
   history.push('/vendas/add');
 
   it('should send data to onSubmit on props', () => {
-    render(
-      <EditarVendas history={history} match={{ params: { id: '123abc' } }} />,
-      {
-        initialState,
-      }
-    );
+    render(<EditarVendas history={history} match={{ params: { id: '123abc' } }} />, {
+      initialState,
+    });
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Clique aqui para salvar' })
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
     expect(mockDispatchFn).toHaveBeenCalled();
   });
 
   it('should navigate back to vendas path', async () => {
-    render(
-      <EditarVendas match={{ params: { id: '123abc' } }} history={history} />,
-      {
-        initialState,
-      }
-    );
+    render(<EditarVendas match={{ params: { id: '123abc' } }} history={history} />, {
+      initialState,
+    });
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Clique aqui para salvar' })
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Clique aqui para salvar' }));
 
     await waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(4));
 

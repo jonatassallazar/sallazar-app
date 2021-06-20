@@ -4,7 +4,7 @@ import * as redux from 'react-redux';
 
 it('should have a title', () => {
   render(<LoginPage />);
-  expect(screen.getByRole('heading')).toHaveTextContent('Faça seu Login');
+  expect(screen.getByRole('heading', { name: 'Faça seu Login' })).toBeInTheDocument();
 });
 
 it('should have a description with welcome text', () => {

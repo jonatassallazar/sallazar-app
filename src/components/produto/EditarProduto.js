@@ -8,8 +8,11 @@ import {
 import ProdutoForm from './ProdutoForm';
 import { StyledButton } from '../forms/elements';
 import { ArrowBackIos } from '@material-ui/icons';
+import { Modal } from '..';
 
 const EditarProduto = (props) => {
+  const [modal, setModal] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,9 +21,7 @@ const EditarProduto = (props) => {
   }, []);
 
   const produto = useSelector((state) => {
-    return state.produtos.find(
-      (produto) => produto.id === props.match.params.id
-    );
+    return state.produtos.find((produto) => produto.id === props.match.params.id);
   });
 
   // Will render component only with props
@@ -40,11 +41,26 @@ const EditarProduto = (props) => {
   const handleDelete = () => {
     dispatch(startRemoveProduto({ id: produto.id })).then(() => {
       props.history.push('/produtos');
+      setModal(false);
     });
+  };
+
+  const handleDeleteModal = () => {
+    setModal(true);
   };
 
   return (
     <div>
+      {modal && (
+        <Modal
+          title="Deseja realmente excluir?"
+          description="Esta ação não terá como desfazer."
+          btnOutlined="Cancelar"
+          btnOutlinedFunction={() => setModal(false)}
+          btnSecondary="Excluir"
+          btnSecondaryFunction={() => handleDelete()}
+        ></Modal>
+      )}
       <StyledButton.Link to="/produtos">
         <StyledButton.OnlyIcon>
           <ArrowBackIos />
@@ -55,7 +71,7 @@ const EditarProduto = (props) => {
         <ProdutoForm
           produto={produto}
           onSubmit={onSubmit}
-          handleDelete={handleDelete}
+          handleDelete={handleDeleteModal}
         />
       )}
     </div>

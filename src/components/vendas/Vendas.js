@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FiltroVenda from './FiltroVenda';
@@ -14,26 +14,30 @@ import {
   useGetValorEmReal,
 } from '../listas/utils';
 import { Tabela, Listagem } from '../listas';
+import { Modal } from '..';
 
 const Vendas = (props) => {
+  const [modal, setModal] = useState(false);
+  const [idToRemove, setIdToRemove] = useState('');
+
   const dispatch = useDispatch();
-  const vendas = useSelector((state) =>
-    selectVendas(state.vendas, state.filtrosVendas)
-  );
+  const vendas = useSelector((state) => selectVendas(state.vendas, state.filtrosVendas));
 
   useEffect(() => {
     dispatch(startSetVendas());
     // eslint-disable-next-line
   }, []);
 
-  const handleDelete = useMemo(
-    (id) => (id) => {
-      dispatch(startEditVenda(id, { status: 'Cancelada' })).then(() =>
-        props.history.push(`/vendas`)
-      );
-    },
-    [dispatch, props.history]
-  );
+  const handleDelete = () => {
+    dispatch(startEditVenda(idToRemove, { status: 'Cancelada' })).then(() => {
+      props.history.push(`/vendas`);
+    });
+  };
+
+  const handleDeleteModal = (id) => {
+    setModal(true);
+    setIdToRemove(id);
+  };
 
   const header = [
     { accessor: 'status', Header: 'Status', Cell: useGetStatus },
@@ -51,13 +55,23 @@ const Vendas = (props) => {
     {
       accessor: 'acoes',
       Header: 'Ações',
-      Cell: (props) => getAcoes(props, handleDelete, 'vendas'),
+      Cell: (props) => getAcoes(props, handleDeleteModal, 'vendas'),
       disableSortBy: true,
     },
   ];
 
   return (
     <div>
+      {modal && (
+        <Modal
+          title="Deseja realmente excluir?"
+          description="A venda será marcada como cancelada e não aparecerá nos relatórios. É possível reverter esta ação."
+          btnOutlined="Cancelar"
+          btnOutlinedFunction={() => setModal(false)}
+          btnSecondary="Excluir"
+          btnSecondaryFunction={() => handleDelete()}
+        ></Modal>
+      )}
       <Listagem.Title>Vendas Realizadas</Listagem.Title>
       <StyledButton
         variant="contained"

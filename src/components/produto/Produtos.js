@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FiltroProduto from './FiltroProduto';
@@ -8,8 +8,12 @@ import { startRemoveProduto, startSetProdutos } from '../../actions/produtos';
 import { StyledButton } from '../forms/elements';
 import { Tabela, Listagem } from '../listas';
 import { getAcoes, useGetData, useGetStatus, useGetValorEmReal } from '../listas/utils';
+import { Modal } from '..';
 
 const Produto = (props) => {
+  const [modal, setModal] = useState(false);
+  const [idToRemove, setIdToRemove] = useState('');
+
   const produtos = useSelector((state) =>
     selectProdutos(state.produtos, state.filtrosProdutos)
   );
@@ -20,14 +24,16 @@ const Produto = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  const handleDelete = useMemo(
-    (id) => (id) => {
-      dispatch(startRemoveProduto({ id })).then(() => {
-        props.history.push('/produtos');
-      });
-    },
-    [dispatch, props.history]
-  );
+  const handleDelete = () => {
+    dispatch(startRemoveProduto({ id: idToRemove })).then(() => {
+      props.history.push('/produtos');
+    });
+  };
+
+  const handleDeleteModal = (id) => {
+    setModal(true);
+    setIdToRemove(id);
+  };
 
   const header = [
     { accessor: 'status', Header: 'Status', Cell: useGetStatus },
@@ -53,13 +59,23 @@ const Produto = (props) => {
     {
       accessor: 'acoes',
       Header: 'Ações',
-      Cell: (props) => getAcoes(props, handleDelete, 'produtos'),
+      Cell: (props) => getAcoes(props, handleDeleteModal, 'produtos'),
       disableSortBy: true,
     },
   ];
 
   return (
     <div>
+      {modal && (
+        <Modal
+          title="Deseja realmente excluir?"
+          description="Não é possível reverter esta ação."
+          btnOutlined="Cancelar"
+          btnOutlinedFunction={() => setModal(false)}
+          btnSecondary="Excluir"
+          btnSecondaryFunction={() => handleDelete()}
+        ></Modal>
+      )}
       <Listagem.Title>Lista de Produtos</Listagem.Title>
       <StyledButton
         variant="contained"

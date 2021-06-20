@@ -13,31 +13,31 @@ Tipografia.H1 = styled(Tipografia)`
 Tipografia.H2 = styled(Tipografia)`
   font-size: calc(${({ theme }) => theme.font.huge} * 0.85);
   font-weight: 400;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.50) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.40) 0;
 `;
 
 Tipografia.H3 = styled(Tipografia)`
   font-size: calc(${({ theme }) => theme.font.huge} * 0.75);
   font-weight: 500;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.50) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.30) 0;
 `;
 
 Tipografia.H4 = styled(Tipografia)`
   font-size: calc(${({ theme }) => theme.font.huge} * 0.65);
   font-weight: 600;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.45) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.25) 0;
 `;
 
 Tipografia.H5 = styled(Tipografia)`
   font-size: calc(${({ theme }) => theme.font.huge} * 0.55);
   font-weight: 700;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.35) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.15) 0;
 `;
 
 Tipografia.H6 = styled(Tipografia)`
   font-size: calc(${({ theme }) => theme.font.huge} * 0.45);
   font-weight: 800;
-  margin: calc(${({ theme }) => theme.spacing.huge} * 0.25) 0;
+  margin: calc(${({ theme }) => theme.spacing.huge} * 0.10) 0;
 `;
 
 Tipografia.P = styled(Tipografia)`

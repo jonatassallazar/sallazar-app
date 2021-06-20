@@ -67,6 +67,7 @@ it('should dispatch function to delete row', () => {
   expect(mockDispatchFn).toHaveBeenCalledTimes(1);
 
   fireEvent.click(screen.getByTestId('delete-button0'));
+  fireEvent.click(screen.getByTestId('btn-secondary-modal'));
 
   expect(mockDispatchFn).toHaveBeenCalledTimes(2);
 });
