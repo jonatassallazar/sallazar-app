@@ -1,10 +1,4 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitForElementToBeRemoved,
-  waitFor,
-} from '../../utils/render';
+import { render, screen, fireEvent } from '../../utils/render';
 import { Dashboard } from '../../../components';
 import * as redux from 'react-redux';
 import vendas from '../../fixtures/vendas';
@@ -83,12 +77,19 @@ it('should have title for Gráfico de Vendas', () => {
   expect(screen.getByText(/Gráfico de Vendas/)).toBeInTheDocument();
 });
 
+it('should have summary for chart sales', () => {
+  render(<Dashboard />, { initialState });
+  expect(screen.getByText(/Total Vendido/)).toBeInTheDocument();
+  expect(screen.getByText(/Total de Vendas/)).toBeInTheDocument();
+  expect(screen.getByText(/Ticket Médio/)).toBeInTheDocument();
+});
+
 it('should have a button to open modal', () => {
   render(<Dashboard />, { initialState });
   expect(screen.getByTestId('data-range-button-display')).toBeInTheDocument();
 });
 
-it('should have a calendar', () => {
+it('should have a pick calendar', () => {
   render(<Dashboard />, { initialState });
 
   expect(screen.queryByTestId('modal-calendar')).not.toBeInTheDocument();

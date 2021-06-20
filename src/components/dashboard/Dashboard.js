@@ -146,6 +146,7 @@ const Dashboard = () => {
       <Tipografia.H1 as="h1">Dashboard</Tipografia.H1>
       <DashboardLayout>
         <Chart
+          vendasChart={vendasChart}
           vendas={vendasFiltradasGrafico}
           DashboardLayout={DashboardLayout}
           chartDate={chartDate}

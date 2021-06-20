@@ -10,6 +10,7 @@ import moment from 'moment';
 
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file'
+import { currencyFormatter } from '../forms/utils/numbersFormatters';
 
 const ChartSection = styled.div`
   grid-column-start: 1;
@@ -20,6 +21,12 @@ const ChartSection = styled.div`
   h1 {
     padding-top: ${({ theme }) => theme.spacing.medium};
   }
+`;
+
+ChartSection.InfoSummary = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 `;
 
 ChartSection.Button = styled.div`
@@ -102,13 +109,28 @@ const StyledGoogleChart = styled(GoogleChart)`
   }
 `;
 
-const Chart = ({ vendas, DashboardLayout, chartDate, setChartDate }) => {
+const Chart = ({ vendasChart, vendas, DashboardLayout, chartDate, setChartDate }) => {
   const [modalData, setModalData] = useState(false);
+
+  const totalVendas = vendasChart.reduce((acc, cur) => acc + cur.total, 0);
+
+  const ticketMedio = totalVendas / vendasChart.length;
 
   return (
     <ChartSection>
       <DashboardLayout.Sub>
         <Tipografia.H6>Gráfico de Vendas</Tipografia.H6>
+        <ChartSection.InfoSummary>
+          <Tipografia.P>
+            <b>Total Vendido:</b> R$ {currencyFormatter(totalVendas)}
+          </Tipografia.P>
+          <Tipografia.P>
+            <b>Total de Vendas:</b> {vendasChart.length}
+          </Tipografia.P>
+          <Tipografia.P>
+            <b>Ticket Médio:</b> R$ {currencyFormatter(ticketMedio)}
+          </Tipografia.P>
+        </ChartSection.InfoSummary>
         <ChartSection.Button>
           <StyledButton
             data-testid="data-range-button-display"
@@ -122,7 +144,10 @@ const Chart = ({ vendas, DashboardLayout, chartDate, setChartDate }) => {
         {modalData && (
           <ChartSection.Modal data-testid="modal-calendar">
             <DateRangePicker
-              onChange={(item) => setChartDate([item.selection])}
+              onChange={(item) => {
+                setChartDate([item.selection]);
+                setTimeout(() => setModalData(false), 1000);
+              }}
               showSelectionPreview={true}
               moveRangeOnFirstSelection={false}
               months={1}
